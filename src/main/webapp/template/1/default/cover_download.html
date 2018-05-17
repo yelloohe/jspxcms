@@ -1,0 +1,198 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.an1{color:#999;text-decoration:none;}
+a.an1:hover{color:#ff6600;text-decoration:underline}
+a.ai1{color:#333;text-decoration:none;}
+a.ai1:hover{color:#ff6600;text-decoration:underline}
+
+.fp{background-color:#fff;float:left;height:8px;width:8px;text-align:center;cursor:pointer;margin-right:6px;}
+.fp-curr{background-color:#0098FD;color:#fff;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center mt10">
+	<div class="left" style="border:1px solid #dbdbdb;">
+		[@InfoList attr='focusdownload' limit='6';list]
+		<div class="relative">
+			<div id="focusContent" style="width:310px;height:210px;">
+				[#list list as info]
+				<a href="${info.url}" title="${info.title}" target="_blank" class="absolute" style="[#if info_index!=0]display:none;[/#if]"><img src="${info.attrImageUrl}" style="width:310px;height:210px;"/></a>
+				[/#list]
+			</div>
+			<div id="focusPage" class="absolute" style="bottom:10px;right:2px;">
+				[#list 1..list?size as index]
+				<div class="fp[#if index_index==0] fp-curr[/#if]"></div>
+				[/#list]
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div>
+			<div style="padding:8px 8px;">
+				<div id="focusTitle" class="ff-yh fs18 relative" style="height:26px;">
+					[#list list as info]
+					<div class="absolute text-center" style="height:26px;line-height:26px;width:100%;[#if info_index!=0]display:none;[/#if]"><a href="${info.url}" target="_blank" class="a-none c-333">${info.title}</a></div>
+					[/#list]
+				</div>
+				<div id="focusDescription" class="ff-yh fs12 relative" style="height:25px;line-height:25px;color:#8d8d8d;">
+					[#list list as info]
+					<div class="absolute" style="height:25px;line-height:25px;[#if info_index!=0]display:none;[/#if]">${substring(info.description,22,'...')}</div>
+					[/#list]
+				</div>
+			</div>
+		</div>
+		<script>
+		$(function() {
+			var interval = 5000;
+			var speed = 400;
+			var currFocus = 0;
+			var maxFocus = ${list?size};
+			var $fc = $("#focusContent");
+			var $fp = $("#focusPage");
+			var $ft = $("#focusTitle");
+			var $fd = $("#focusDescription");
+			var fsTimeout;
+			function focusSwitch(targetFocus) {
+				if(targetFocus >= maxFocus) {
+					targetFocus = 0;
+				}
+				if(targetFocus < 0) {
+					targetFocus = maxFocus-1;
+				}
+				$fc.children().eq(currFocus).fadeOut(100);
+				$fc.children().eq(targetFocus).fadeIn(speed);
+				$ft.children().eq(currFocus).fadeOut(100);
+				$ft.children().eq(targetFocus).fadeIn(speed);
+				$fd.children().eq(currFocus).fadeOut(100);
+				$fd.children().eq(targetFocus).fadeIn(speed);
+				$fp.children().eq(currFocus).removeClass("fp-curr");
+				$fp.children().eq(targetFocus).addClass("fp-curr");
+				currFocus = targetFocus;
+			}
+			function focusSwitchAuto() {	
+				targetFocus = currFocus + 1;
+				focusSwitch(targetFocus);
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			}
+			$fc.hover(function() {
+				clearTimeout(fsTimeout);
+			},function() {
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			});
+			$fp.children().each(function(index) {
+				$(this).hover(function(){
+					clearTimeout(fsTimeout);
+					$fc.stop(true);
+					focusSwitch(index);
+				},function() {
+					fsTimeout = setTimeout(focusSwitchAuto,interval);			
+				});
+			});
+			fsTimeout = setTimeout(focusSwitchAuto,interval);
+		});
+		</script>
+		[/@InfoList]
+	</div>
+	<div class="ml10 left" style="width:420px;border:1px solid #dbdbdb;">
+		<div style="border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+			<div class="left b ff-yh fs14" style="height:31px;line-height:28px;padding:0 12px;margin-top:-1px;margin-left:-1px;border-top:3px solid #0098fd;border-right:1px solid #dbdbdb;border-left:1px solid #dbdbdb;border-bottom:1px solid #dbdbdb;background-color:#fff;">最新软件</div>
+			<div class="right"></div>
+			<div class="clear"></div>
+		</div>
+		<ul class="list-unstyled fs12" style="padding:0px 8px;">
+			[@InfoList node='download' isIncludeChildren='true' limit='9';list]
+			[#list list as info]
+			<li>
+				<div class="left" style="height:27px;line-height:27px;"><a href="${info.node.url}" class="an1 ff-yh">${info.node.name}</a><span style="padding:0 8px;">|</span><a href="${info.url}" class="ai1" target="_blank">${substring(info.title,20,'...')}</a></div>
+				<div class="right" style="height:27px;line-height:27px;color:#ff0000;">${info.publishDate?string('MM-dd')}</div>
+				<div class="clear"></div>
+			</li>
+			[/#list]
+			[/@InfoList]
+		</ul>
+	</div>
+	<div class="ml10 left" style="width:244px;border:1px solid #dbdbdb;">
+		<div class="b ff-yh fs14" style="padding:0 12px;height:31px;line-height:31px;border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+			下载排行榜
+		</div>
+		<ul class="list-unstyled ff-yh fs12" style="padding:5px 8px;">
+		[@InfoList node='download' isIncludeChildren='true' sort='downloads desc' limit='10';list]
+		[#list list as info]
+		<li style="[#if info_has_next]border-bottom:1px dotted #dbdbdb;[/#if]">
+			<div class="left"><span style="background-color:[#if info_index<3]#F47B0F[#else]#c8c8c8[/#if];color:#fff;padding:0px 6px;">${info_index+1}</span><a href="${info.url}" class="ai1 ml10" style="line-height:25px;" target="_blank">${substring(info.title,20,'...')}</a></div>
+			<div class="right" style="color:#858585;">${info.bufferDownloads}</div>
+			<div class="clear"></div>			
+		</li>
+		[/#list]
+		[/@InfoList]
+		</ul>
+	</div>
+	<div class="clear"></div>
+</div>
+[@NodeList parentId=node.id;list]
+[#list list as node]
+<div class="w center mt10">
+	<div class="left" style="width:742px;border:1px solid #dbdbdb;">
+		<div style="border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+			<div class="left b ff-yh fs14" style="height:31px;line-height:28px;padding:0 12px;margin-top:-1px;margin-left:-1px;border-top:3px solid #0098fd;border-right:1px solid #dbdbdb;border-left:1px solid #dbdbdb;border-bottom:1px solid #dbdbdb;background-color:#fff;">${node.name}</div>
+			<div class="right ff-yh" style="padding-right:10px;line-height:32px;"><a href="${node.url}" class="an1">更多>></a></div>
+			<div class="clear"></div>
+		</div>
+		<ul class="list-unstyled fs12" style="padding:5px 1px 15px 1px;">
+		[@InfoList nodeId=node.id limit='9';list]
+			[#list list as info]
+			<li class="left mt10" style="width:185px;">
+				<div class="left" style="padding:10px;"><a href="${info.url}" target="_blank"><img src="${info.smallImageUrl}" width="50" height="50"/></a></div>
+				<div class="left" style="padding-top:6px;width:115px;">
+					<div><a class="fs14 b c-infoem a-hover" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,10)}</a></div>
+					<div><a class="a" href="${info.node.url}">${info.node.name}</a></div>
+					<div style="color:#fe6500;">${info.customs['star']}</div>
+				</div>
+				<div class="clear"></div>
+			</li>
+			[/#list]
+		[#--
+		<li class="left text-center ml10" style="width:80px;height:92px;">
+			<div><img src="${info.smallImageUrl}" width="60" height="60"/></div>
+			<div class="fs12" style="height:20px;"><a href="${info.url}" class="ai1" target="_blank">${substring(info.title,20,'...')}</a></div>
+		</li>
+		--]
+		<div class="clear"></div>
+		[/@InfoList]
+		</ul>
+	</div>
+	<div class="ml10 left" style="width:244px;border:1px solid #dbdbdb;">
+		<div class="b ff-yh fs14" style="padding:0 12px;height:31px;line-height:31px;border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+			${node.name}排行榜
+		</div>
+		<ul class="list-unstyled ff-yh fs12" style="padding:5px 8px;">
+		[@InfoList nodeId=node.id sort='downloads desc' limit='10';list]
+		[#list list as info]
+		<li style="[#if info_has_next]border-bottom:1px dotted #dbdbdb;[/#if]">
+			<div class="left"><span style="background-color:[#if node_index % 4 = 0 && info_index<3]#52a402[#elseif node_index % 4 = 1 && info_index<3]#866556[#elseif node_index % 4 = 2 && info_index<3]#f45792[#elseif node_index % 4 = 3 && info_index<3]#5395d9[#else]#c8c8c8[/#if];color:#fff;padding:0px 6px;">${info_index+1}</span><a href="${info.url}" class="ai1 ml10" style="line-height:25px;" target="_blank">${substring(info.title,20,'...')}</a></div>
+			<div class="right" style="color:#858585;">${info.bufferDownloads}</div>
+			<div class="clear"></div>			
+		</li>
+		[/#list]
+		[/@InfoList]
+		</ul>
+	</div>
+	<div class="clear"></div>
+</div>
+[/#list]
+[/@NodeList]
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

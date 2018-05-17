@@ -1,0 +1,88 @@
+[#if global.customs['oauth']! == '1']
+    [#assign oauthWeixinUrl]${ctx}/support_genuine.jsp[/#assign]
+    [#assign oauthQqUrl]${ctx}/support_genuine.jsp[/#assign]
+    [#assign oauthWeiboUrl]${ctx}/support_genuine.jsp[/#assign]
+[#elseif global.customs['oauth']! == '2']
+    [#assign oauthWeixinUrl]javascript:alert('请先设置好第三方平台appid和secret，再开启第三方登录');[/#assign]
+    [#assign oauthQqUrl]javascript:alert('请先设置好第三方平台APP_ID和APP_KEY，再开启第三方登录');[/#assign]
+    [#assign oauthWeiboUrl]javascript:alert('请先设置好第三方平台CLIENT_ID和CLIENT_SERCRET，再开启第三方登录');[/#assign]
+[#elseif global.customs['oauth']! == '3']
+    [#assign oauthWeixinUrl]${ctx}/oauth/login/weixin?fallbackUrl=${Param.fallbackUrl!?url}[/#assign]
+    [#assign oauthQqUrl]${ctx}/oauth/login/qq?fallbackUrl=${Param.fallbackUrl!?url}[/#assign]
+    [#assign oauthWeiboUrl]${ctx}/oauth/login/weibo?fallbackUrl=${Param.fallbackUrl!?url}[/#assign]
+[/#if]
+[#assign script]
+[#escape x as (x)!?html]
+	[#if user??]
+	<span class="c666">${user.username}</span>,您好
+	<span id="notifi-span">
+		<a href="${ctx}/my/notification" id="notifi" class="notifi">0</a>
+		<div id="notifi-div" style="display:none;position:absolute;width:300px;border-radius:3px;border:1px solid #ccc;background-color:#fff9c9;">
+			<div id="notifi-container"></div>
+			<div style="padding:0 10px;text-align:center;"><a href="${dy}/my/notification" class="a-hover" style="color:#666;">查看所有通知</a></div>
+		</div>
+	</span>
+	<script>
+	$(function() {
+		var notifiFlickerInterval;
+		var curr = false;
+		var title = $(document).attr("title");
+		var notifiFlicker = function() {
+			if(curr) {
+				$("#notifi").removeClass("notifi-curr");
+				curr = false;
+			} else {
+				$("#notifi").addClass("notifi-curr");
+				curr = true;
+			}
+		};
+		var notifiInterval = function() {
+			$.getJSON("${ctx}/app?template=notification&d="+new Date()*1, function(json){
+				var origText = $("#notifi").text();
+				$("#notifi").text(json.count);
+				$("#notifi-container").html(json.content);
+				$(".notifi-view").click(function() {
+					$.get("${ctx}/my/notification/delete",{"ids":$(this).attr("data-notifi-id"),"responseType":"ajax"});
+				});
+				if(json.count>0) {
+					if(origText=="0") {
+						notifiFlickerInterval = setInterval(notifiFlicker,1000);
+						$("#notifi-div").offset({top:$("#notifi").offset().top+$("#notifi").outerHeight(),left:$("#notifi").offset().left+$("#notifi").outerWidth()-$("#notifi-div").outerWidth()});
+					}
+					$(document).attr("title","("+json.count+" 条通知) "+title);
+				} else {
+					$(document).attr("title",title);
+					$("#notifi-div").hide();
+					clearInterval(notifiFlickerInterval);
+					$("#notifi").removeClass("notifi-curr");
+					curr = false;
+				}
+			});
+		};
+		notifiInterval();
+		setInterval(notifiInterval,120000);
+		var notifiHideTimeout;
+		$("#notifi-span").hover(function() {
+			if($("#notifi").text()!="0") {
+				clearTimeout(notifiHideTimeout);
+				$("#notifi-div").show();				
+			}
+		},function() {
+			notifiHideTimeout = setTimeout('$("#notifi-div").hide();',300);
+		});
+	});
+	</script>
+	<a class="topa ml5" href="${ctx}/space/${user.id}">我的空间</a>
+	| <a class="topa" href="${ctx}/my">设置</a>
+	| <a class="topa" href="${ctx}/logout">退出</a>
+	[#else]
+    [#if oauthWeixinUrl?? && oauthQqUrl?? && oauthWeiboUrl??]
+    <a href="${oauthWeixinUrl}"><img src="_files/img/oauth_weixin_icon24.png" style="padding:0 0 3px;"/></a>
+    <a href="${oauthQqUrl}" class="ml10"><img src="_files/img/oauth_qq_7.png" style="padding:0 0 3px;"/></a>
+    <a href="${oauthWeiboUrl}" class="ml10"><img src="_files/img/oauth_weibo_240.png" style="padding:0 0 3px;"/></a>
+    [/#if]
+	当前访客身份：游客 [ <a class="topa" href="${ctx}/login?fallbackUrl=${Param.fallbackUrl?url}">登录</a> | <a class="topa"  href="${ctx}/register">注册</a> ]
+[/#if]
+[/#escape]
+[/#assign]
+document.write("${script?js_string}");

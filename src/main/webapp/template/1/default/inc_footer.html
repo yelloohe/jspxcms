@@ -1,0 +1,17 @@
+[#escape x as (x)!?html]
+<div class="w center text-center c-666" style="padding:20px;line-height:30px;">
+	<div class="powered">
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+		<span><a href="${ctx}/cmscp/index.do" class="c-infoem" target="_blank">登录后台</a></span>
+	</div>
+</div>
+
+<script type="text/javascript">
+document.write(unescape("%3Cscript src='${ctx}/visit_log%3Furl%3D")+document.location.href+unescape("%26referrer%3D")+document.referrer+unescape("' type='text/javascript'%3E%3C/script%3E"));
+</script>
+[/#escape]

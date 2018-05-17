@@ -1,0 +1,101 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}[#if node.parent??]_${node.parent.name}[/#if]_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.an1{color:#999;text-decoration:none;}
+a.an1:hover{color:#ff6600;text-decoration:underline}
+a.ai1{color:#333;text-decoration:none;}
+a.ai1:hover{color:#ff6600;text-decoration:underline}
+a.node{border-radius:3px;color:#333;margin:5px 10px;width:92px;height:28px;line-height:28px;text-align:center;background-color:#e2e2e2; text-decoration:none;}
+a.node:hover{color:#fff;background-color:#fb6902;}
+a.node-curr{color:#fff;background-color:#fb6902;text-decoration:none;}
+a.download{color:#fff;background-color:#29a5f8;text-decoration:none;height:26px;line-height:26px;width:70px;text-align:center;}
+a.download:hover{background-color:#ff7700;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div style="padding:10px 5px;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a>[#if n_has_next] > [/#if][/#list]</div>
+</div>
+<div class="w center">
+	[@InfoPage nodeId=node.id isIncludeChildren='true' limit='20';pagedList]
+	<div class="left" style="width:742px;border:1px solid #dbdbdb;padding-bottom:20px;">
+		<div style="border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+			<div class="left b ff-yh fs14" style="color:#0098fd;height:31px;line-height:28px;padding:0 12px;margin-top:-1px;margin-left:-1px;border-top:3px solid #0098fd;border-right:1px solid #dbdbdb;border-left:1px solid #dbdbdb;border-bottom:1px solid #dbdbdb;background-color:#fff;">按时间排序</div>
+			<div class="clear"></div>
+		</div>
+		<ul class="list-unstyled fs12" style="padding:0px 12px;">
+			[#list pagedList.content as info]
+			<li style="padding:15px 0; border-bottom:1px solid #dbdbdb;">
+				<div class="left" style="width:65px;">
+					<a href="${info.url}"><img src="${info.smallImageUrl}" style="width:48px;height:48px;"/></a>
+				</div>
+				<div class="left" style="width:560px;">
+					<div>
+						<a href="${info.url}" target="_blank" class="ai1 ff-yh fs14 b">${info.title}</a>
+						<span style="color:#f8a30d;font-size:12px;padding-left:5px;">${info.customs['star']}</span>
+					</div>
+					<div class="mt5" style="color:#666;">${substring(info.description,115,'...')}</div>
+					<div class="mt10" style="color:#999;">
+						<span>更新：${info.publishDate?string('yyyy-MM-dd')}</span>
+						[#if info.fileLength??]<span style="padding-left:15px;">大小：${info.fileSize}</span>[/#if]
+					</div>
+				</div>
+				<a href="${dy}/info_download?id=${info.id}" class="download left ml20 ff-yh" style="margin-top:28px;">下载</a>
+				<div class="clear"></div>
+			</li>
+			[/#list]
+		</ul>
+		<div class="mt20 ml10">
+			[#include "page.html"/]
+		</div>
+	</div>
+	[/@InfoPage]
+	<div class="right" style="width:244px;">
+		<div style="border:1px solid #dbdbdb;">
+			<div class="b ff-yh fs14" style="padding:0 12px;height:31px;line-height:31px;border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+				下载分类
+			</div>
+			<div style="padding:8px 0 8px 10px;">
+				[@NodeList parentId=node.parent.id;list]
+				[#list list as n]
+				<div><a href="${n.url}" class="node[#if n.id==node.id] node-curr[/#if] left ff-yh fs14 mt10">${n.name}</a></div>
+				[/#list]
+				<div class="clear"></div>
+				[/@NodeList]
+			</div>
+		</div>
+		<div class="mt10" style="border:1px solid #dbdbdb;">
+			<div class="b ff-yh fs14" style="padding:0 12px;height:31px;line-height:31px;border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+				下载排行榜
+			</div>
+			<ul class="list-unstyled ff-yh fs12" style="padding:5px 8px;">
+			[@InfoList node='download' isIncludeChildren='true' sort='downloads desc' limit='15';list]
+			[#list list as info]
+			<li style="[#if info_has_next]border-bottom:1px dotted #dbdbdb;[/#if]">
+				<div class="left"><span style="background-color:[#if info_index<3]#F47B0F[#else]#c8c8c8[/#if];color:#fff;padding:0px 6px;">${info_index+1}</span><a href="${info.url}" class="ai1 ml10" style="line-height:25px;" target="_blank">${substring(info.title,20,'...')}</a></div>
+				<div class="right" style="color:#858585;">${info.bufferDownloads}</div>
+				<div class="clear"></div>			
+			</li>
+			[/#list]
+			[/@InfoList]
+			</ul>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

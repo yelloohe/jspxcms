@@ -1,0 +1,120 @@
+label.error{color:red;font-style:normal;padding-left:10px;}
+em.required{color:red;font-style:normal;font-weight:normal;padding-right:1px;}
+
+.page{font-size:12px;}
+a.page{text-decoration:none;color:#000000;float:left;height:26px;line-height:26px;padding:0 8px;margin:0 3px;background-color:#f0f0f0;border:#cccccc solid 1px;}
+a.page:hover{text-decoration:none;color:#ff6600;}
+a.page-curr{text-decoration:none;color:#ff6600;float:left;height:26px;line-height:26px;padding:0 8px;margin:0 3px;background-color:#ffffff;border:#ff6600 solid 1px;color:#ff6600}
+
+.w{width:1000px;}
+.w1{width:320px;}
+.w2{width:660px;}
+
+.c-desc{color:#8c8c8c;}
+.c-node{color:#458fce;}
+.c-infoem{color:#3b639f;}
+.c-comment{color:#1E50A2;}
+
+a.a{color:#252525;text-decoration:none}
+a.a:hover{color:#cd0200;text-decoration:underline}
+
+a.nava{color:#fff;text-decoration:none;}
+a.nava:hover{color:#fef082;text-decoration:none;}
+
+a.topa{color:#666;font-size:12px;text-decoration:none;}
+a.topa:hover{color:#333;}
+
+a.detaila{font-size:12px;color:#3b639f;}
+a.detaila:hover{text-decoration:underline;}
+
+.notifi{padding:1px 5px 2px 5px;border-radius:3px;border:1px solid #ccc;text-decoration:none;color:#252525;}
+.notifi-curr{background-color:#f39c12;color:#fff;border-color:#f39c12;}
+#notifi-container a.notifi-source{color:#006699;}
+#notifi-container a.notifi-target{}
+#notifi-container a.notifi-view{color:#3E62A6;}
+
+.favorite-icon-curr{color:#ffbb00;}
+
+.search-input{font-size:14px;padding:6px;height:18px;line-height:17px;border-left:2px solid #ccc;border-top:2px solid #ccc;border-bottom:2px solid #ccc;border-right:0;}
+.search-input:focus{border-left:2px solid #3297d8;border-top:2px solid #3297d8;border-bottom:2px solid #3297d8;}
+
+.nav{}
+.nav .item{padding:0 30px;}
+.nav .first{border-right:1px solid #355C90;}
+.nav .middle{border-left:1px solid #82ABDB;border-right:1px solid #355C90;}
+.nav .last{border-left:1px solid #82ABDB;}
+.nav .curr{font-weight:bold;}
+
+.focus{position:relative;overflow:hidden;}
+.focus-content{position:relative;padding-left:0;list-style:none;}
+.focus-content .content-item{float:left;position:relative;}
+.focus-content .content-item .item-title{position:absolute;bottom:0;width:100%;height:30px;line-height:30px;text-align:center;background:#000;filter:alpha(opacity=50);background:rgba(0, 0, 0, 0.5) none repeat scroll 0 0 !important;}
+.focus-content .content-item .item-title .title-text{position:relative;}
+.focus-page{position:absolute;bottom:30px;right:3px;}
+.focus-page .page-num{padding:0 5px;background:#666;}
+.focus-page .curr{background:#cc0000;}
+a.focusa{color:#fff;text-decoration:none;}
+a.focusa:hover{color:#ffff00;}
+
+.ico-point-blue{background:url(img/ico-point-blue.png) 0 center no-repeat;}
+.ico-point-red{background:url(img/ico-point-red.png) 0 center no-repeat;}
+.info-list li.item{height:28px;line-height:28px;padding:0 10px;}
+.info-list li.spacing{height:15px;}
+.rank-top{margin:3px 0;width:22px;line-height:22px;color:#fff;background-color:#db2323;}
+.rank-normal{margin:2px 0;width:20px;line-height:22px;border:1px solid #ccc;}
+
+.box1{height:29px;line-height:28px;background-color:#fbfbfb;border-top:2px solid #458fce;border-bottom:1px solid #dbecec;}
+.box1 .head{padding-left:10px;}
+.box2{border:1px solid #d2e1f1;}
+.box2 .head{height:30px;line-height:30px;padding:0 10px;background:url(img/box_bg.png);}
+.box3{height:29px;line-height:30px;position:relative;border-top:2px solid #458fce;border-bottom:1px solid #dbecec;background-color:#fbfbfb;}
+.box3 .head{padding:0 20px;background-color:#fff;position:absolute;border-left:1px solid #bdd7f2;border-right:1px solid #bdd7f2;}
+.box4{height:30px;line-height:30px;padding:0 10px;background:url(img/box_bg.png);border-top:1px solid #bdd7f2;}
+
+.cert{padding-right:18px;margin-right:2px;background:url(img/cert.png) right center no-repeat;}
+.play{padding-right:5px;background:url(img/play.png) 5px center no-repeat;}
+
+.info-title{padding:20px 20px;margin:0;line-height:1.5;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei";font-size:26px;text-align:center;}
+.info-detail{padding:5px;}
+.info-text{font-size:14px;line-height:2;}
+
+.score-mood{padding:10px 0;list-style:none;text-align:center;}
+.score-mood .mood-item{float:left;margin:0 10px;padding:0 5px;cursor:pointer;}
+.score-mood .mood-item .item-count{color:#cc3333;}
+.score-mood .mood-item .item-img{padding:2px 0;}
+
+.digg .digg-item{float:left;padding-left:90px;width:46px;height:36px;line-height:36px;cursor:pointer;font-weight:bold;font-size:18px;color:#256eb1;}
+#diggs{background:url(img/digg.png);}
+#burys{margin-left:20px;background:url(img/digg.png) no-repeat -149px 0;}
+#diggs:hover{background:url(img/digg.png) 0 -50px;}
+#burys:hover{background:url(img/digg.png) -149px -50px;}
+
+a.comment-like{color:#666;text-decoration:none;}
+a.comment-like:hover{color:#BA2636;}
+.comment-score{color:#BA2636;}
+.comment-i{font-size:14px;margin-top:5px;border:1px solid #379BE9;height:100px;line-height:100px;text-align:center;}
+.comment-form{border:1px solid #379be9;margin-top:5px;}
+.comment-form-body{padding:8px;}
+.comment-form-footer{border-top:1px solid #ccc;overflow:hidden;padding:8px;}
+.comment-textarea{width:100%;height:80px;border:none;margin:0;padding:0;outline:none;resize:none;}
+.comment-captcha{width:94px;padding:4px;height:22px;line-height:22px;border:1px solid #ccc;}
+.comment-captcha-img{cursor:pointer;border:1px solid #ccc;margin:0;vertical-align:top;display:none;}
+.comment-button{height:32px;padding:0 1em;border:0;margin:0;background-color:#035e95;font-size:14px;color:#fff;}
+.comment-like{text-align:right;}
+.comment-avatar{padding:2px;border:1px solid #ccc;width:42px;height:42px;}
+a.comment-login{color:#458FCE;}
+
+.guestbook-i{font-size:14px;border:1px solid #379BE9;height:100px;line-height:100px;text-align:center;}
+a.guestbook-login{color:#458FCE;}
+
+button::-moz-focus-inner{border:0;padding:0;margin:0; }
+/*
+.button{padding:0 0.5em;height:24px;border:1px solid #999;background-color:#eee;line-height:normal;overflow:visible;}
+.button:hover{border:1px solid #7a7a7a;background-color:#dfdfdf;}
+.button:active{border:1px solid #7a7a7a;background-color:#fff;}
+.button:focus{border:1px solid #7a7a7a;background-color:#dfdfdf;}
+*/
+
+
+
+

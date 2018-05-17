@@ -1,0 +1,38 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>用户注册_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="用户注册"/>
+<meta name="description" content="用户注册"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+<div class="w center mt10 oh">
+	<a class="left" style="margin-left:50px;width:228px;height:90px;background:url(_files/img/logo.png) no-repeat;" href="${ctx}/"></a>
+	<div class="left ff-yh fs28 ml20 c-333" style="margin:30px 0 0 25px;padding-left:25px;border-left:1px solid #ddd;">用户注册</div>
+</div>
+<div class="center oh" style="width:1200px;background:url(_files/img/member_line_bg.png) 0 -1px no-repeat;">
+	<div style="padding:90px 0 40px 370px;">
+		<div class="" style="color:#404040;padding:20px 0 10px 60px;background:url(_files/img/ok.png) 0 14px no-repeat;">
+			<span class="fs20 ff-yh">恭喜您已注册成功！</span> &nbsp; <a href="${ctx}/login" class="fs14 a-hover" style="color:#0a8cd2;">现在登录</a>
+			[#if Param.verifyMode! == '0']
+			[#elseif Param.verifyMode! == '1']
+			<div class="mt20">我们给您的邮箱 <span class="fs14" style="color:#c00;">${Param.email!}</span> 发送一封账号激活邮件</div>
+			<div>点击邮件中的激活链接，方可使用该账号。</div>
+			[#elseif Param.verifyMode! == '2']
+			<div class="mt20">需等待管理员审核后，才能使用该帐号。</div>
+			[/#if]
+		</div>
+	</div>
+</div>
+<div class="w center text-center" style="margin-top:100px;">
+	<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+	<span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+</div>
+</body>
+</html>
+[/#escape]

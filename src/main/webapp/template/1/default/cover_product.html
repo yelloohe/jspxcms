@@ -1,0 +1,121 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.a1{color:#676767;text-decoration:none;}
+a.a1:hover{color:#B79768;text-decoration:none;}
+.fp{background-color:#fff;color:#000;display:inline-block;line-height:22px;width:22px;text-align:center;cursor:pointer;border-radius:50%;margin-right:4px;}
+.fp-curr{background-color:#ff4848;color:#fff;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center mt10">
+	<div class="left" style="width:210px;">
+		<ul class="list-unstyled" style="height:186px;padding:0 15px;border:2px solid #b89366;background-color:#f5f5f5;">
+			[@NodeList parentId=node.id limit='5';list]
+			[#list list as n]
+			<li style="height:36px;line-height:36px;padding-left:15px;[#if n_has_next]border-bottom:1px solid #fff;[/#if]background:url(_files/img/ico-point-product.png) 0 center no-repeat;"><a href="${n.url}" class="a1 fs14">${n.name}</a></li>
+			[/#list]
+			[/@NodeList]
+		</ul>
+	</div>
+	<div class="right relative ml20" style="width:770px;height:190px;overflow:hidden;">
+		[@InfoList attr='focusproduct' limit='6';list]
+		<div id="focusContent" class="absolute">
+			[#list list as info]
+			<div>
+				<a href="${info.url}" target="_blank" title="${info.title}"><img src="${info.attrImageUrl}" width="770" height="190"/></a>
+			</div>
+			[/#list]
+		</div>
+		<div id="focusPage" class="absolute" style="bottom:10px;right:6px;">
+			[#list 1..list?size as index]
+			<span class="fp[#if index_index==0] fp-curr[/#if]" title="第${index}页">${index}</span>
+			[/#list]
+		</div>
+		<script>
+		$(function() {
+			var interval = 5000;
+			var speed = 400;
+			var currFocus = 0;
+			var maxFocus = ${list?size};
+			var $fc = $("#focusContent");
+			var $fp = $("#focusPage");
+			var fsTimeout;
+			function focusSwitch(targetFocus) {
+				if(targetFocus >= maxFocus) {
+					targetFocus = 0;
+				}
+				if(targetFocus < 0) {
+					targetFocus = maxFocus-1;
+				}
+				$fc.animate({top:"-"+$fc.children(":first").height()*targetFocus+"px"},speed);
+				$fp.children().eq(currFocus).removeClass("fp-curr");
+				$fp.children().eq(targetFocus).addClass("fp-curr");
+				currFocus = targetFocus;
+			}
+			function focusSwitchAuto() {	
+				targetFocus = currFocus + 1;
+				focusSwitch(targetFocus);
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			}
+			$fc.hover(function() {
+				clearTimeout(fsTimeout);
+			},function() {
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			});
+			$fp.children().each(function(index) {
+				$(this).hover(function(){
+					clearTimeout(fsTimeout);
+					$fc.stop(true);
+					focusSwitch(index);
+				},function() {
+					fsTimeout = setTimeout(focusSwitchAuto,interval);			
+				});
+			});
+			fsTimeout = setTimeout(focusSwitchAuto,interval);
+		});
+		</script>
+		[/@InfoList]
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="w center mt10">			
+	[@NodeList parentId=node.id;list]
+	[#list list as n]
+	<div class="mt30" style="background-color:#F4EEE4;height:27px;">
+		<div class="left ff-yh fs16 b c-fff" style="padding:0 25px 0 20px;height:30px;line-height:30px;margin-top:-3px;margin-left:-1px;background:url(_files/img/product_bg.png) #fff right center no-repeat;">${n.name}</div>
+		<div class="right" style="padding-right:12px;text-align:right;line-height:27px;"><a href="${n.url}" class="a-hover" style="color:#015DA4;" target="_blank">更多>></a></div>
+		<div class="clear"></div>
+	</div>
+	<div class="mt20">
+		[@InfoList nodeId=n.id limit='5';list]
+		[#list list as info]
+		<div class="left mt5" style="width:184px;[#if (info_index)%5 != 0]margin-left:20px;[/#if]">
+			<a href="${info.url}" target="_blank" title="${info.title}">
+				<img src="${info.smallImageUrl}" width="184" height="184"/>
+			</a>
+			<div class="fs20 lh mt10" style="color:#C00;font-family:arial;"><span class="b fs12">￥</span>${info.customs['price']}</div>
+			<div class="ff-yh fs12 mt5" style="line-height:18px;height:36px;overflow:hidden;"><a href="${info.url}" class="a" title="${info.title}" target="_blank">${info.title}</a></div>
+		</div>
+		[/#list]
+		[/@InfoList]
+		<div class="clear"></div>
+	</div>
+	[/#list]
+	[/@NodeList]
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

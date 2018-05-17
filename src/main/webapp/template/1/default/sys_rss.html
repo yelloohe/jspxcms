@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+  	<title>${site.name}</title>
+  	<description>${site.name}</description>
+  	<link>${site.protocol}:${site.urlFull}</link>
+  	<copyright>Copyright ${.now?string('yyyy')} ${site.domain}. All Rights Reserved.</copyright>
+  	<language>zh-cn</language>
+  	[@InfoList limit='100';list]
+  	[#list list as info]
+  	<item>
+  		<title>${info.title}</title>
+  		<link>${info.site.protocol}:${info.urlFull}</link>
+  		<pubDate>${info.publishDate?string('yyyy-MM-dd HH:mm:ss')}</pubDate>
+  		<description><![CDATA[${info.description}]]></description>
+  		<author>${info.site.domain}</author>
+  	</item>
+    [/#list]
+    [/@InfoList]
+  </channel>
+</rss>

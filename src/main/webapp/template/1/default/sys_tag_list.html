@@ -1,0 +1,35 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>TAGS_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="TAGS"/>
+<meta name="description" content="TAGS"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+<div style="padding:30px 0;background-color:#edeef0;">
+	<div class="w center">
+		<div><a href="${ctx}/tag" class="ff-yh fs28 a-none" style="color:#059;">TAGS</a></div>
+		<div style="padding:3px 0 0 2px;"><a href="${ctx}/" class="a c-desc">首页</a> > <a href="${ctx}/tag" class="a c-desc">TAGS</a></div>
+	</div>
+</div>
+<div class="w center">
+	[@TagPage pageSize='100';pagedList]
+	<ul class="list-unstyled oh mt15">
+		[#list pagedList.content as tag]
+		<li class="left" style="padding:10px 40px 10px 0;"><a href="${ctx}/tag/${tag.id?url}" class="ff-yh fs16 a-hover c-333">${tag.name}</a><span>(${tag.refers})</span></li>
+		[/#list]
+	</ul>
+	<div style="padding:20px 0;">
+		[#include 'page.html'/]
+	</div>
+	[/@TagPage]
+</div>
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

@@ -1,0 +1,47 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title>${node.name} - ${site.name}</title>
+  <meta name="keywords" content="${node.keywords}">
+  <meta name="description" content="${node.description}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="_files/css/bootstrap.min.css">
+  <link rel="stylesheet" href="_files/css/main.css">
+	[#include 'inc_js.html'/]
+</head>
+<body>
+
+[#include 'inc_header.html'/]
+
+[@InfoPage nodeId=node.id pageSize='10' siteId='1';pagedList]
+<div class="container">
+  <h3 style="padding:8px 0;"><a href="${node.url}">${node.name}</a></h3>
+  <div style="margin-top:10px;">
+    [#list pagedList.content as info]
+    <div class="media" style="border-bottom:1px solid #ccc;padding-bottom:10px;">
+      [#if info.withImage]
+      <div class="media-left">
+        <a href="${info.url}"><img class="media-object" src="${info.smallImageUrl}" style="width:100px;height:70px;"></a>
+      </div>
+      [/#if]
+      <div class="media-body">
+        <h4 class="media-heading ff-yh"><a href="${info.url}" style="color:#333;">${substring(info.title,14,'...')}</a></h4>
+        <div style="color:#666;">${substring(info.description,35,'...')}</div>
+      </div>
+    </div>
+    [/#list]
+  </div>
+	[#include 'page.html'/]
+</div>
+[/@InfoPage]
+
+[#include 'inc_footer.html'/]
+  
+[#include 'inc_js_body.html'/]
+</body>
+</html>
+[/#escape]

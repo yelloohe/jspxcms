@@ -1,0 +1,23 @@
+[#escape x as (x)!?html]
+	[#if global.customs['oauth']! == '1']
+    	[#assign oauthWeixinUrl]${ctx}/support_genuine.jsp[/#assign]
+    	[#assign oauthQqUrl]${ctx}/support_genuine.jsp[/#assign]
+    	[#assign oauthWeiboUrl]${ctx}/support_genuine.jsp[/#assign]
+	[#elseif global.customs['oauth']! == '2']
+			[#assign oauthWeixinUrl]javascript:alert('请先设置好第三方平台appid和secret，再开启第三方登录');[/#assign]
+    	[#assign oauthQqUrl]javascript:alert('请先设置好第三方平台APP_ID和APP_KEY，再开启第三方登录');[/#assign]
+    	[#assign oauthWeiboUrl]javascript:alert('请先设置好第三方平台CLIENT_ID和CLIENT_SERCRET，再开启第三方登录');[/#assign]
+	[#elseif global.customs['oauth']! == '3']
+    	[#assign oauthWeixinUrl]${ctx}/oauth/login/weixin?fallbackUrl=${Param.fallbackUrl!?url}[/#assign]
+    	[#assign oauthQqUrl]${ctx}/oauth/login/qq?fallbackUrl=${Param.fallbackUrl?url}[/#assign]
+    	[#assign oauthWeiboUrl]${ctx}/oauth/login/weibo?fallbackUrl=${Param.fallbackUrl?url}[/#assign]
+	[/#if]
+    [#if oauthWeixinUrl?? && oauthQqUrl?? && oauthWeiboUrl??]
+    <div class="c-666 fs12" style="border-top:1px dashed #ccc;padding-top:8px;margin-top:10px;">或者您也可以用以下网站账号登录</div>
+    <div style="margin-top:8px;">
+    	<div class="mt10"><a href="${oauthWeixinUrl}"><img src="_files/img/oauth_weixin_icon24.png"/></a></div>
+      <div class="mt10"><a href="${oauthQqUrl}"><img src="_files/img/oauth_qq_7.png"/></a></div>
+      <div class="mt10"><a href="${oauthWeiboUrl}"><img src="_files/img/oauth_weibo_240.png"/></a></div>
+    </div>
+    [/#if]
+[/#escape]

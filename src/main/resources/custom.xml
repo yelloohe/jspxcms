@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd"
+	default-lazy-init="true">
+	<!-- 验证码配置 -->
+	<!-- 验证码仓库 -->
+	<bean id="captchaStore" class="com.octo.captcha.service.captchastore.FastHashMapCaptchaStore"/>
+	<!-- 验证码字符。验证码中使用的字符，去掉一些容易混淆的字符，比如i、1 -->
+	<bean id="wordGen" class= "com.octo.captcha.component.word.wordgenerator.RandomWordGenerator">
+    <constructor-arg value="ABCDEGHJKLMNRSTUWXY235689"/>
+	</bean>
+	<!-- 验证码字体 -->
+	<bean id="fontGen" class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+		<!-- 最小字体 -->
+    <constructor-arg index="0" value="30"/>
+		<!-- 最大字体 -->
+    <constructor-arg index="1" value="30"/>
+    <constructor-arg index="2">
+        <list>
+            <bean class="java.awt.Font" >
+						    <constructor-arg index="0" value="Bell MT"/>
+						    <constructor-arg index="1" type="int" value="0"/>
+						    <constructor-arg index="2" type="int" value="30"/>
+						</bean>
+            <bean class="java.awt.Font" >
+						    <constructor-arg index="0" value="nyala"/>
+						    <constructor-arg index="1" type="int" value="1"/>
+						    <constructor-arg index="2" type="int" value="30"/>
+						</bean>
+            <bean class="java.awt.Font" >
+						    <constructor-arg index="0" value="Credit valley"/>
+						    <constructor-arg index="1" type="int" value="1"/>
+						    <constructor-arg index="2" type="int" value="30"/>
+						</bean>
+        </list>
+    </constructor-arg>
+    <constructor-arg index="3" value="false"/>
+	</bean>
+	<!-- 验证码颜色 -->
+	<bean id="colorGen" class="com.octo.captcha.component.image.color.RandomListColorGenerator">
+    <constructor-arg>
+    	<list>
+				<bean class="java.awt.Color" >
+					<constructor-arg index="0" type="int" value="23"/>
+					<constructor-arg index="1" type="int" value="170"/>
+					<constructor-arg index="2" type="int" value="27"/>
+				</bean>
+				<bean class="java.awt.Color" >
+					<constructor-arg index="0" type="int" value="220"/>
+					<constructor-arg index="1" type="int" value="34"/>
+					<constructor-arg index="2" type="int" value="11"/>
+				</bean>
+				<bean class="java.awt.Color" >
+					<constructor-arg index="0" type="int" value="23"/>
+					<constructor-arg index="1" type="int" value="67"/>
+					<constructor-arg index="2" type="int" value="172"/>
+				</bean>    		
+    	</list>
+    </constructor-arg>
+	</bean>
+	<!-- 验证码背景 -->
+	<bean id="backGen" class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator">
+		<!-- 背景宽 -->
+    <constructor-arg index="0" value="100"/>
+		<!-- 背景高 -->
+    <constructor-arg index="1" value="30"/>
+		<!-- 背景颜色 -->
+    <constructor-arg index="2">
+			<bean class="java.awt.Color" >
+				<constructor-arg index="0" type="int" value="255"/>
+				<constructor-arg index="1" type="int" value="255"/>
+				<constructor-arg index="2" type="int" value="255"/>
+			</bean>
+    	<!-- <util:constant static-field="java.awt.Color.white"/> -->
+    </constructor-arg>
+	</bean>
+	<!-- 验证码引擎 -->
+	<bean id="imageEngine" class="com.jspxcms.common.captcha.GmailEngine">
+    <constructor-arg index="0" ref="wordGen"/>
+    <constructor-arg index="1" ref="fontGen"/>
+    <constructor-arg index="2" ref="colorGen"/>
+    <constructor-arg index="3" ref="backGen"/>
+    <constructor-arg index="4" value="4"/>
+    <constructor-arg index="5" value="4"/>
+    <constructor-arg index="6" value="10"/>
+	</bean>
+	<!-- 验证码Service -->
+	<bean id="captchaService" class="com.jspxcms.common.captcha.MyManageableImageCaptchaService">
+		<constructor-arg index="0" ref="captchaStore"/>
+		<constructor-arg index="1" ref="imageEngine"/>
+		<constructor-arg index="2" type="int" value="180"/>
+		<constructor-arg index="3" type="int" value="100000"/>
+		<constructor-arg index="4" type="int" value="75000"/>
+	</bean>
+
+	<!-- 全文索引文件目录 -->
+	<bean id="fsDirectory" class="com.jspxcms.common.fulltext.FSDirectoryFactoryBean">
+		<property name="location" value="${fsDirectory.location}" />
+	</bean>
+	<!-- 中文智能分词器。使用词库对中文进行分词，可达到较好的分词效果，但对内存的要求也较高，需有200M以上的内存 -->
+	<bean id="analyzer" class="org.wltea.analyzer.lucene.IKAnalyzer" destroy-method="close">
+		<!-- false分词粒度最细， true分词粒度较粗。-->
+		<!-- “一个开源的软件”细粒度分词为： “一个  | 一  | 个  | 开源  | 的  | 软件” -->
+		<!-- “一个开源的软件”粗粒度分词为： “一个  | 开源  | 的  | 软件” -->
+		<constructor-arg type="boolean" value="false"/>
+	</bean>
+	<!-- 中文双字分词器。所有的中文都按两个字分词。如“我的世界”分词为“我的  | 的世  | 世界” -->
+	<!-- 
+	<bean id="analyzer" class="org.apache.lucene.analysis.cjk.CJKAnalyzer" destroy-method="close">
+		<constructor-arg><util:constant static-field="org.apache.lucene.util.Version.LUCENE_36"/></constructor-arg>
+	</bean>
+	 -->
+	<!-- 中文单字分词器。所有的中文都按两个字分词。如“我的世界”分词为“我  | 的  | 世  | 界” -->
+	<!-- 
+  <bean id="analyzer" class="org.apache.lucene.analysis.standard.StandardAnalyzer" destroy-method="close">
+    <constructor-arg><util:constant static-field="org.apache.lucene.util.Version.LUCENE_36"/></constructor-arg>
+  </bean>
+	 -->
+	
+	<bean id="indexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg><util:constant static-field="org.apache.lucene.util.Version.LUCENE_36"/></constructor-arg>
+		<constructor-arg ref="analyzer"/>
+	</bean>
+	<bean id="indexWriter" class="com.jspxcms.common.fulltext.IndexWriterFactoryBean">
+		<property name="directory" ref="fsDirectory"/>
+		<property name="indexWriterConfig" ref="indexWriterConfig"/>
+	</bean>
+	<bean id="searcherManager" class="com.jspxcms.common.fulltext.SearcherManagerFactoryBean">
+		<property name="indexWriter" ref="indexWriter" />
+	</bean>
+	<bean id="luceneIndexTemplate" class="com.jspxcms.common.fulltext.DefaultLuceneIndexTemplate">
+		<!-- <property name="indexWriter" ref="indexWriter"/>
+		<property name="searcherManager" ref="searcherManager"/> -->
+		<property name="autoCommit" value="${luceneIndexTemplate.autoCommit}"/>
+	</bean>
+	<!-- 
+	<bean id="trackingIndexWriter" class="org.apache.lucene.search.NRTManager.TrackingIndexWriter">
+		<constructor-arg ref="indexWriter"/>
+	</bean>
+	<bean id="nrtManager" class="com.jspxcms.common.fulltext.NRTManagerFactoryBean">
+		<property name="trackingIndexWriter" ref="trackingIndexWriter" />
+	</bean>
+	<bean id="luceneIndexTemplate" class="com.jspxcms.common.fulltext.NRTLuceneIndexTemplate">
+		<property name="trackingIndexWriter" ref="trackingIndexWriter"/>
+		<property name="nrtManager" ref="nrtManager"/>
+	</bean>
+	 -->
+</beans>

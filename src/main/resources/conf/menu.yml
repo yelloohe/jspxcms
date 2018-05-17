@@ -1,0 +1,627 @@
+0:
+  name: navigation.homepage
+  icon: fa fa-dashboard
+  perms: core:homepage:welcome,core:nav
+0-0:
+  name: homepage.welcome
+  url: core/homepage/welcome.do
+  perms: core:homepage:welcome
+0-100:
+  name: homepage.environment
+  url: core/homepage/environment.do
+  perms: core:homepage:environment
+0-200:
+  name: homepage.notification
+  url: core/homepage/notification_list.do
+  perms: core:homepage:notification:list
+  ops:
+    - delete@core:homepage:notification:delete
+0-300:
+  name: homepage.message
+  url: core/homepage/message_list.do
+  perms: core:homepage:message:list
+  ops:
+    - message.send.form@core:homepage:message:send:form
+    - message.send@core:homepage:message:send
+    - delete@core:homepage:message:delete
+0-400:
+  name: homepage.mailInbox
+  url: core/homepage/mail_inbox_list.do
+  perms: core:homepage:mail_inbox:list
+  ops:
+    - show@core:homepage:mail_inbox:show
+    - delete@core:homepage:mail_inbox:delete
+0-500:
+  name: homepage.personal
+  url: core/homepage/personal_edit.do
+  perms: core:homepage:personal:edit
+  ops:
+    - update@core:homepage:personal:update
+100:
+  name: navigation.content
+  icon: glyphicon glyphicon-edit
+  perms: nav_content
+100-100:
+  name: info.management
+  url: core/info/list.do,core/info/left.do
+  perms: core:info:list,core:info:left
+  ops:
+   - create@core:info:create
+   - copy@core:info:copy
+   - edit@core:info:edit
+   - move@core:info:move_form
+   - info.massWeixinForm@core:info:mass_weixin_form
+   - info.status@core:info:status
+   - save@core:info:save,commons:img_crop,core:upload
+   - update@core:info:update,commons:img_crop,core:upload
+   - delete@core:info:logic_delete
+   - completelyDelete@core:info:delete
+   - info.recall@core:info:recall
+   - info.auditPass@core:info:audit_pass
+   - info.auditReject@core:info:audit_reject
+   - info.auditReturn@core:info:audit_return
+   - info.moveSubmit@core:info:move_submit
+   - info.massWeixin@core:info:mass_weixin
+   - info.makeHtml@core:info:make_html
+100-200:
+  name: node.management
+  url: core/node/list.do,core/node/left.do?noSelect=true
+  perms: core:node:list,core:node:left
+  ops:
+   - create@core:node:create
+   - node.batchCreate@core:node:batch_create_form
+   - copy@core:node:copy
+   - edit@core:node:edit
+   - move@core:node:move_form
+   - merge@core:node:merge_form
+   - save@core:node:save,commons:img_crop,core:upload
+   - node.batchCreateSubmit@core:node:batch_create_submit
+   - update@core:node:update,commons:img_crop,core:upload
+   - batchUpdate@core:node:batch_update
+   - delete@core:node:delete
+   - node.moveSubmit@core:node:move_submit 
+   - node.mergeSubmit@core:node:merge_submit
+100-300:
+  name: comment.management
+  url: core/comment/list.do
+  perms: core:comment:list
+  ops:
+    - create@core:comment:create
+    - copy@core:comment:copy
+    - edit@core:comment:edit
+    - commentConf.settingEdit@core:comment_conf:edit
+    - save@core:comment:save
+    - update@core:comment:update
+    - delete@core:comment:delete
+    - audit@core:comment:audit
+    - antiAudit@core:comment:anti_audit
+    - commentConf.settingUpdate@core:comment_conf:update
+100-400:
+  name: guestbook.management
+  url: ext/guestbook/list.do
+  perms: ext:guestbook:list
+  ops:
+    - create@ext:guestbook:create
+    - copy@ext:guestbook:copy
+    - edit@ext:guestbook:edit
+    - save@ext:guestbook:save
+    - update@ext:guestbook:update
+    - delete@ext:guestbook:delete
+100-500:
+  name: guestbookType.management
+  url: ext/guestbook_type/list.do
+  perms: ext:guestbook_type:list
+  ops:
+    - create@ext:guestbook_type:create
+    - copy@ext:guestbook_type:copy
+    - edit@ext:guestbook_type:edit
+    - guestbookConf.settingEdit@ext:guestbook_conf:edit
+    - save@ext:guestbook_type:save
+    - update@ext:guestbook_type:update
+    - batchUpdate@ext:guestbook_type:batch_update
+    - delete@ext:guestbook_type:delete
+    - guestbookConf.settingUpdate@ext:guestbook_conf:update
+100-600:
+  name: special.management
+  url: core/special/list.do
+  perms: core:special:list
+  ops:
+    - create@core:special:create
+    - copy@core:special:copy
+    - edit@core:special:edit
+    - save@core:special:save,commons:img_crop,core:upload
+    - update@core:special:update,commons:img_crop,core:upload
+    - delete@core:special:delete
+100-700:
+  name: specialCategory.management
+  url: core/special_category/list.do
+  perms: core:special_category:list
+  ops:
+    - create@core:special_category:create
+    - copy@core:special_category:copy
+    - edit@core:special_category:edit
+    - save@core:special_category:save
+    - update@core:special_category:update
+    - batchUpdate@core:special_category:batch_update
+    - delete@core:special_category:delete
+100-800:
+  name: attribute.management
+  url: core/attribute/list.do
+  perms: core:attribute:list
+  ops:
+    - save@core:attribute:save
+    - batchUpdate@core:attribute:batch_update
+    - delete@core:attribute:delete
+100-900:
+  name: tag.management
+  url: core/tag/list.do
+  perms: core:tag:list
+  ops:
+    - create@core:tag:create
+    - copy@core:tag:copy
+    - edit@core:tag:edit
+    - save@core:tag:save
+    - update@core:tag:update
+    - delete@core:tag:delete
+100-1000:
+  name: generation.management
+  url: core/generation/html_index.do
+  perms: core:generation:html_index
+  ops:
+   - submit@core:generation:html_submit,core:generation:fulltext_submit
+200:
+  name: navigation.file
+  icon: fa fa-folder
+  perms: nav_file
+200-100:
+  name: webFile1.management
+  url: core/web_file_1/list.do,core/web_file_1/left.do?noSelect=true
+  perms: core:web_file_1:list,core:web_file_1:left
+  ops:
+    - webFile.createText@core:web_file_1:create
+    - webFile.createDir@core:web_file_1:create_dir
+    - copy@core:web_file_1:copy
+    - edit@core:web_file_1:edit
+    - webFile.open@core:web_file_1:open
+    - save@:web_file_1:save
+    - update@core:web_file_1:update
+    - delete@core:web_file_1:delete
+    - webFile.rename@core:web_file_1:rename
+    - webFile.mkdir@core:web_file_1:mkdir
+    - webFile.move@core:web_file_1:move
+    - webFile.zip@core:web_file_1:zip
+    - webFile.zipDownload@core:web_file_1:zip_download
+    - webFile.unzip@core:web_file_1:unzip
+    - webFile.upload@core:web_file_1:upload
+    - webFile.zipUpload@core:web_file_1:zip_upload
+    - webFile.siteFile@core:web_file_1:site_file
+200-200:
+  name: webFile2.management
+  url: core/web_file_2/list.do,core/web_file_2/left.do?noSelect=true
+  perms: core:web_file_2:list,core:web_file_2:left
+  ops:
+    - webFile.createText@core:web_file_2:create
+    - webFile.createDir@core:web_file_2:create_dir
+    - copy@core:web_file_2:copy
+    - edit@core:web_file_2:edit
+    - webFile.open@core:web_file_2:open
+    - save@:web_file_2:save
+    - update@core:web_file_2:update
+    - delete@core:web_file_2:delete
+    - webFile.rename@core:web_file_2:rename
+    - webFile.mkdir@core:web_file_2:mkdir
+    - webFile.move@core:web_file_2:move
+    - webFile.zip@core:web_file_2:zip
+    - webFile.zipDownload@core:web_file_2:zip_download
+    - webFile.unzip@core:web_file_2:unzip
+    - webFile.upload@core:web_file_2:upload
+    - webFile.zipUpload@core:web_file_2:zip_upload
+    - webFile.siteFile@core:web_file_2:site_file
+200-300:
+  name: webFile3.management
+  url: core/web_file_3/list.do,core/web_file_3/left.do?noSelect=true
+  perms: core:web_file_3:list,core:web_file_3:left
+  ops:
+    - webFile.createText@core:web_file_3:create
+    - webFile.createDir@core:web_file_3:create_dir
+    - copy@core:web_file_3:copy
+    - edit@core:web_file_3:edit
+    - webFile.open@core:web_file_3:open
+    - save@:web_file_3:save
+    - update@core:web_file_3:update
+    - delete@core:web_file_3:delete
+    - webFile.rename@core:web_file_3:rename
+    - webFile.mkdir@core:web_file_3:mkdir
+    - webFile.move@core:web_file_3:move
+    - webFile.zip@core:web_file_3:zip
+    - webFile.zipDownload@core:web_file_3:zip_download
+    - webFile.unzip@core:web_file_3:unzip
+    - webFile.upload@core:web_file_3:upload
+    - webFile.zipUpload@core:web_file_3:zip_upload
+    - webFile.siteFile@core:web_file_3:site_file
+500:
+  name: navigation.module
+  icon: glyphicon glyphicon-th
+  perms: nav_module
+500-100:
+  name: task.management
+  url: core/task/list.do
+  perms: core:task:list
+  ops:
+    - view@core:task:view
+    - stop@core:task:stop
+    - delete@core:task:delete
+500-200:
+  name: scheduleJob.management
+  url: core/schedule_job/list.do
+  perms: core:schedule_job:list
+  ops:
+    - create@core:schedule_job:create
+    - copy@core:schedule_job:copy
+    - edit@core:schedule_job:edit
+    - save@core:schedule_job:save
+    - update@core:schedule_job:update
+    - delete@core:schedule_job:delete
+500-300:
+  name: collect.management
+  url: ext/collect/list.do
+  perms: ext:collect:list,ext:collect_field:list
+  ops:
+    - create@ext:collect:create,ext:collect_field:create
+    - copy@ext:collect:copy
+    - edit@ext:collect:edit
+    - save@ext:collect:save,ext:collect_field:save
+    - update@ext:collect:update,ext:collect_field:update
+    - delete@ext:collect:delete,ext:collect_field:delete
+    - start@ext:collect:start
+    - stop@ext:collect:stop
+    - pause@ext:collect:pause
+500-400:
+  name: sensitiveWord.management
+  url: core/sensitive_word/list.do
+  perms: core:sensitive_word:list
+  ops:
+    - create@core:sensitive_word:create
+    - copy@core:sensitive_word:copy
+    - edit@core:sensitive_word:edit
+    - save@core:sensitive_word:save
+    - update@core:sensitive_word:update
+    - delete@core:sensitive_word:delete
+500-500:
+  name: attachment.management
+  url: core/attachment/list.do
+  perms: core:attachment:list
+  ops:
+    - delete@core:attachment:delete
+500-600:
+  name: scoreGroup.management
+  url: core/score_group/list.do
+  perms: core:score_group:list
+  ops:
+    - create@core:score_group:create
+    - copy@core:score_group:copy
+    - edit@core:score_group:edit
+    - save@core:score_group:save
+    - update@core:score_group:update
+    - batchUpdate@core:score_group:batch_update
+    - delete@core:score_group:delete
+500-700:
+  name: vote.management
+  url: ext/vote/list.do
+  perms: ext:vote:list
+  ops:
+    - create@ext:vote:create
+    - copy@ext:vote:copy
+    - edit@ext:vote:edit
+    - save@ext:vote:save
+    - update@ext:vote:update
+    - delete@ext:vote:delete
+500-800:
+  name: question.management
+  url: ext/question/list.do
+  perms: ext:question:list
+  ops:
+    - view@ext:question:view
+    - create@ext:question:create
+    - copy@ext:question:copy
+    - edit@ext:question:edit
+    - save@ext:question:save
+    - update@ext:question:update
+    - delete@ext:question:delete
+600:
+  name: navigation.plug
+  icon: fa fa-plug
+  perms: nav_plug
+600-100:
+  name: friendlinkType.management
+  url: ext/friendlink_type/list.do
+  perms: ext:friendlink_type:list
+  ops:
+    - create@ext:friendlink_type:create
+    - copy@ext:friendlink_type:copy
+    - edit@ext:friendlink_type:edit
+    - save@ext:friendlink_type:save
+    - update@ext:friendlink_type:update
+    - batchUpdate@ext:friendlink_type:batch_update
+    - delete@ext:friendlink_type:delete
+600-200:
+  name: friendlink.management
+  url: ext/friendlink/list.do
+  perms: ext:friendlink:list
+  ops:
+    - create@ext:friendlink:create
+    - copy@ext:friendlink:copy
+    - edit@ext:friendlink:edit
+    - save@ext:friendlink:save,commons:img_crop,core:upload
+    - update@ext:friendlink:update,commons:img_crop,core:upload
+    - batchUpdate@ext:friendlink:batch_update
+    - delete@ext:friendlink:delete
+600-300:
+  name: adSlot.management
+  url: ext/ad_slot/list.do
+  perms: ext:ad_slot:list
+  ops:
+    - create@ext:ad_slot:create
+    - copy@ext:ad_slot:copy
+    - edit@ext:ad_slot:edit
+    - save@ext:ad_slot:save
+    - update@ext:ad_slot:update
+    - delete@ext:ad_slot:delete
+600-400:
+  name: ad.management
+  url: ext/ad/list.do
+  perms: ext:ad:list
+  ops:
+    - create@ext:ad:create
+    - copy@ext:ad:copy
+    - edit@ext:ad:edit
+    - save@ext:ad:save,commons:img_crop,core:upload
+    - update@ext:ad:update,commons:img_crop,core:upload
+    - delete@ext:ad:delete
+700:
+  name: navigation.stat
+  icon: glyphicon glyphicon-stats
+  perms: nav_stat
+700-100:
+  name: visitLog.trafficAnalysis
+  url: ext/visit_log/traffic_analysis.do
+  perms: ext:visit_log:traffic_analysis
+700-200:
+  name: visitLog.sourceAnalysis
+  url: ext/visit_log/source_analysis.do
+  perms: ext:visit_log:source_analysis
+700-300:
+  name: visitLog.urlAnalysis
+  url: ext/visit_log/url_analysis.do
+  perms: ext:visit_log:url_analysis
+700-400:
+  name: visitLog.countryAnalysis
+  url: ext/visit_log/country_analysis.do
+  perms: ext:visit_log:country_analysis
+700-500:
+  name: visitLog.browserAnalysis
+  url: ext/visit_log/browser_analysis.do
+  perms: ext:visit_log:browser_analysis
+700-600:
+  name: visitLog.osAnalysis
+  url: ext/visit_log/os_analysis.do
+  perms: ext:visit_log:os_analysis
+700-700:
+  name: visitLog.deviceAnalysis
+  url: ext/visit_log/device_analysis.do
+  perms: ext:visit_log:device_analysis
+700-800:
+  name: visitLog.management
+  url: ext/visit_log/list.do
+  perms: ext:visit_log:list
+  ops:
+    - view@ext:visit_log:view
+    - delete@ext:visit_log:delete
+800:
+  name: navigation.user
+  icon: glyphicon glyphicon-user
+  perms: nav_user
+800-100:
+  name: user.management
+  url: core/user/list.do
+  perms: core:user:list
+  ops: 
+    - create@core:user:create
+    - copy@core:user:copy
+    - edit@core:user:edit
+    - save@core:user:save
+    - update@core:user:update
+    - delete@core:user:delete
+    - user.deletePassword@core:user:delete_password
+    - user.check@core:user:check
+    - user.lock@core:user:lock
+    - user.unlock@core:user:unlock
+800-300:
+  name: role.management
+  url: core/role/list.do
+  perms: core:role:list
+  ops:
+    - create@core:role:create
+    - copy@core:role:copy
+    - edit@core:role:edit
+    - save@core:role:save
+    - update@core:role:update
+    - delete@core:role:delete
+800-400:
+  name: memberGroup.management
+  url: core/member_group/list.do
+  perms: core:member_group:list
+  ops: 
+    - create@core:member_group:create
+    - copy@core:member_group:copy
+    - edit@core:member_group:edit
+    - save@core:member_group:save
+    - update@core:member_group:update
+    - delete@core:member_group:delete
+800-500:
+  name: org.management
+  url: core/org/list.do
+  perms: core:org:list
+  ops:
+    - create@core:org:create
+    - copy@core:org:copy
+    - edit@core:org:edit
+    - save@core:org:save
+    - update@core:org:update
+    - batchUpdate@core:org:batch_update
+    - delete@core:org:delete
+800-600:
+  name: notification.management
+  url: core/notification/list.do
+  perms: core:notification:list
+  ops:
+    - delete@core:notification:delete
+800-700:
+  name: message.management
+  url: core/message/list.do
+  perms: core:message:list
+  ops:
+    - edit@core:message:edit
+    - update@core:message:update
+    - delete@core:message:delete
+800-800:
+  name: mailOutbox.management
+  url: core/mail_outbox/list.do
+  perms: core:mail_outbox:list
+  ops: 
+    - mailOutbox.send.form@core:mail_outbox:send:form
+    - edit@core:mail_outbox:edit
+    - mailOutbox.send@core:mail_outbox:send
+    - update@core:mail_outbox:update
+    - delete@core:mail_outbox:delete
+800-900:
+  name: favorite.management
+  url: ext/favorite/list.do
+  perms: ext:favorite:list
+  ops:
+    - delete@ext:favorite:delete
+800-1000:
+  name: userGlobal.management
+  url: core/user_global/list.do
+  perms: core:user_global:list
+  ops:
+    - create@core:user_global:create
+    - copy@core:user_global:copy
+    - edit@core:user_global:edit
+    - save@core:user_global:save
+    - update@core:user_global:update
+    - delete@core:user_global:delete
+    - user.deletePassword@core:user_global:delete_password
+    - user.check@core:user_global:check
+    - user.lock@core:user_global:lock
+    - user.unlock@core:user_global:unlock
+800-1100:
+  name: orgGlobal.management
+  url: core/org_global/list.do
+  perms: core:org_global:list
+  ops:
+    - create@core:org_global:create
+    - copy@core:org_global:copy
+    - edit@core:org_global:edit
+    - save@core:org_global:save
+    - update@core:org_global:update
+    - batchUpdate@core:org_global:batch_update
+    - delete@core:org_global:delete
+900:
+  name: navigation.system
+  icon: fa fa-cog
+  perms: nav_system
+900-100:
+  name: site.configuration
+  url: core/conf_site/base_edit.do
+  perms: core:conf_site:base_edit
+  ops:
+    - site.base.settingUpdate@core:conf_site:base_update
+    - site.watermark.settingEdit@core:conf_site:watermark_edit
+    - site.watermark.settingUpdate@core:conf_site:watermark_update
+    - site.weixin.settingEdit@core:conf_site:weixin_edit
+    - site.weixin.settingUpdate@core:conf_site:weixin_update
+    - site.custom.settingEdit@core:conf_site:custom_edit
+    - site.custom.settingUpdate@core:conf_site:custom_update
+900-200:
+  name: global.configuration
+  url: core/conf_global/base_edit.do
+  perms: core:conf_global:base_edit
+  ops:
+    - global.base.settingUpdate@core:conf_global:base_update
+    - global.upload.settingEdit@core:conf_global:upload_edit
+    - global.upload.settingUpdate@core:conf_global:upload_update
+    - global.register.settingEdit@core:conf_global:register_edit
+    - global.register.settingUpdate@core:conf_global:register_update
+    - global.mail.settingEdit@core:conf_global:mail_edit
+    - global.mail.settingUpdate@core:conf_global:mail_update,core:conf_global:mail_send
+    - global.other.settingEdit@core:conf_global:other_edit
+    - global.other.settingUpdate@core:conf_global:other_update
+    - global.custom.settingEdit@core:conf_global:custom_edit
+    - global.custom.settingUpdate@core:conf_global:custom_update
+900-300:
+  name: publishPoint.management
+  url: core/publish_point/list.do
+  perms: core:publish_point:list
+  ops:
+    - create@core:publish_point:create
+    - copy@core:publish_point:copy
+    - edit@core:publish_point:edit
+    - save@core:publish_point:save
+    - update@core:publish_point:update
+    - delete@core:publish_point:delete
+900-400:
+  name: site.management
+  url: core/site/list.do
+  perms: core:site:list
+  ops:
+    - create@core:site:create
+    - copy@core:site:copy
+    - edit@core:site:edit
+    - save@core:site:save
+    - update@core:site:update
+    - delete@core:site:delete
+900-500:
+  name: model.management
+  url: core/model/list.do
+  perms: core:model:list
+  ops:
+    - create@core:model:create
+    - copy@core:model:copy
+    - edit@core:model:edit
+    - modelField.edit@core:model_field:list,core:model_field:predefined_list,core:model_field:create,core:model_field:copy,core:model_field:edit
+    - save@core:model:save
+    - update@core:model:update
+    - batchUpdate@core:model:batch_update
+    - delete@core:model:delete
+    - modelField.update@core:model_field:save,core:model_field:batch_save,core:model_field:update,core:model_field:batch_update,core:model_field:disable,core:model_field:enable,core:model_field:delete
+
+900-700:
+  name: workflowGroup.management
+  url: core/workflow_group/list.do
+  perms: core:workflow_group:list
+  ops:
+    - create@core:workflow_group:create
+    - copy@core:workflow_group:copy
+    - edit@core:workflow_group:edit
+    - save@core:workflow_group:save
+    - update@core:workflow_group:update
+    - delete@core:workflow_group:delete
+900-800:
+  name: workflow.management
+  url: core/workflow/list.do
+  perms: core:workflow:list,core:workflow_step:list
+  ops:
+    - create@core:workflow:create,core:workflow_step:create
+    - copy@core:workflow:copy,core:workflow_step:copy
+    - edit@core:workflow:edit,core:workflow_step:edit
+    - save@core:workflow:save,core:workflow_step:save
+    - update@core:workflow:update,core:workflow_step:update
+    - delete@core:workflow:delete,core:workflow_step:delete
+900-900:
+  name: operationLog.management
+  url: core/operation_log/list.do
+  perms: core:operation_log:list
+  ops:
+    - view@core:operation_log:view
+    - delete@core:operation_log:delete

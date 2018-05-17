@@ -1,0 +1,15 @@
+[#assign script]
+	[#if user??]
+		[@NotificationList receiverId=user.id limit=8; list]
+		[#assign notifiList = list/]
+		[#list list as notifi]
+		<div style="border-bottom:1px solid #eee;padding:0 10px;color:#333;">${notifi.content}</div>
+		[/#list]
+		[/@NotificationList]
+	[/#if]
+[/#assign]
+[#if notifiList??]
+{"count":${notifiList?size},"content":"${script?js_string}"}
+[#else]
+{"count":0}
+[/#if]

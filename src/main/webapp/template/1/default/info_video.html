@@ -1,0 +1,109 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${title}_${node.name}_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${info.keywords}"/>
+<meta name="description" content="${info.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<script type="text/javascript" src="_files/ckplayer/ckplayer.js"></script>
+<style>
+.a1{color:#333;text-decoration:none;}
+.a1:hover{color:#699f00;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<h1 class="ff-yh fs24 lh" style="margin:15px 0 0 0;font-weight:normal;">${title}</h1>
+	<div class="mt5 c-666">
+		<span class="ff-yh">[#list node.hierarchy as n]<a href="${n.url}" class="a-none c-desc" style="color:#699f00;">${n.name}</a>[#if n_has_next] > [/#if][/#list]</span>
+		<span class="ml20">发布时间：${info.publishDate?string('yyyy-MM-dd HH:mm')}</span>
+		<span class="ml20">播放数：<span id="info_views"></span></span>
+		<script type="text/javascript">
+			$("#info_views").load("${dy}/info_views/${info.id}?d="+new Date()*1);
+		</script>
+		<span class="ml20">评论数：<span id="info_comments"></span></span>
+		<script type="text/javascript">
+			 $("#info_comments").load("${dy}/info_comments/${info.id}?d="+new Date()*1);
+		</script>
+		<span class="ml20"><script src="${dy}/app?template=info_favorites&id=${info.id}&d="+new Date()*1></script></span>
+	</div>		
+</div>
+<div class="w center" style="margin-top:12px;">
+	<div class="left" style="width:672px;">
+		[#if info.video??]
+		<div id="video"></div>
+		<script type="text/javascript">
+		var flashvars={
+			f:"${info.video}",
+			c:0,
+			p:1
+		};
+		CKobject.embedSWF("_files/ckplayer/ckplayer.swf","video","ckplayer_video","672","449",flashvars);
+		</script>
+		[#else]
+		<embed src="${info.customs['flashaddr']}" allowFullScreen="true" quality="high" width="672" height="449" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+		[/#if]
+		
+		<table class="digg center mt20"><tr><td>
+			<script type="text/javascript">
+				function digg() {
+					$.post("${dy}/info_digg",{id:${info.id}},function(data){
+						if(data!="0"){$("#diggs").text(data);}else{alert("你已经顶过一次！")}
+					});
+				}
+				function bury() {
+					$.post("${dy}/info_bury",{id:${info.id}},function(data){
+						if(data!="0"){$("#burys").text(data);}else{alert("你已经踩过一次！")}
+					});
+				}
+			</script>
+			<div id="diggs" class="digg-item" onclick="digg();"></div>
+			<div id="burys" class="digg-item" onclick="bury();"></div>
+			<div class="clear"></div>
+			<script type="text/javascript">
+				$.get("${dy}/info_diggs/${info.id}?d="+new Date()*1,function(data) {
+					$("#diggs").text(data[0]);$("#burys").text(data[1]);
+				},"json");
+			</script>
+		</td></tr></table>
+		
+		<div class="bdsharebuttonbox mt20"><a href="#" class="bds_more a-none" data-cmd="more">分享到：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+		<script>
+			window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};
+			with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+		</script>
+		
+		<div id="commentDiv" class="mt20"></div>		
+		<script type="text/javascript">
+			$("#commentDiv").load("${dy}/comment_list?fid=${info.id}&url=${url?url}&d="+new Date()*1);
+		</script>
+	</div>
+	[@InfoFulltextList q=info.title+info.keywords nodeId=node.parent.id excludeId=info.id limit=10;list]
+	<div class="right" style="width:308px;">
+		[#list list as bean]
+		<div style="[#if bean_index!=0]margin-top:11px;[/#if]">
+			<div class="left" style="width:144px;">
+				<a href="${bean.url}" title="${bean.title}"><img src="${bean.smallImageUrl}" width="144" height="81"/></a>
+			</div>
+			<div class="right" style="width:158px;">
+				<div><a href="${bean.url}" class="ff-yh fs14 a1" title="${bean.title}">${substring(bean.title,16,'...')}</a></div>
+				<div class="ff-yh c-666" style="margin-top:1px;padding-left:16px;background:url(_files/img/play.png) 0 center no-repeat;">${bean.bufferViews}</div>
+				<div class="ff-yh c-666" style="margin-top:1px;">发布于 ${bean.publishDate?string('yyyy-MM-dd')}</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		[/#list]
+	</div>
+	[/@InfoFulltextList]
+	<div class="clear"></div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

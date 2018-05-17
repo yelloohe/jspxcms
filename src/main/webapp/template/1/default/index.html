@@ -1,0 +1,433 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+[#if site.url != site.urlMobile]
+<script>
+//生成静态HTML时，需要使用js判断是否为手机端访问，并跳转到手机端地址
+var ua = navigator.userAgent;var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),isAndroid = ua.match(/(Android)\s+([\d.]+)/),isMobile = isIphone || isAndroid;
+if(isMobile) location.href = "${site.urlMobile}";
+</script>
+[/#if]
+<meta charset="utf-8"/>
+<title>${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center mt10">
+	<div class="left w1">
+		[@InfoList attr='focus' limit='4';list]
+		<div id="focus" class="focus" style="width:318px;height:212px;border:1px solid transparent;">
+			<ul class="focus-content" style="width:2000px;">
+				[#list list as info]
+				<li class="content-item">
+					<a class="focusa fs14" href="${info.url}" title="${info.title}" target="_blank">
+						<img src="${info.attrImageUrl}" width="318" height="212" alt="${info.title}"/>
+						<div class="item-title">
+							<span class="title-text">${substring(info.title,20,'...')}</span>
+						</div>
+					</a>
+				</li>
+				[/#list]
+			</ul>
+			<div class="focus-page">
+				[#list list as info]
+				<a class="c-fff a-none page-num[#if info_index==0] curr[/#if]" href="${info.url}" target="_blank" title="${info.title}">${info_index+1}</a>
+				[/#list]
+			</div>
+			<div class="clear"></div>
+		</div>
+		[#if list?size > 1]
+		<script>
+			$(function() {
+				var interval = 5000;
+				var speed = 500;
+				var maxFocus = ${list?size};
+				var currFocus = 0;
+				var targetFocus = 1;
+				var $fc = $("#focus .focus-content");
+				var $fp = $("#focus .focus-page");
+				var fsTimeout;
+				function focusSwitch(targetFocus) {
+					if(targetFocus>=maxFocus) {
+						targetFocus = 0;
+					}	
+					if(targetFocus<0) {
+						targetFocus = maxFocus-1;
+					}	
+					$fc.animate({left:"-"+$fc.children(":first").width()*targetFocus+"px"},speed);
+					$fp.children().eq(currFocus).removeClass("curr");
+					$fp.children().eq(targetFocus).addClass("curr");				
+					currFocus = targetFocus;
+				}
+				function focusSwitchAuto() {	
+					targetFocus = currFocus + 1;
+					focusSwitch(targetFocus);
+					fsTimeout = setTimeout(focusSwitchAuto,interval);
+				}
+				function focusSwitchNext() {
+					clearTimeout(fsTimeout);
+					$fc.stop(true);
+					focusSwitch(currFocus+1);
+					fsTimeout = setTimeout(focusSwitchAuto,interval);
+				}
+				function focusSwitchPrev() {
+					clearTimeout(fsTimeout);
+					$fc.stop(true);
+					focusSwitch(currFocus-1);
+					fsTimeout = setTimeout(focusSwitchAuto,interval);
+				}
+				$fc.hover(function() {
+					clearTimeout(fsTimeout);
+				},function() {
+					fsTimeout = setTimeout(focusSwitchAuto,interval);
+				});
+				$fp.children().each(function() {
+					$(this).mouseover(function() {
+						clearTimeout(fsTimeout);
+						$fc.stop(true);
+						focusSwitch($(this).index());
+					});
+				});
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			});
+		</script>
+		[/#if]
+		[/@InfoList]
+		<div class="mt10">
+			<div class="box3">
+				<div class="head b c-node fs14">热度排行</div>
+			</div>
+			<ul class="list-unstyled" style="padding:10px;">
+				[@InfoList sort='views desc' limit='10';list]
+				[#list list as info]
+				<li style="height:28px;line-height:28px;"><span class="left text-center [#if info_index<3]rank-top[#else]rank-normal[/#if]" style="margin-right:10px;">${info_index+1}</span><a class="a fs14" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,18,'...')}</a></li>
+				[/#list]
+				[/@InfoList]
+			</ul>
+		</div>
+	</div>
+	<div class="left w1 ml20">
+		<div class="box4">
+			<a class="b c-node fs14 a-hover" href="${getNode('news').url}">要闻</a>
+		</div>
+		<div class="mt5">
+			[@InfoList attr='headlines' limit='3';list]
+			[#if list?size > 0]
+			<div class="text-center" style="height:38px;line-height:38px;">
+				<a class="fs14 b a-hover c-infoem" href="${list[0].url}" target="_blank" title="${list[0].title}">${substring(list[0].title,18,'...')}</a>
+			</div>
+			[/#if]
+			<ul class="list-unstyled text-center" style="height:30px;line-height:30px;">
+			[#list list as info]
+			[#if info_index > 0]
+				<li class="left" style="width:50%;">[<a class="a-hover c-infoem" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,11,'...')}</a>]</li>
+			[/#if]
+			[/#list]
+			</ul>
+			[/@InfoList]			
+		</div>
+		<ul class="mt10 info-list list-unstyled" style="border-top:1px dotted #d2e1f1;padding:10px 0;">
+			[@InfoList node='news' isIncludeChildren='true' limit='14';list]
+			[#list list as info]
+			<li class="item ico-point-blue">
+				<a class="fs14 [#if info_index=4 || info_index=9 || info.strong] c-infoem a-hover b[#else]a[/#if]" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,20,'...')}</a>
+			</li>
+			[#if info_index = 3 || info_index = 8]
+			<li class="spacing"></li>
+			[/#if]
+			[/#list]
+			[/@InfoList]
+			<div class="clear"></div>
+		</ul>
+	</div>
+	<div class="right w1">
+		<div class="box4" style="border-bottom:1px solid #dbe8ef;">
+			[@Node number='video';node]<a class="c-node fs14 b a-hover" href="${node.url}">${node.name}</a>[/@Node]
+		</div>
+		<ul class="list-unstyled mt10" style="padding:0 10px;">
+			[@InfoList node='video' isIncludeChildren='true' limit='2';list]
+			[#list list as info]
+			<li class="[#if info_index % 2 = 0]left[#else]right[/#if]" style="width:132px;">
+				<a class="block relative" style="width:132px;height:88px;" href="${info.url}" target="_blank" title="${info.title}">
+					<img src="${info.smallImageUrl}" width="132" height="88"/>
+					<div class="trans c-000 absolute" style="bottom:0;height:22px;line-height:22px;width:100%;">
+						<div class="relative c-fff text-right play">&nbsp;${info.videoTime}</div>
+					</div>
+				</a>
+				<div class="text-center" style="height:28px;line-height:28px;"><a class="fs12 a" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,9,'...')}</a></div>
+			</li>
+			[/#list]
+			<div class="clear"></div>
+			[/@InfoList]
+		</ul>
+		<ul class="list-unstyled" style="padding:5px 10px;">
+			[@InfoList node='video' isIncludeChildren='true' offset='2' limit='6';list]
+			[#list list as info]
+			[#if info_index % 2 = 0]
+			<li style="padding-left:25px;height:28px;line-height:28px;background:url(_files/img/video.png) 0 center no-repeat;">
+			[/#if]
+				<a class="fs14 a" style="[#if info_index % 2 = 0]padding-right:5px;[/#if]" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,9)}</a>
+			[#if info_index % 2 = 1]
+			</li>
+			[/#if]
+			[/#list]
+			[/@InfoList]
+		</ul>
+		<div class="box2 mt10">
+			<div class="head"><a class="b c-node fs14 a-hover" href="${ctx}/special_category">专题</a></div>
+			[@SpecialList limit='1';list]
+			[#list list as special]
+			<div style="padding:10px;">
+				<a class="left" style="width:130px;" href="${ctx}/special/${special.id}" target="_blank" title="${special.title}">
+					<img src="${special.smallImageUrl}" width="130" height="87"/>
+				</a>
+				<div class="right" style="width:158px;margin-left:10px;">						
+					<div><a class="fs14 b a-hover c-infoem" href="${ctx}/special/${special.id}" title="${special.title}" target="_blank">${substring(special.title,10,'...')}</a></div>
+					<div class="mt5 c-desc">${substring(special.description,32,'...')} <a class="c-node a-all" href="${ctx}/special/${special.id}" target="_blank">[详细]</a></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			[/#list]	
+			[/@SpecialList]
+			[@SpecialList offset='1' limit='6';list]
+			<ul class="mt5 list-unstyled" style="padding:10px 10px;border-top:1px dotted #d2e1f1;">
+			[#list list as special]
+				<li style="height:26px;line-height:26px;"><a class="fs14 a" href="${ctx}/special/${special.id}" target="_blank" title="${special.title}">${substring(special.title,20,'...')}</a></li>
+			[/#list]
+			</ul>			
+			[/@SpecialList]
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="w center mt10">
+	<div class="box1">
+		<div class="head">[@Node number='product';node]<a class="b c-node fs14 a-hover" href="${node.url}">${node.name}</a>[/@Node]</div>
+	</div>
+	<ul class="list-unstyled" style="padding:20px 0;">
+		[@InfoList node='product' isIncludeChildren='true' limit='5';list]
+		[#list list as info]
+		<li class="left" style="width:159px;padding:0 20px;border-right:1px solid #e5e5e5;">
+			<div class="text-center" style="height:42px;"><a class="a" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,20)}</a></div>
+			<div><a href="${info.url}" target="_blank" title="${info.title}"><img src="${info.smallImageUrl}" width="159" height="159"/></a></div>
+			<div class="text-center" style="color:#e4393c;line-height:50px;font-size:20px;font-family:Verdana;">￥${info.customs['price']}</div>
+		</li>
+		[/#list]
+		[/@InfoList]
+		<div class="clear"></div>
+	</ul>
+</div>
+<div class="w center">
+	<script src="${ctx}/dd_number/homepage"></script>
+</div>
+<div class="w center mt10">	
+	<div class="left w2">
+		[@NodeList parent='news';list]
+		[#list list as node]
+		<div class="w1 [#if node_index%2 = 0]left[#else]right ml20[/#if]">
+			<div class="box1">
+				<div class="head"><a class="b c-node fs14 a-hover" href="${node.url}">${node.name}</a></div>
+			</div>
+			[@InfoList nodeId=node.id isWithImage='true' limit='1';list]
+			[#list list as info]
+			<div style="padding:10px;">
+				<a class="left" style="width:130px;" href="${info.url}" target="_blank" title="${info.title}">
+					<img src="${info.smallImageUrl}" width="130" height="87"/>
+				</a>
+				<div class="right" style="width:158px;margin-left:10px;">						
+					<div><a class="fs14 b a-hover c-infoem" href="${info.url}" title="${info.title}" target="_blank">${substring(info.title,10,'...')}</a></div>
+					<div class="mt5 c-desc">${substring(info.description,32,'...')} <a class="c-node a-all" href="${info.url}" target="_blank">[详细]</a></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			[/#list]	
+			[/@InfoList]
+			[@InfoList nodeId=node.id limit='5';list]
+			<ul class="mt5 list-unstyled" style="padding:10px 10px;border-top:1px dotted #d2e1f1;">
+			[#list list as info]
+				<li class="ico-point-blue" style="padding-left:10px;height:26px;line-height:26px;"><a class="fs14 a" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,20,'...')}</a></li>
+			[/#list]
+			</ul>			
+			[/@InfoList]
+		</div>
+		[/#list]
+		<div class="clear"></div>
+		[/@NodeList]
+		
+		<div class="box1">
+			<div class="head">[@Node number='download';node]<a class="b c-node fs14 a-hover" href="${node.url}">${node.name}</a>[/@Node]</div>
+		</div>
+		<ul class="list-unstyled" style="padding:10px 0 10px 20px;">
+			[@InfoList node='download' isIncludeChildren='true' limit='9';list]
+			[#list list as info]
+			<li class="left" style="width:193px;padding-right:20px;">
+				<div class="left" style="padding:10px;"><img src="${info.smallImageUrl}" width="50" height="50"/></div>
+				<div class="left" style="padding-top:6px;width:123px;">
+					<div><a class="fs14 b c-infoem a-hover" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,10)}</a></div>
+					<div><a class="a" href="${info.node.url}">${info.node.name}</a></div>
+					<div style="color:#fe6500;">${info.customs['star']}</div>
+				</div>
+				<div class="clear"></div>
+			</li>
+			[/#list]
+			[/@InfoList]
+			<div class="clear"></div>
+		</ul>
+		
+		<div class="box1">
+			<div class="head">[@Node number='jobs';node]<a class="b c-node fs14 a-hover" href="${node.url}">${node.name}</a>[/@Node]</div>
+		</div>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+			[@InfoList node='jobs' limit='6';list]
+			[#list list as info]
+			<tr style="height:35px; border-bottom:1px dotted #d2e1f1">
+				<td width="38%" valign="middle"><a href="${info.url}" class="fs14 c-infoem a-hover" style="padding-left:20px;" title="${info.title}">${substring(info.title,22,'...')}</a></td>
+				<td width="32%" valign="middle" class="c-desc">${info.customs['company']}</td>
+				<td width="15%" valign="middle" class="c-desc">${info.customs['location']}</td>
+				<td width="15%" valign="middle" class="c-desc">${info.publishDate?string('yyyy-MM-dd')}</td>
+			</tr>
+			[/#list]
+			[/@InfoList]
+		</table>
+	</div>
+	<div class="right w1">
+		<div class="box2">
+			<div class="head"><span class="b c-node fs14">Digg</span></div>
+			<ul class="list-unstyled" style="padding:10px 5px;">
+				[@InfoList sort='diggs desc' limit='6';list]
+				[#list list as info]
+				<li style="height:26px;line-height:26px;">
+					<span class="left b text-center" style="width:40px;margin:2px 5px;line-height:22px;color:#fe6500;background-color:#dae3e9;">${info.diggs}</span>
+					<a class="fs14 a" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,17,'...')}</a>
+				</li>
+				[/#list]				
+				[/@InfoList]
+			</ul>
+		</div>
+		<div class="box2 mt10">
+			<div class="head"><span class="b c-node fs14">最新评论</span></div>
+			<div>
+				[@CommentList limit='3';list]
+				<ul class="list-unstyled" style="line-height:1.8;padding:0 10px;">
+				[#list list as comment]
+					<li style="padding:10px 0;border-top:1px dotted #d2e1f1;">[#if comment.creator.id==0]<span class="b c-comment cert">匿名网友</span>[#else]<a href="${ctx}/space/${comment.creator.id}" target="_blank" class="b a-hover c-comment cert">${comment.creator.username}</a>[/#if]：<a class="c-comment a-hover" href="${comment.anchor.url}" target="_blank" title="${comment.anchor.title}">#${substring(comment.anchor.title,12,'...')}#</a>${substring(comment.text,22,'...')}</li>
+				[/#list]
+				</ul>			
+				[/@CommentList]
+			</div>
+		</div>
+		<div class="box2 mt10">
+			<div class="head"><a href="${ctx}/questions" class="b c-node fs14 a-none">调查问卷</a></div>
+			<div style="padding:0 10px;">
+				[@Question;question]
+				[#if question??]
+				<form action="${ctx}/questions/${question.id}/answer" method="post" id="questionForm">
+					<div class="text-center" style="padding:5px 10px;"><a class="c-infoem fs14 a-hover" href="${ctx}/questions/${question.id}" target="_blank">${question.title}</a></div>
+					[#list question.items as item]
+					<div class="" style="padding:5px 0;"><span class="fs14">${item_index+1}、${item.title}</span><label for="item_${item.id}" class="hide error"></label></div>
+					<ul class="list-unstyled" style="padding-left:6px;">
+						[#if !item.essay]
+						[#list item.options as option]
+						<li style="padding:5px 0;"><label><input type="[#if item.maxSelected==1]radio[#else]checkbox[/#if]" name="item_${item.id}" value="${option.id}" class="required" data-msg-required="必选项"/> ${option.title}</label></li>
+						[/#list]
+						[#else]
+						<textarea name="input_${item.id}" maxlength="2000" class="required" style="width:90%;height:80px;"></textarea>
+						[/#if]
+					</ul>
+					[/#list]
+					<input type="hidden" name="status_504" value="您已经参与过调查"/>
+					<input type="hidden" name="redirectUrl" value="${ctx}/questions/${question.id}/result"/>
+					<div class="text-center" style="padding:10px 0 20px 0;">
+						<input type="submit" value="提交"/> &nbsp;
+						<a class="a fs14" href="${ctx}/questions/${question.id}/result" target="_blank">查看结果</a>
+					</div>
+				</form>
+				<script>
+				$(function() {
+					$("#questionForm").validate();
+				});
+				</script>
+				[#else]
+				<div style="padding:10px;">没有投票</div>
+				[/#if]
+				[/@Question]
+			</div>
+		</div>
+		<div class="box2 mt10">
+			<div class="head"><span class="b c-node fs14">投票</span></div>
+			<div style="padding:0 10px;">
+				[@Vote;vote]
+				[#if vote??]
+				<div class="text-center" style="padding:5px 10px;"><a class="c-infoem fs14 a-hover" href="${ctx}/vote?id=${vote.id}" target="_blank">${vote.title?html}</a></div>
+				<form action="${ctx}/vote" method="post" id="voteForm">
+					<input type="hidden" name="id" value="${vote.id}"/>
+					<ul class="list-unstyled">
+						<label for="optionIds" class="hide error"></label>
+						[#list vote.options as option]
+						<li style="padding:5px 0;"><label><input type="[#if vote.maxSelected==1]radio[#else]checkbox[/#if]" name="optionIds" value="${option.id}" class="required" data-msg-required="请至少选择一项"/> ${option.title}</label></li>
+						[/#list]
+					</ul>
+					<input type="hidden" name="status_560" value="您已经投过票了"/>
+					<input type="hidden" name="redirectUrl" value="${ctx}/vote/{id}"/>
+					<div class="text-center" style="padding:10px 0 20px 0;">
+						<input type="submit" value="投票"/> &nbsp;
+						<a class="a fs14" href="${ctx}/vote/${vote.id}" target="_blank">查看结果</a>
+					</div>
+				</form>
+				<script>
+				$(function() {
+					$("#voteForm").validate();
+				});
+				</script>
+				[#else]
+				<div>没有投票</div>
+				[/#if]
+				[/@Vote]
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="w center mt10">
+	<div class="box1">
+		<div class="head">[@Node number='photo';node]<a class="b c-node fs14 a-hover" href="${node.url}">${node.name}</a>[/@Node]</div>
+	</div>
+	<ul class="phone list-unstyled mt20" style="padding:0 6px;">
+		[@InfoList node='photo' isIncludeChildren='true' limit='7';list]
+		[#list list as info]
+		<li class="left [#if info_index!=0] ml10[/#if][#if info_index>3] mt10[/#if]">
+			<a class="block relative fs12 overflow-hidden" href="${info.url}" target="_blank">
+				<img src="${info.smallImageUrl}" width="[#if info_index=0]390[#else]189[/#if]" height="[#if info_index=0]262[#else]126[/#if]"/>
+				<div class="title trans absolute text-center" style="bottom:-24px;width:100%;height:24px;line-height:24px;">
+					<span class="relative c-fff">[#if info_index=0]${substring(info.title,24,'...')}[#else]${substring(info.title,12,'...')}[/#if]</span>
+				</div>
+			</a>
+		</li>
+		[/#list]
+		[/@InfoList]
+		<script>
+		$(function() {
+			$(".phone a").each(function() {
+				$(this).hover(function(){
+					$(this).find(".title").animate({bottom:0},300);
+				},function() {
+					$title = $(this).find(".title");
+					$title.animate({bottom:"-"+$title.height()+"px"},50);					
+				});
+			});
+		});
+		</script>
+		<div class="clear"></div>
+	</ul>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

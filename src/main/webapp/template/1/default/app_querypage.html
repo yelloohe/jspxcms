@@ -1,0 +1,31 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center mt10">
+[#assign pageSize=1/]
+[@Query sql="select count(*) from cms_user";list]
+[#assign pagedList={'totalPages':list[0]}/]
+[/@Query]
+<div>共有 ${pagedList.totalPages} 条数据</div>
+[@Query sql='select t.f_user_id,t.f_username from cms_user t limit '+(page-1)*pageSize+','+page*pageSize;list]
+  [#list list as bean]
+    <div>${bean[0]},${bean[1]}[#if bean_has_next];[/#if]</div>
+  [/#list]
+[/@Query]
+[#include 'page.html'/]
+</div>
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

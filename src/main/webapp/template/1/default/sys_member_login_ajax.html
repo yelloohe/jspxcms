@@ -1,0 +1,4 @@
+[#assign script]
+[#if user??]你好，<a href="${ctx}/my">${user.username}</a><a href="${ctx}/logout">[退出]</a>[#else]游客，你好，你还未<a href="${ctx}/login">登录</a>！[/#if]
+[/#assign]
+document.write("${script?js_string}");

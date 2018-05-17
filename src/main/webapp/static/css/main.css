@@ -1,0 +1,50 @@
+body{font-family:'Helvetica Neue',Helvetica,Arial,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;}
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {font-family:inherit;}
+/*form-control放在input-group内，z-index会设置为2，form-control-feedback的z-index也为2，在选中input时，会被覆盖，要把z-index设置为3*/
+.form-control-feedback{z-index:4;}
+th{text-align:center;}
+.content-body{background-color:#ecf0f5;height:auto;}
+
+em.required{color:red;font-style:normal;}
+.ls-search{padding-bottom:10px;}
+.ls-search label{font-weight:normal;}
+.ls-search .form-group,
+.ls-search .btn{margin-top:5px;}
+.ls-btn-bar{padding-bottom:10px;}
+.ls-btn{float:left;padding:3px 5px 0 0;}
+.ls-tb{margin-bottom:10px;}
+.ls-tb th{text-align:center;}
+.ls-tb>tbody>tr>td{vertical-align:middle;}
+.ls-th-sort{cursor:pointer;}
+.ls-sort{padding-right:16px;background:url('../img/sort_both.png') no-repeat right center;}
+.ls-sort-asc{background:url('../img/sort_asc.png') no-repeat right center;}
+.ls-sort-desc{background:url('../img/sort_desc.png') no-repeat right center;}
+.ls-opt:link,.ls-opt:visited,.ls-opt:active{padding:0 2px;color:#0066cc;text-decoration:none;outline-style:none;}
+.ls-opt:hover{text-decoration:underline;}
+.ls-opt-disabled,.ls-opt-disabled:hover{color:#999;padding:0 2px;}
+.ls-norecord{padding:6px;border:1px solid #f1e2b5;background-color:#fff8e3;}
+.ls-page{margin:10px 0;}
+
+.in-prompt{padding:2px 8px;background:url('../img/prompt.png') no-repeat center center}
+.in-prompt-txt{padding-left:5px;color:#666;}
+
+.file-directory{padding-left:20px;background:url('../img/file/directory.png') no-repeat 3px center}
+.file-file{padding-left:20px;background:url('../img/file/file.png') no-repeat 2px center}
+.file-zip{padding-left:20px;background:url('../img/file/zip.png') no-repeat 2px center}
+.file-image{padding-left:20px;background:url('../img/file/image.png') no-repeat 2px center}
+.file-text{padding-left:20px;background:url('../img/file/text.png') no-repeat 2px center}
+
+.f7-span{border:1px solid #999;padding:3px 5px;}
+
+.ui-dialog .ui-dialog-title {line-height:115%;}
+.ui-dialog .ui-dialog-content {padding:.5em 1em .4em 1em;}
+.ui-dialog .ui-dialog-buttonpane {padding:0 1em 0 0;}
+.ui-dialog .ui-dialog-buttonpane button { margin: .3em .3em .2em 0;}
+.ui-button .ui-button-text {line-height:1;}
+
+
+.ztree li a.curSelectedNode{background-color:#c5c5c5;}
+.ztree li a.curSelectedNode_Edit{background-color:#c5c5c5;}
+.ztree li span.button.dir_ico_open{margin-right:2px; background-position:-110px 0; vertical-align:top; *vertical-align:middle}
+.ztree li span.button.dir_ico_close{margin-right:2px; background-position:-110px 0; vertical-align:top; *vertical-align:middle}
+.ztree li span.button.dir_ico_docu{margin-right:2px; background-position:-110px 0; vertical-align:top; *vertical-align:middle}

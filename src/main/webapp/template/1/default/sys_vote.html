@@ -1,0 +1,51 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${vote.title}_投票_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${vote.title}"/>
+<meta name="description" content="${vote.title}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<script>
+$(function() {
+	$("#voteForm").validate();
+});
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div style="padding:10px 5px;">您的位置:&nbsp; <a href="${ctx}" class="a c-desc">首页</a> > 投票</div>		
+	<form action="${ctx}/vote" method="post" id="voteForm">
+	<input type="hidden" name="id" value="${vote.id}"/>
+	<input type="hidden" name="status_560" value="您已经投过票了"/>
+	<input type="hidden" name="redirectUrl" value="${ctx}/vote/{id}"/>
+	<div style="border-top:2px solid #f29149;padding:0 30px;">
+		<h1 class="ff-yh fs28" style="margin:20px 0 0 0;padding:0 20px;">${vote.title}</h1>
+		<div style="padding:10px 20px;border-bottom:1px solid #ccc;">
+			<div><span></span></div>
+			<div class="c-666" style="text-indent:2em;padding:10px 0;">${vote.description}</div>
+		</div>
+		<ul class="list-unstyled mt10 ff-yh fs14" style="padding:0 30px;">
+			<label for="optionIds" class="hide error"></label>
+			[#list vote.options as option]
+			<li class="oh" style="padding:12px 0;border-bottom:1px dashed #ccc;">
+				<label><input type="[#if vote.maxSelected==1]radio[#else]checkbox[/#if]" name="optionIds" value="${option.id}" class="required" data-msg-required="请至少选择一项"/> ${option.title}</label>
+			</li>
+			[/#list]
+		</ul>
+		<div class="text-center" style="padding:25px 0 20px 0;">
+			<button type="submit">投票</button> &nbsp;
+			<a class="a fs14" href="${ctx}/vote/${vote.id}" target="_blank">查看结果</a>
+		</div>
+	</div>
+	</form>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

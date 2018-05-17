@@ -1,0 +1,134 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${user.username}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<script type="text/javascript" src="${ctx}/static/vendor/My97DatePicker/cn_WdatePicker.js"></script>
+<style>
+.user-top{background-color:#008ee1;color:#fff;}
+.user-top a{color:#fff;text-decoration:none;}
+.user-top a:hover{color:#fff;}
+.ct-bg{background-color:#fff;border:1px solid #dcdcdc;}
+.user-box{border:1px solid #ccc;background-color:#fff;}
+.user-box-head{padding:0 12px;border-bottom:1px solid #eee;line-height:32px;height:32px;font-size:14px;font-weight:bold;font-family:"Microsoft YaHei";}
+.user-box-body{padding:5px 12px;}
+.user-box-body-item{padding:3px 0;}
+.user-box-body-item a{color:#4466bb;font-size:14px;font-family:"Microsoft YaHei";text-decoration:none;display:block;}
+ 
+.user-box-body-item a:hover{}
+.user-box-body-item label{color:#666;}
+.user-nav{list-style:none;padding-left:0;overflow:hidden; border-bottom:1px solid #008ee1;font-family:"Microsoft YaHei";font-size:14px;}
+.user-nav-item{float:left;margin-left:12px;padding:0 12px;line-height:28px;background-color:#e6e6e6;}
+.user-nav-item a{color:#666;text-decoration:none;}
+.user-nav-item a:hover{color:#000;}
+.user-nav-item-curr{background-color:#008ee1;}
+.user-nav-item-curr a{color:#fff;}
+.user-nav-item-curr a:hover{color:#fff;}
+
+.table-list{width:100%;}
+.table-list thead th{text-align:left;color:#666;padding:8px 0;border-bottom:1px dashed #e6e6e6;}
+.table-list tbody td{color:#666;padding:8px 0;border-bottom:1px dashed #e6e6e6;}
+
+a.ua{color:#666;text-decoration:none;}
+a.ua:hover{text-decoration:underline;}
+a.op{color:#06C;;text-decoration:underline;}
+
+</style>
+<script>
+$(function(){
+	$("#validForm").validate();
+});
+</script>
+</head>
+<body style="background-color:#f4f4f4;">
+<div class="user-top">
+	<div class="w center c999" style="height:32px;line-height:32px;">
+		<div class="left">
+			<a class="topa ml5" href="${ctx}/" target="_blank">首页</a>
+			<a class="topa ml5" href="${ctx}/sitemap" target="_blank">网站地图</a>
+			<a class="topa ml5" href="${ctx}/rss">RSS订阅</a>
+			<a class="topa ml5" href="${ctx}/tags">TAGS标签</a>
+		</div>
+		<div class="right">
+			<script type="text/javascript" src="${ctx}/login_include?d=${.now?time}"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="w center mt10 oh">
+	[#include 'sys_member_my_header.html'/]
+</div>
+<div class="w center mt10 oh">
+	<div class="left" style="width:240px;">
+		<div class="user-box">
+			<div class="user-box-head">账号管理</div>
+			<div class="user-box-body">
+				[#include 'sys_member_my_left.html'/]
+			</div>
+		</div>
+	</div>
+	<div class="right user-box" style="width:740px;">
+		<div class="user-box-head">稿件列表</div>
+		[@InfoPage userId=user.id pageSize='10' status='1,A,B,C,D' sort='publishDate desc';pagedList]
+		<div style="padding:5px 12px;">
+			<table class="table-list">
+				<thead>
+					<tr>
+						<th width="40">ID</th>
+						<th>标题</th>
+						<th width="50">状态</th>
+						<th width="60">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					[#list pagedList.content as info]
+					<tr>
+						<td>${info.id}</td>
+						<td>
+							[#if info.status=='A']
+								<a href="${info.url}" class="ua" target="_blank">${substring(info.title,20,'...')}</a>
+							[#else]
+								${substring(info.title,20,'...')}
+							[/#if]
+						</td>
+						<td>[@s.message code='info.status.${info.status}'/]</td>
+						<td>
+							[#if info.status == 'B' || info.status == 'C' || info.status == 'D']
+							<a href="${ctx}/my/contribution/update/${info.id}" class="op">修改</a>
+							<a href="${ctx}/my/contribution/delete?ids=${info.id}&nextUrl=${ctx}/my/contribution" class="op" onclick="if(confirm('您确定删除吗？')){return true;}else{return false;}">删除</a>
+							[#else]
+							<span style="color:#999;background-color:#ddd;">修改</span>
+							<span style="color:#999;background-color:#ddd;">删除</span>
+							[/#if]
+						</td>
+					</tr>
+					[/#list]
+				</tbody>
+			</table>
+			<div style="padding:15px 0;">
+				[#include "page.html"/]
+			</div>
+		</div>
+		[/@InfoPage]
+	</div>
+</div>
+<div style="border-top:1px solid #e6e6e6;padding-bottom:20px;margin-top:30px;"></div>
+<div class="w center text-center">
+	<div class="powered">    
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+	</div>
+</div>
+</body>
+</html>
+[/#escape]

@@ -1,0 +1,6 @@
+[#assign script]
+[#list slot.ads as ad]
+<a href="${ad.url}" target="_blank"><img src="${ad.image}" alt="${ad.text}" width="${slot.width}" height="${slot.height}"></a>
+[/#list]
+[/#assign]
+document.write("${script?js_string}");

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	>
+	
+	<!-- 国际化 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="cacheSeconds" value="${messageSource.cacheSeconds}"/>
+		<property name="basenames" value="#{propertiesHelper.getList('messageSource.basenames.')}"/>
+		<property name="fallbackToSystemLocale" value="false"/>
+		<property name="alwaysUseMessageFormat" value="false"/>
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	<!-- FreeMarker -->
+	<bean id="freeMarkerViewResolver" class="com.jspxcms.common.freemarker.MyFreeMarkerViewResolver">
+		<property name="contentType" value="text/html; charset=UTF-8"/>
+		<property name="cacheUnresolved" value="false"/>
+    <property name="redirectHttp10Compatible" value="false"/>
+	</bean>
+	<!-- <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> -->
+	<bean id="freemarkerConfig" class="com.jspxcms.common.freemarker.AdapterFreeMarkerConfigurer">
+		<property name="freemarkerVariables" value="#{propertiesHelper.getBeanMap('freemarkerVariables.')}"/>
+		<property name="templateLoaderPath" value="${templateStorePath}"/>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="tag_syntax">square_bracket</prop>
+				<prop key="template_update_delay">${freemarkerConfig.template_update_delay}</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="localized_lookup">false</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="datetime_format">yyyy-MM-dd'T'HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">0.###</prop>
+				<prop key="whitespace_stripping">true</prop>
+				<prop key="auto_import">/spring.ftl as s</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 模型类别Holder -->
+  <bean id="modelTypeHolder" class="com.jspxcms.core.holder.ModelTypeHolder">
+    <property name="types" value="#{propertiesHelper.getSortedList('modelType.')}"/>
+    <property name="paths" value="#{propertiesHelper.getMap('modelTypePath.')}"/>
+  </bean>
+	<!-- 定时任务Holder -->
+  <bean id="scheduleJobHolder" class="com.jspxcms.core.holder.ScheduleJobHolder">
+    <property name="codes" value="#{propertiesHelper.getSortedList('scheduleJob.')}"/>
+    <property name="paths" value="#{propertiesHelper.getMap('scheduleJobPath.')}"/>
+  </bean>
+  
+	<!-- WEB上下文路径获取类 -->
+	<bean id="pathResolver" class="com.jspxcms.common.web.ServletContextPathResolver" />
+	<!-- 上传处理类 -->
+	<bean id="uploadHandler" class="com.jspxcms.core.support.UploadHandlerImpl" />
+	<!-- IP数据库，用于查找IP所在的城市 -->
+	<bean id="ipSeeker" class="com.jspxcms.common.ip.IPSeeker">
+		<constructor-arg value="classpath:qqwry.dat" />
+	</bean>
+</beans>

@@ -1,0 +1,145 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${title}_${node.name}_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${info.keywords}"/>
+<meta name="description" content="${info.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div style="padding:10px 5px;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a> > [/#list]正文</div>
+	<div class="left w2">
+		<h1 class="info-title" style="border-top:2px solid #458fce;">[#noescape]${bbcode(title)}[/#noescape]</h1>
+		<div class="c-666" style="padding:0 20px 20px 20px;text-align:center;border-bottom:1px dotted #458fce;">
+			<span class="info-detail">${info.publishDate?string('yyyy-MM-dd HH:mm')}</span>
+			[#if info.sourceUrl??]
+			<span class="info-detail"><a href="${info.sourceUrl}" target="_blank" class="a-hover c-666">${info.source}</a></span>
+			[#else]
+			<span class="info-detail">${info.source}</span>			
+			[/#if]
+			<span class="info-detail">${info.author!info.creator.realName!info.creator.username}</span>
+			<span class="info-detail"><span id="info_views"></span>次阅读</span>
+			<script type="text/javascript">
+				$("#info_views").load("${dy}/info_views/${info.id}?d="+new Date()*1);
+			</script>
+			[#if info.getCommentStatus(user,groups)!=0]
+			<a href="${ctx}/comment?fid=${info.id}" class="info-detail c-666 a-hover" target="_blank"><span id="info_comments"></span>条评论</a>
+			<script type="text/javascript">
+				 $("#info_comments").load("${dy}/info_comments/${info.id}?d="+new Date()*1);
+			</script>
+			[/#if]
+			<script src="${dy}/app?template=info_favorites&id=${info.id}&d="+new Date()*1></script>
+		</div>
+		<div class="info-text mt20">
+			[#noescape]${text}[/#noescape]
+		</div>
+		<table class="center mt20"><tr><td>
+			[#if pagedList.totalPages>1]
+				[#include 'page.html'/]
+			[/#if]
+		</td></tr></table>
+		<table class="center mt20"><tr><td>
+			<script type="text/javascript">
+				function infoScoring(id,itemId) {
+					$.post('${dy}/info_scoring',{id:id,itemId:itemId},function(data) {
+						if(data!="0"){$("#score-item-"+itemId).text(data);}else{alert("你已经表达过心情了！");}
+					});
+				}
+			</script>
+			[@ScoreGroup number='mood';sg]
+			[#if sg??]
+			<ul class="score-mood">
+				[#list sg.items as item]
+				<li class="mood-item" onclick="infoScoring(${info.id},${item.id});">
+					<div class="item-count"><span id="score-item-${item.id}">0</span>人</div>
+					<div class="item-img"><img src="${item.iconUrl}"/></div>
+					<div class="item-name">${item.name}</div>
+				</li>
+				[/#list]
+				<div class="clear"></div>
+			</ul>
+			[/#if]
+			[/@ScoreGroup]
+			<script type="text/javascript">
+				$.get("${dy}/info_score/${info.id}?d="+new Date()*1,function(data) {
+					for(id in data){$("#score-item-"+id).text(data[id]);}
+				},"json");
+			</script>
+		</td></tr></table>
+		<table class="digg center mt20"><tr><td>
+			<script type="text/javascript">
+				function digg() {
+					$.post("${dy}/info_digg",{id:${info.id}},function(data){
+						if(data!="0"){$("#diggs").text(data);}else{alert("你已经顶过一次！")}
+					});
+				}
+				function bury() {
+					$.post("${dy}/info_bury",{id:${info.id}},function(data){
+						if(data!="0"){$("#burys").text(data);}else{alert("你已经踩过一次！")}
+					});
+				}
+			</script>
+			<div id="diggs" class="digg-item" onclick="digg();"></div>
+			<div id="burys" class="digg-item" onclick="bury();"></div>
+			<div class="clear"></div>
+			<script type="text/javascript">
+				$.get("${dy}/info_diggs/${info.id}?d="+new Date()*1,function(data) {
+					$("#diggs").text(data[0]);$("#burys").text(data[1]);
+				},"json");
+			</script>
+		</td></tr></table>
+		<div class="bdsharebuttonbox mt20"><a href="#" class="bds_more a-none" data-cmd="more">分享到：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+		<script>
+			window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};
+			with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+		</script>
+		<ul class="mt20 list-unstyled fs14" style="line-height:28px;">
+			[@InfoPrev id=info.id;bean]
+			[#if bean??]
+			<li><span class="b c-000">上一条：</span> <a href="${bean.url}" class="a">${bean.title!}</a> <span class="fs12 c-999 ml5">${bean.publishDate?string('yyyy-MM-dd')}</span></li>
+			[#else]
+			<li><span class="b c-000">上一条：</span> <span>没有了</span></li>
+			[/#if]
+			[/@InfoPrev]
+			[@InfoNext id=info.id;i]
+			[#if i??]
+			<li><span class="b c-000">下一条：</span> <a href="${i.url}" class="a">${i.title!}</a> <span class="fs12 c-999 ml5">${i.publishDate?string('yyyy-MM-dd')}</span></li>
+			[#else]
+			<li><span class="b c-000">下一条：</span> <span>没有了</span></li>
+			[/#if]
+			[/@InfoNext ]
+		</ul>
+		<div class="mt20">
+			<div class="fs16" style="height:26px;border-bottom:1px solid #e8e8e8;">
+				<div class="left ff-yh" style="height:26px;border-bottom:1px solid #56abee;color:#56abee;">相关新闻</div>
+				<div class="clear"></div>
+			</div>
+			[@InfoFulltextList q=info.title excludeId=info.id limit=5;list]
+			<ul class="list-unstyled info-list fs14 mt10">
+				[#list list as fulltextInfo]
+				<li class="item ico-point-blue" >[@A bean=fulltextInfo target="_blank" class="a"/] <span class="fs12 c-999 ml5">${fulltextInfo.publishDate?string('yyyy-MM-dd')}</span></li>
+				[/#list]
+			</ul>
+			[/@InfoFulltextList]
+		</div>
+		<div id="commentDiv" class="mt20"></div>		
+		<script type="text/javascript">
+			$("#commentDiv").load("${dy}/comment_list?fid=${info.id}&url=${url?url}&d="+new Date()*1);
+		</script>
+	</div>
+	<div class="right w1">
+		[#include 'inc_news_right.html'/]
+	</div>
+	<div class="clear"></div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

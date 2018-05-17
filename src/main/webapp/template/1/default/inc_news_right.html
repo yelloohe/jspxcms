@@ -1,0 +1,71 @@
+[#escape x as (x)!?html]
+		<div>
+			<div class="box3">
+				<div class="head b c-node fs14">热度排行</div>
+			</div>
+			<ul class="list-unstyled" style="padding:10px;">
+				[@InfoList sort='views desc' limit='10';list]
+				[#list list as info]
+				<li style="height:28px;line-height:28px;"><span class="left text-center [#if info_index<3]rank-top[#else]rank-normal[/#if]" style="margin-right:10px;">${info_index+1}</span><a class="a fs14" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,18,'...')}</a></li>
+				[/#list]
+				[/@InfoList]
+			</ul>
+		</div>
+		
+		<div class="box4" style="border-bottom:1px solid #dbe8ef;">
+			[@Node number='video';node]<a class="c-node fs14 b a-hover" href="${node.url}">${node.name}</a>[/@Node]
+		</div>
+		<ul class="list-unstyled mt10" style="padding:0 10px;">
+			[@InfoList node='video' isIncludeChildren='true' limit='2';list]
+			[#list list as info]
+			<li class="[#if info_index % 2 = 0]left[#else]right[/#if]" style="width:132px;">
+				<a class="block relative" style="width:132px;height:88px;" href="${info.url}" target="_blank" title="${info.title}">
+					<img src="${info.smallImageUrl}" width="132" height="88"/>
+					<div class="trans c-000 absolute" style="bottom:0;height:22px;line-height:22px;width:100%;">
+						<div class="relative c-fff text-right play">&nbsp;${info.customs['duration']}</div>
+					</div>
+				</a>
+				<div class="text-center" style="height:28px;line-height:28px;"><a class="fs12 a" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,9,'...')}</a></div>
+			</li>
+			[/#list]
+			<div class="clear"></div>
+			[/@InfoList]
+		</ul>
+		<ul class="list-unstyled" style="padding:5px 10px;">
+			[@InfoList node='video' isIncludeChildren='true' offset='2' limit='6';list]
+			[#list list as info]
+			[#if info_index % 2 = 0]
+			<li style="padding-left:25px;height:28px;line-height:28px;background:url(_files/img/video.png) 0 center no-repeat;">
+			[/#if]
+				<a class="fs14 a" style="[#if info_index % 2 = 0]padding-right:5px;[/#if]" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,9)}</a>
+			[#if info_index % 2 = 1]
+			</li>
+			[/#if]
+			[/#list]
+			[/@InfoList]
+		</ul>
+		<div class="box2 mt10">
+			<div class="head"><a class="b c-node fs14 a-hover" href="${ctx}/special_category">专题</a></div>
+			[@SpecialList limit='1';list]
+			[#list list as special]
+			<div style="padding:10px;">
+				<a class="left" style="width:130px;" href="${ctx}/special/${special.id}" target="_blank" title="${special.title}">
+					<img src="${special.smallImageUrl}" width="130" height="87"/>
+				</a>
+				<div class="right" style="width:158px;margin-left:10px;">						
+					<div><a class="fs14 b a-hover c-infoem" href="${ctx}/special/${special.id}" title="${special.title}" target="_blank">${substring(special.title,10,'...')}</a></div>
+					<div class="mt5 c-desc">${substring(special.description,32,'...')} <a class="c-node a-all" href="${ctx}/special/${special.id}" target="_blank">[详细]</a></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			[/#list]	
+			[/@SpecialList]
+			[@SpecialList offset='1' limit='6';list]
+			<ul class="mt5 list-unstyled" style="padding:10px 10px;border-top:1px dotted #d2e1f1;">
+			[#list list as special]
+				<li style="height:26px;line-height:26px;"><a class="fs14 a" href="${ctx}/special/${special.id}" target="_blank" title="${special.title}">${substring(special.title,20,'...')}</a></li>
+			[/#list]
+			</ul>			
+			[/@SpecialList]
+		</div>
+[/#escape]

@@ -1,0 +1,139 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${title}_${node.name}_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${info.keywords}"/>
+<meta name="description" content="${info.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.an1{color:#999;text-decoration:none;}
+a.an1:hover{color:#ff6600;text-decoration:underline}
+a.ai1{color:#333;text-decoration:none;}
+a.ai1:hover{color:#ff6600;text-decoration:underline}
+a.node{border-radius:3px;color:#333;margin:5px 10px;width:92px;height:28px;line-height:28px;text-align:center;background-color:#e2e2e2; text-decoration:none;}
+a.node:hover{color:#fff;background-color:#fb6902;}
+a.node-curr{color:#fff;background-color:#fb6902;text-decoration:none;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div style="padding:10px 5px;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a> > [/#list]正文</div>
+	<div class="left" style="width:742px;">
+		<div style="border:1px solid #dbdbdb;">
+			<h1 class="ff-yh fs20 b c-333" style="margin:0;padding:10px 15px;line-height:1.5;border-bottom:1px dotted #aaa9a9;">${title}</h1>
+			<div style="padding:15px;">
+				<div class="left" style="width:260px;">
+					<img src="${info.largeImageUrl}" style="width:260px;height:260px;"/>
+				</div>
+				<div class="right ff-yh c-333 fs14" style="width:420px;">
+					<div>
+						<div class="left" style="width:210px;">软件语言：${info.customs['language']}</div>
+						<div class="left" style="width:210px;">软件类型：${info.customs['type']}</div>
+						<div class="clear"></div>
+					</div>
+					<div class="mt10">
+						<div class="left" style="width:210px;">授权方式：${info.customs['license']}</div>
+						<div class="left" style="width:210px;">软件大小：${info.fileSize}</div>
+						<div class="clear"></div>
+					</div>
+					<div class="mt10">
+						<div class="left" style="width:210px;">推荐星级：<span style="color:#fe6500;font-size:12px;font-family:\5b8b\4f53;">${info.customs['star']}</span></div>
+						<div class="left" style="width:210px;">更新时间：${info.publishDate?string('yyyy-MM-dd')}</div>
+						<div class="clear"></div>
+					</div>
+					<div class="mt10">
+						<div class="left" style="width:210px;">浏览次数：<span id="info_views"style="color:red;"></span> 次</div>
+						<div class="left" style="width:210px;">下载次数：<span id="info_downloads" style="color:red;"></span> 次</div>
+						<script type="text/javascript">
+							$("#info_views").load("${dy}/info_views/${info.id}?d="+new Date()*1);
+							$("#info_downloads").load("${dy}/info_downloads/${info.id}?d="+new Date()*1);
+						</script>
+						<div class="clear"></div>
+					</div>
+					<div class="mt10">运行环境：${info.customs['system']}</div>
+					<table class="center mt15"><tr><td>
+						<a href="${dy}/info_download?id=${info.id}" class="block ff-yh" style="background:url(_files/img/download.png);height:61px;width:186px;text-decoration:none;"></a>
+					</td></tr></table>
+					<table class="digg center mt15"><tr><td>
+						<script type="text/javascript">
+							function digg() {
+								$.post("${dy}/info_digg",{id:${info.id}},function(data){
+									if(data!="0"){$("#diggs").text(data);}else{alert("你已经顶过一次！")}
+								});
+							}
+							function bury() {
+								$.post("${dy}/info_bury",{id:${info.id}},function(data){
+									if(data!="0"){$("#burys").text(data);}else{alert("你已经踩过一次！")}
+								});
+							}
+						</script>
+						<div id="diggs" class="digg-item" onclick="digg();"></div>
+						<div id="burys" class="digg-item" onclick="bury();"></div>
+						<div class="clear"></div>
+						<script type="text/javascript">
+							$.get("${dy}/info_diggs/${info.id}?d="+new Date()*1,function(data) {
+								$("#diggs").text(data[0]);$("#burys").text(data[1]);
+							},"json");
+						</script>
+					</td></tr></table>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="mt10" style="border:1px solid #dbdbdb;">
+			<div style="border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+				<div class="left b ff-yh fs14" style="height:31px;line-height:28px;padding:0 12px;margin-top:-1px;margin-left:-1px;border-top:3px solid #0098fd;border-right:1px solid #dbdbdb;border-left:1px solid #dbdbdb;border-bottom:1px solid #dbdbdb;background-color:#fff;">软件简介</div>
+				<div class="clear"></div>
+			</div>
+			<div style="padding:15px;">				
+				[#noescape]${text}[/#noescape]
+			</div>
+		</div>
+		<div id="commentDiv" class="mt20"></div>		
+		<script type="text/javascript">
+			$("#commentDiv").load("${dy}/comment_list?fid=${info.id}&url=${url?url}&d="+new Date()*1);
+		</script>
+	</div>
+	<div class="right" style="width:244px;">
+		<div style="border:1px solid #dbdbdb;">
+			<div class="b ff-yh fs14" style="padding:0 12px;height:31px;line-height:31px;border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+				下载分类
+			</div>
+			<div style="padding:8px 0 8px 10px;">
+				[@NodeList parentId=node.parent.id;list]
+				[#list list as n]
+				<div><a href="${n.url}" class="node[#if n.id==node.id] node-curr[/#if] left ff-yh fs14 mt10">${n.name}</a></div>
+				[/#list]
+				<div class="clear"></div>
+				[/@NodeList]
+			</div>
+		</div>
+		<div class="mt10" style="border:1px solid #dbdbdb;">
+			<div class="b ff-yh fs14" style="padding:0 12px;height:31px;line-height:31px;border-bottom:2px solid #dbdbdb;height:32px;background-color:#ededed;">
+				下载排行榜
+			</div>
+			<ul class="list-unstyled ff-yh fs12" style="padding:5px 8px;">
+			[@InfoList node='download' isIncludeChildren='true' sort='downloads desc' limit='15';list]
+			[#list list as info]
+			<li style="[#if info_has_next]border-bottom:1px dotted #dbdbdb;[/#if]">
+				<div class="left"><span style="background-color:[#if info_index<3]#F47B0F[#else]#c8c8c8[/#if];color:#fff;padding:0px 6px;">${info_index+1}</span><a href="${info.url}" class="ai1 ml10" style="line-height:25px;" target="_blank">${substring(info.title,20,'...')}</a></div>
+				<div class="right" style="color:#858585;">${info.bufferDownloads}</div>
+				<div class="clear"></div>			
+			</li>
+			[/#list]
+			[/@InfoList]
+			</ul>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

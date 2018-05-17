@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="jpaCache">
+	<diskStore path="java.io.tmpdir/jspxcms/ehcache/jpa" />
+
+	<!-- 
+	maxEntriesLocalHeap: 内存中最大对象数量。0不限制。	
+	maxEntriesLocalDisk：硬盘中最大对象数量。0不限制。默认为0。
+	eternal：对象是否永不过期。true或false。
+	timeToIdleSeconds：闲置时间。超过这个时间没有被使用，将失效。0不限制。默认为0。
+	timeToLiveSeconds：生存时间。从创建到过期的时间。0不限制。默认为0。
+	 -->
+	<defaultCache maxEntriesLocalHeap="1000" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600" overflowToDisk="false" />
+	<!-- 查询结果缓存 -->
+	<cache name="org.hibernate.cache.internal.StandardQueryCache" maxEntriesLocalHeap="200" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<!-- 表更新时间缓存 -->
+	<cache name="org.hibernate.cache.spi.UpdateTimestampsCache" maxEntriesLocalHeap="1000" eternal="true" overflowToDisk="false" />
+
+	<cache name="com.jspxcms.core.domain.Global" maxEntriesLocalHeap="1" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Global.customs" maxEntriesLocalHeap="1" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Site" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Site.customs" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Org" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.User" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.User.details" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.UserDetail" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.User.userGroups" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.UserMemberGroup" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.User.userOrgs" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.UserOrg" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.User.userRoles" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.UserRole" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.MemberGroup" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Role" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Info" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Info.infoAttrs" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.InfoAttribute" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Attribute" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.InfoDetail" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Node" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Node.details" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.NodeDetail" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Node.buffers" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.NodeBuffer" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Model" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Model.customs" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.Model.fields" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.ModelField" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.core.domain.ModelField.customs" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	
+	<cache name="com.jspxcms.ext.domain.Friendlink" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.FriendlinkType" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.Guestbook" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.GuestbookType" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.Vote" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.Vote.options" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.VoteOption" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.AdSlot" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.AdSlot.ads" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+	<cache name="com.jspxcms.ext.domain.Ad" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" />
+
+
+	<!-- <cache name="com" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="false" /> -->
+	<!-- <cache name="com" maxEntriesLocalHeap="500" eternal="false" timeToIdleSeconds="1200" timeToLiveSeconds="3600" overflowToDisk="true" diskSpoolBufferSizeMB="1" maxEntriesLocalDisk="10000" /> -->
+
+</ehcache>

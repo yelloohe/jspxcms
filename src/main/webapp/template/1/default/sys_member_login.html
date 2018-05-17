@@ -1,0 +1,103 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>用户登录_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="用户登录"/>
+<meta name="description" content="用户登录"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+label.error{color:red;font-style:normal;padding-left:10px;}
+label.valid{color:red;font-style:normal;padding-left:10px;}
+form .line{margin-top:30px;overflow:hidden;}
+form .label{float:left;width:100px;color:#666;font-weight:bold;text-align:right;font-size:14px;}
+form .input{float:left;width:auto;margin-left:20px;}
+
+input.text{padding:4px;height:22px;line-height:22px;border:1px solid #ccc;}
+input.text:focus{border-color:#7abd54;}
+</style>
+<script type="text/javascript">
+$(function() {
+	$("#validForm").validate();
+	$("#username").focus().select();
+});
+</script>
+</head>
+<body>
+<div class="w center mt10 oh">
+	<a class="left" style="margin-left:50px;width:228px;height:90px;background:url(_files/img/logo.png) no-repeat;" href="${ctx}/"></a>
+	<div class="left ff-yh fs28 ml20 c-333" style="margin:30px 0 0 25px;padding-left:25px;border-left:1px solid #ddd;">用户登录</div>
+</div>
+<div class="center oh" style="width:1200px;background:url(_files/img/member_line_bg.png) 0 -1px no-repeat;">
+	<div class="left" style="width:620px;padding:10px 20px 40px 130px;line-height:30px;border-right:1px solid #ddd;">
+		<div class="fs14" style="height:50px;line-height:50px;padding-left:120px;color:red;">
+		[#if shiroLoginFailure??]
+			<div style="background:url(_files/img/error.png) 0 center no-repeat;padding-left:20px;">
+			[#if shiroLoginFailure=='com.jspxcms.common.security.IncorrectCaptchaException']
+			验证码不正确！
+			[#--[@s.message code='incorrectCaptchaError'/]--]
+			[#elseif shiroLoginFailure=='org.apache.shiro.authc.UnknownAccountException']
+			[#--用户名不存在--]
+			用户名或密码错误！
+			[#elseif shiroLoginFailure=='org.apache.shiro.authc.LockedAccountException']
+			此用户被锁定！
+			[#elseif shiroLoginFailure=='com.jspxcms.common.security.UnactivatedAccountException']
+			此用户未激活！
+			[#elseif shiroLoginFailure=='org.apache.shiro.authc.IncorrectCredentialsException']
+			用户名或密码错误！
+			[#else]
+			${shiroLoginFailure}
+			[/#if]
+			</div>
+		[/#if]
+		</div>
+		<form id="validForm" action="${ctx}/login" method="post">
+			<input type="hidden" name="fallbackUrl" value="${fallbackUrl!Param.fallbackUrl}"/>
+			<div class="oh">
+				<label for="username" class="label">用户名:</label>
+				<div class="input"><input type="text" id="username" name="username" value="${username!}" class="text required" style="width:200px;"/></div>
+			</div>
+			<div class="line">
+				<label for="password" class="label">密码:</label>
+				<div class="input"><input type="password" id="password" name="password" class="text" style="width:200px;"/></div>
+			</div>
+			[#if Session.shiroCaptchaRequired?? || global.captchaErrors<=0]
+			<div class="line">
+				<label for="captcha" class="label">验证码:</label>
+				<div class="input">
+					<input type="text" id="captcha" name="captcha" class="text" data-rule-required="true" data-rule-remote='{"url":"${ctx}/captcha","type":"post"}' data-msg-remote="验证码错误" style="width:94px;" autocomplete="off"/>
+					<img src="${ctx}/captcha" onclick="this.src='${ctx}/captcha?d='+new Date()*1;$('#captcha').focus();" style="cursor:pointer;border:1px solid #ccc;margin:0;vertical-align:top;" title="点击重新获取验证码"/><label for="captcha" generated="true" class="error"></label>
+				</div>
+			</div>
+			[/#if]
+			<div class="line">
+				<label class="label">&nbsp;</label>
+				<div class="input"><label><input type="checkbox" id="rememberMe" name="rememberMe" style="vertical-align:middle;"/> 自动登录</label></div>
+			</div>
+			<div class="line">
+				<label class="label">&nbsp;</label>
+				<div class="input"><input type="submit" value="登录" style="height:25px;width:60px;margin-right:20px;"/><a href="${ctx}/forgot_password" class="a-hover" style="color:#0a8cd2;">忘记密码</a></div>
+			</div>
+		</form>
+	</div>
+	<div class="left fs14" style="width:310px;padding:60px 50px 0 50px;">
+		<div>没有账号？<a href="${ctx}/register" class="a-hover" style="color:#0a8cd2;">注册新账号</a></div>
+		[#include 'inc_oauth.html'/]
+	</div>
+</div>
+<div class="w center text-center" style="margin-top:100px;">
+	<div class="powered">    
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+	</div>
+</div>
+</body>
+</html>
+[/#escape]

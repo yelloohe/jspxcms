@@ -1,0 +1,46 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title>${info.title} - ${site.name}</title>
+  <meta name="keywords" content="${info.keywords}">
+  <meta name="description" content="${info.description}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <link rel="stylesheet" href="_files/css/bootstrap.min.css">
+  <link rel="stylesheet" href="_files/css/main.css">
+	[#include 'inc_js.html'/]
+  <style>
+	.info-text img{max-width:100%;}
+	</style>
+</head>
+<body>
+
+[#include 'inc_header.html'/]
+
+<ol class="breadcrumb">
+  <li><a href="${site.url}">首页</a></li>
+  <li class="active"><a href="${node.url}">${node.name}</a></li>
+</ol>
+
+<div class="container">
+	<h3 class="ff-yh">${info.title}</h3>
+  <div class="clearfix" style="border-bottom:1px solid #eee;padding:5px 0;color:#888;">
+  	<div class="pull-left">${info.publishDate?string('yyyy-MM-dd HH:mm')}</div>
+    <div class="pull-right"><span id="info_views"></span>次阅读</div>
+  </div>
+  <div class="info-text" style="padding-top:10px;">[#noescape]${info.textWithoutPageBreak!}[/#noescape]</div>
+</div>
+
+[#include 'inc_footer.html'/]
+
+[#include 'inc_js_body.html'/]
+
+<script type="text/javascript">
+	$("#info_views").load("${ctx}/info_views/${info.id}?d="+new Date()*1);
+</script>
+</body>
+</html>
+[/#escape]

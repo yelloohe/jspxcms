@@ -1,0 +1,17 @@
+600-1000:
+  name: resume.management
+  url: plug/resume/list.do
+  perms: plug:resume:list
+  ops:
+    - create@plug:resume:create
+    - copy@plug:resume:copy
+    - edit@plug:resume:edit
+    - save@plug:resume:save
+    - update@plug:resume:update
+    - delete@plug:resume:delete
+600-1100:
+  name: weixinMenu.management
+  url: plug/weixin_menu/list.do
+  perms: plug:weixin_menu:list
+  ops:
+    - save@plug:weixin_menu:save

@@ -1,0 +1,9 @@
+E:\Tools\apache-maven-3.5.2\bin\mvn install:install-file -Dfile=Digests.jar -DgroupId=com.hikvision -DartifactId=common-digests -Dversion=1.0 -Dpackaging=jar
+E:\Tools\apache-maven-3.5.2\bin\mvn install:install-file -Dfile=HttpClientSSLUtils.jar -DgroupId=com.hikvision -DartifactId=common-httpclient -Dversion=1.0 -Dpackaging=jar
+
+mvn deploy:deploy-file -DgroupId=com.hikvision -DartifactId=common-digests -Dversion=1.0 -Dpackaging=jar -Dfile=E:\maven\Digests.jar jar-Durl=http://118.24.13.116:8081/repository/3rd_part/ -DrepositoryId=3rd_part
+
+
+mvn deploy:deploy-file -DgroupId=com.hikvision -DartifactId=common-httpclient -Dversion=1.0 -Dpackaging=jar -Dfile=E:\maven\HttpClientSSLUtils.jar jar-Durl=http://118.24.13.116:8081/repository/3rd_part/ -DrepositoryId=3rd_part
+
+

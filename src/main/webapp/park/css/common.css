@@ -1,0 +1,290 @@
+@charset "utf-8";
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.bgColor{
+	width: 100%;
+	height: 100vh;
+	background: linear-gradient(top,#81a1de,#cec4e9,#dbd1e9,#fbf9fc);
+	background: -webkit-linear-gradient(top,#81a1de,#cec4e9,#dbd1e9,#fbf9fc);
+	background: -moz-linear-gradient(top,#81a1de,#cec4e9,#dbd1e9,#fbf9fc);
+	background: -ms-linear-gradient(top,#81a1de,#cec4e9,#dbd1e9,#fbf9fc);
+	color: white;
+	font-weight: 600;
+	overflow: hidden;
+	margin: 0;
+	position: relative;
+}
+.starBox{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+.bgColor>div{
+	z-index: 10;
+}
+/*星星的设置*/
+.star{
+	border-radius: 50%;
+	background: white;
+	box-shadow: 1 1 0 0 white;
+	z-index: 1;
+	opacity: 0.6;
+	filter: alpha("60%");
+	
+}
+/*英文字体设置*/
+.enXs{
+	font-size: 18px;
+	font-family: "calibri";
+	font-weight: 500;
+	
+}
+.enSm{
+	font-size: 26px;
+	font-family: "calibri";
+	font-weight: 500;
+	color: black;
+	
+}
+.enMd{
+	font-size: 20px;
+	font-family:"calibri" ;
+	margin-top: -6px;
+}
+.textXs{
+	font-size: 20px;
+	font-family: "黑体";
+	letter-spacing: 4px;
+}
+.textMd{
+	font-size: 30px;
+	font-family: "黑体";
+	letter-spacing: 4px;
+}
+
+.leftSide{
+	position: relative;
+	height: 100%;
+	padding: 0;
+}
+.greyShade{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2)
+}
+
+.headText{
+	margin-top: 40px;
+	opacity: 1;
+	/*透明度不被继承*/
+	position: relative;
+	padding-left: 32px;
+	
+}
+.headText>span{
+	display: inline-block;
+	width: 100%;	
+	font-weight: 500;
+}
+
+.leftPart{
+	position: relative;
+	margin: 40px 0;
+}
+.weatherHeight{
+	height: 200px;
+}
+.weather{
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	margin-left: -100px;
+}
+.textCenter{
+	text-align: center;
+}
+.weather>img{
+	width: 200px;
+}
+
+.textLeft{
+	text-align: left;
+	padding-left: 32px;
+	margin-bottom: 16px;
+}
+
+/*彩色圆柱中的数字*/
+.textNum{
+	font-size: 20px;
+	font-family: "黑体";
+	line-height: 36px;
+	padding-left: 10px;
+}
+
+
+/*彩色圆柱*/
+.column{
+	width: 80%;
+	height: 36px;
+	margin-left: 32px;
+	position: relative;
+	border-radius: 18px;
+	
+}
+.columnBgTem{
+	background: linear-gradient(left,#6ce0bc,#FFE4B5,#e58faa);
+	background: -webkit-linear-gradient(left,#6ce0bc,#FFE4B5,#e58faa);
+	background: -moz-linear-gradient(left,#6ce0bc,#FFE4B5,#e58faa);
+	background: -ms-linear-gradient(left,#6ce0bc,#FFE4B5,#e58faa);
+}
+
+.percent{
+	position: absolute;
+	height: 100%;
+	border-radius: 18px;
+}
+.percentTem{
+	width: 60%;
+	background: linear-gradient(left,#6ce0bc,#c7ba8d,#ffa070);
+	background: -webkit-linear-gradient(left,#6ce0bc,#c7ba8d,#ffa070);
+	background: -moz-linear-gradient(left,#6ce0bc,#c7ba8d,#ffa070);
+	background: -ms-linear-gradient(left,#6ce0bc,#c7ba8d,#ffa070);
+}
+
+.columnBgHum{
+	background: linear-gradient(left,#f8bd49,#a1cf63,#56d1a2,#93d4da);
+	background: -webkit-linear-gradient(left,#f8bd49,#a1cf63,#56d1a2,#93d4da);
+	background: -moz-linear-gradient(left,#f8bd49,#a1cf63,#56d1a2,#93d4da);
+	background: -ms-linear-gradient(left,#f8bd49,#a1cf63,#56d1a2,#93d4da);
+}
+
+.percentHum{
+	width: 90%;
+	background: linear-gradient(left,#f8bd49,#a1cf63,#56d1a2);
+	background: -webkit-linear-gradient(left,#f8bd49,#a1cf63,#56d1a2);
+	background: -moz-linear-gradient(left,#f8bd49,#a1cf63,#56d1a2);
+	background: -ms-linear-gradient(left,#f8bd49,#a1cf63,#56d1a2);
+}
+
+/*环境分贝的圆*/
+.circle{
+	width: 200px;
+	height: 200px;
+	border-radius: 100px;
+	border: 3px solid white;
+	position: absolute;
+	right: 20%;
+	font-size: 68px;
+	font-weight: 500;
+	text-align: center;
+	line-height: 185px;
+	font-family: "Calibri";
+}
+.heightEnvir,
+.heightAir{
+	height: 200px;
+	margin: 20px 0;
+}
+.marginAir{
+	margin: 0;
+}
+.circleEnvir{
+	background: #69bcca;
+	right: 0;
+}
+
+.clrcleAir{
+	background: linear-gradient(315deg,#f79da7,#df9acf);
+	background: -webkit-linear-gradient(315deg,#f79da7,#df9acf);
+	background: -moz-linear-gradient(315deg,#f79da7,#df9acf);
+	background: -ms-linear-gradient(315deg,#f79da7,#df9acf);
+}
+.relativeEnvir{
+	width: 200px;
+	height: 200px;
+	position: absolute;
+	right: 20%;
+	font-size: 68px;
+	font-weight: 500;
+	text-align: center;
+	line-height: 185px;
+	font-family: "Calibri";
+}
+.zhexian{
+	width: 120px;
+	position: absolute;
+	left: 35px;
+    bottom: -16px;
+}
+
+/*地图*/
+.map{
+	margin-left: 10%;
+}
+.mapBox{
+	position: relative;
+	display: inline-block;
+}
+.doorAb{
+	position: absolute;
+	display: inline-block;
+}
+.door2{
+	left: 10%;
+}
+.door3{
+	left: 150px;
+	top: -20px;
+}
+/*坐标*/
+.coordinate{
+	position: relative;
+	display: inline-block;
+}
+.coordImg{
+	width: 38px;	
+}
+
+.coordNum{
+	width: 37px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	color: #6c3599;
+	font-size: 18px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.doorCon{
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+.doorCon>span:nth-child(2){
+	color: black;
+	font-weight: 600;
+	font-size: 20px;
+	font-family: "微软雅黑";
+}
+
+/*小人*/
+.figure>img{
+	height:32px;
+	float:left;
+	margin-top: 4px;
+}
+.figureNum{
+	float: left;
+	width: 68px;
+	font-size: 32px;
+	color: #6c3599;
+	font-family: "Calibri";
+	margin-left: 40px;
+}

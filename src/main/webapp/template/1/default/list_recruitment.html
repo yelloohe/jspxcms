@@ -1,0 +1,47 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div style="padding:10px 5px;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a>[#if n_has_next] > [/#if][/#list]</div>
+	<div style="border-top:2px solid #7aaf23;">	
+		[@InfoPage node='jobs' limit='20';pagedList]
+		<table width="100%" class="mt10" style="margin-bottom:10px;">
+			<tr class="fs14" align="left">
+				<th style="padding:10px 0 10px 20px;">职位名称</th>
+				<th>公司名称</th>
+				<th>工作地点</th>
+				<th>发布日期</th>
+			</tr>
+			[#list pagedList.content as info]
+			<tr style="height:35px; border-bottom:1px dotted #d2e1f1">
+				<td width="38%" valign="middle"><a href="${info.url}" class="fs14 c-infoem a-hover" style="padding-left:20px;" title="${info.title}">${substring(info.title,22,'...')}</a></td>
+				<td width="32%" valign="middle" class="c-desc">${info.customs['company']}</td>
+				<td width="15%" valign="middle" class="c-desc">${info.customs['location']}</td>
+				<td width="15%" valign="middle" class="c-desc">${info.publishDate?string('yyyy-MM-dd')}</td>
+			</tr>
+			[/#list]
+		</table>
+		<table class="center mt20"><tr><td>
+			[#include 'page.html'/]
+		</td></tr></table>
+		[/@InfoPage]
+	</div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

@@ -1,0 +1,30 @@
+[#assign script]
+[@Info id=Param.id;info]
+<span id="favorite-a" style="cursor:pointer;"><span id="favorite-icon" class="[#if info.isFavorite(user)]favorite-icon-curr[/#if]">★</span>收藏<span id="info_favorites">${info.favorites}</span>次</span>
+<script type="text/javascript">
+$(function() {
+	$("#favorite-a").click(function() {
+		var url;
+		if($("#favorite-icon").hasClass("favorite-icon-curr")) {
+			url = "${ctx}/info_unfavorite";
+		} else {
+			url = "${ctx}/info_favorite";
+		}
+		$.get(url,{"d":new Date()*1,"id":${info.id}},function(data) {
+			if(data=="-1") {
+				alert("请先登录");
+			} else {
+				$("#info_favorites").text(data);
+				if($("#favorite-icon").hasClass("favorite-icon-curr")){
+					$("#favorite-icon").removeClass("favorite-icon-curr");
+				} else {
+					$("#favorite-icon").addClass("favorite-icon-curr");
+				}
+			}
+		});
+	})
+})
+</script>
+[/@Info]
+[/#assign]
+document.write("${script?js_string}");

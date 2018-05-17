@@ -1,0 +1,46 @@
+[#escape x as (x)!?html]
+<!-- 顶部开始 -->
+<div style="background-color:#fafafa;border-bottom:1px solid #ebebeb;">
+	<div class="w center c999" style="height:28px;line-height:28px;">
+		<div class="left">
+			<a class="topa" href="${ctx}/sitemap" target="_blank">网站地图</a>
+			<a class="topa" href="${ctx}/rss" target="_blank">RSS订阅</a>
+			<a class="topa" href="${ctx}/tag" target="_blank">TAGS标签</a>
+		</div>
+		<div class="right">
+			<script type="text/javascript" src="${ctx}/login_include?fallbackUrl=${url?url}&d=${.now?long}"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<!-- 顶部结束 -->
+<!-- LOGO开始 -->
+<div class="w center">
+	<div class="left" style="width:30%;">
+		<a class="right block" style="width:228px;height:90px;background:url(_files/img/logo.png) no-repeat;" href="${ctx}/"></a>
+		<div class="clear"></div>
+	</div>
+	<div class="right" style="width:70%;">
+		<form action="${ctx}/search" method="get" style="margin:28px 0 0 20px;">
+			<input type="text" name="q" value="${Param.q}" class="left search-input" style="width:380px;" autocomplete="off"/>
+			<button type="submit" class="left" style="width:86px;height:34px;background:url(_files/img/search.png);border:0;"></button>
+			<div class="clear"></div>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- LOGO结束 -->
+<!-- 导航开始 -->
+<div class="w center">
+	<ul class="list-unstyled nav" style="height:36px;line-height:36px;background:url(_files/img/nav_bg.png)">
+		<li class="left"><a href="${ctx}/" class="nava fs14 item first[#if node?? && !node.parent??] curr[/#if]">首页</a></li>
+		[@NodeList;list]
+		[#list list as n]
+		<li class="left"><a href="${n.url}" class="nava fs14 item[#if (node.hierarchy[1])?? && node.hierarchy[1].id == n.id] curr[/#if][#if n_has_next] middle[#else] last[/#if]">${n.name}</a></li>
+		[/#list]
+		[/@NodeList]
+	</ul>
+	<div class="clear"></div>
+</div>
+<!-- 导航结束 -->
+[/#escape]

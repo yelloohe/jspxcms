@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=11" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/numberRun.css"/>
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<!--时间插件引入css-->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/default.css">
+		<link rel="stylesheet" href="css/flipclock.css">
+		<!--自己的css-->
+		<link rel="stylesheet" type="text/css" href="css/zhongshanPark.css"/>
+	</head>
+
+	<body class="">
+		<div id="bgSize" class="bgColor">
+			<!--绝对定位，显示“测试”字样-->
+			<div class="test">
+				<p>以下为测试数据</p>
+			</div>
+			<!--第一行-->
+			<div class="inlineFloat marginTop">
+				<!--时间-->
+				<div class="timeBox">
+					<div class="greyShade"></div>
+					<div class="htmleaf-content time">
+						<div class="clock" ></div>
+					</div>
+					<!--<span class="time">09:36
+					</span>-->
+					<span class="whiteLine"></span>
+					<span class="date">2017.10.01</span>
+					<span class="week heiti">星期三</span>
+					<div class="lunar">
+						<span class="lunarYear"></span>
+						<span>·</span>
+						<span class="lunarDate"></span><br>
+						<span class="specialDate"></span>
+					</div>
+				</div>
+				<!--温度与空气湿度-->
+				<div class="AirBox">
+					<div class="greyShade"></div>
+					<div class="leftPart marginTop">
+						<div class="textLeft">
+							<span class="textSm">温度</span>
+							<span class="enSm">Environmental Tempurature</span>
+						</div>
+						<div class="column">
+							<div class="percent textNum tmpCol">
+							</div>
+						</div>
+					</div>
+					<div class="leftPart">
+						<div class="textLeft">
+							<span class="textSm">空气湿度</span>
+							<span class="enSm">Humidity</span>
+						</div>
+						<div class="column">
+							<div class="percent textNum humCol"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--第二行-->
+			<div class="inlineFloat">
+				<!--环境分贝-->
+				<div>
+					<div class="headText">
+						<span class="textSm">环境分贝</span>
+						<span class="enSm">Envirommental Decibel</span>
+					</div>
+					<div class="leftPart">
+						<div class="environmenBox">
+							<div id="envirLine"></div>
+							<div class="envirDescr">
+								<span class="envirNum"></span>
+								<span class="envirUnit">分贝</span>
+							</div>
+						</div>
+					</div>	
+					
+				</div>
+				<!--空气质量-->
+				<div>
+					<div class="headText marginAir">
+						<span class="textSm">空气质量</span>
+						<span class="enSm">Air Quality</span>
+					</div>
+					<div class="leftPart marginAirCol kqzl">
+						<!--20171127删去,占据30px高度-->
+						<!--<div class="column">
+							<div class="percent textNum AirCol">28</div>
+							<div class="textNum textAir">优</div>
+						</div>						-->
+						<span id="spanAir"></span>
+					</div>
+					<div class="marginAirRing">
+						<img class="co2Bg" src="img/back-05-hei.png" alt="" />
+						<img class="oxyBg" src="img/back-05-hei.png" alt="" />
+						<canvas class="process" id="canvasCo2" width="220px" height="200px"></canvas>
+						<canvas class="process" id="canvasOxy" width="220px" height="200px"></canvas>
+						<div class="airNumBox numberRunCo2"  id="airNumBox1"></div>
+						<div class="airNumBox numberRunOxy" id="airNumBox2"></div>
+						<div class="unit unitCo2">ppm</div>
+						<div class="unit unitOxy"><span class="unitGe">个/</span>cm³</div>
+						<div class="canvasText">
+							<span class="textXs">二氧化碳</span>
+							<span class="enXs">Co2</span>
+						</div>
+						<div class="canvasText">
+							<span class="textXs">负氧离子</span>
+							<span class="enXs">Negative Oxygen Lon</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--第三行-->
+			<div class="inline">
+				<div class="headText">
+					<span class="textSm">人流量统计</span>
+					<span class="enSm">Visitors Flow Rate</span>
+				</div>
+				<div class="leftPart">
+					<img class="renqunPic" src="img/PeopleNum-01.png" alt="" />
+					<div class="people">
+						<span class="peopleZero"></span>
+						<span class="peopleNum"></span>
+					</div>
+					<p class="people peopleText">园内总人数</p>
+				</div>	
+			
+				<div class="zhongshanParkMap">
+					<img class="map" src="img/PeopleNum-02.png" alt="" />
+				</div>
+			</div>
+			<div class="peopleNumShow">
+				<div>
+					<div class="imgBox imgBox1">
+						<div class="imgDoorBox">
+							<img class="imgDoor imgDoor1" src="img/PeopleNum-03.png" alt="" />
+							<p class="doorNum door1Num">
+							</p>
+						</div>
+						<p>
+							<span class="textXs">一号门入园人数 </span>
+							<!--<span class="enSsm">Gate 1</span>-->
+						</p>
+						<div class="personImg personImg1">
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+							<img src="img/PeopleNum-07.png" alt="" />
+						</div>
+					</div>
+					
+					
+				</div>
+				<div>
+					<div class="imgBox imgBox2">
+						<div class="imgDoorBox">
+							<img class="imgDoor imgDoor2" src="img/PeopleNum-04.png" alt="" />
+							<p class="doorNum door2Num"></p>
+						</div>
+						<p>
+							<span class="textXs">二号门入园人数 </span>
+							<!--<span class="enSsm">Gate 2</span>-->
+						</p>
+						<div class="personImg personImg2">
+							<img src="img/PeopleNum-08.png" alt="" />
+							<img src="img/PeopleNum-08.png" alt="" />
+							<img src="img/PeopleNum-08.png" alt="" />
+						</div>
+					</div>
+					
+				</div>
+				<div>
+					<div class="imgBox imgBox3">
+						<div class="imgDoorBox">
+							<img class="imgDoor imgDoor3" src="img/PeopleNum-09.png" alt="" />
+							<p class="doorNum door3Num"></p>
+						</div>
+						<p>
+							<span class="textXs">三号门入园人数</span>
+							<!--<span class="enSsm">Gate 3</span>-->
+						</p>
+						<div class="personImg personImg3">
+							<img src="img/PeopleNum-06.png" alt="" />
+							<img src="img/PeopleNum-06.png" alt="" />
+							<img src="img/PeopleNum-06.png" alt="" />
+							<img src="img/PeopleNum-06.png" alt="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/common/jquery-1.11.1.min.js"></script>
+	<script src="js/common/jquery.color.js"></script>
+	<!--折线图js-->
+	<script src="js/common/echarts.min.js"></script>
+	<!--时间插件js-->
+	<script src="js/common/flipclock.js"></script>
+	<!--数字跳动js-->
+	<script src="js/common/numberRun.js"></script>
+	<!--转化为农历-->
+	<script src="js/common/calendar.solar2lunar.js"></script>
+	<script src="js/zhongshanPark.js"></script>
+</html>

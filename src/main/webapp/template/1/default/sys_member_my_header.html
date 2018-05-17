@@ -1,0 +1,8 @@
+[#escape x as (x)!?html]
+	<div class="left" style="padding:5px;border:1px solid #ccc;background-color:#fff;"><a href="${site.urlFull}/space/${(targetUser!user).id}"><img src="${(targetUser!user).avatarLarge}?d=${.now?datetime}" width="120" height="120"/></a></div>
+	<div class="left ml20 mt30">
+		<div class="mt5"><a href="${ctx}/space/${(targetUser!user).id}" class="a-none fs28 b ff-yh c-333 lh">${(targetUser!user).username}</a></div>
+		<div><a href="${site.urlFull}/space/${(targetUser!user).id}" class="a-hover lh" style="color:#777;">${site.urlFull}/space/${(targetUser!user).id}</a></div>
+		<div class="mt15 ff-yh fs14" style="color:#777;">${(targetUser!user).bio!"还没有填写个人简介"}</div>
+	</div>
+[/#escape]

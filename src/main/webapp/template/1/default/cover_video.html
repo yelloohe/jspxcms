@@ -1,0 +1,136 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.vfocus{color:#ccc;text-decoration:none;display:block;padding:0 5px 0 8px;height:34px;line-height:34px;overflow:hidden;}
+a.vfocus-hover{color:#fff;text-decoration:none;background-color:#699f00;}
+
+a.vtitle{color:#333;text-decoration:none;}
+a.vtitle:hover{color:#699f00;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+[@InfoList attr='focusvideo' limit='10';list]
+<div class="w center mt10 relative" style="width:1000px;height:410px;">
+	<div id="focusContent">
+		[#list list as info]
+		<a href="${info.url}" target="_blank" title="${info.title}" class="absolute[#if info_index!=0] hide[/#if]"><img src="${info.attrImageUrl}" width="1000" height="410"/></a>
+		[/#list]
+	</div>
+	<div class="absolute fs14" style="bottom:6px;right:0;padding:18px 18px 0 16px;width:213px;height:353px;background:url(_files/img/video_bg.png)">
+		<ul id="focusPage" class="list-unstyled" style="height:100%;border-radius:6px;overflow:hidden;">
+			[#list list as info]
+			<li><a href="${info.url}" target="_blank" title="${info.title}" class="ff-yh vfocus[#if info_index==0] vfocus-hover[/#if]">${substring(info.title,16,'...')}</a></li>
+			[/#list]
+		</ul>
+	</div>
+</div>
+<script>
+$(function() {
+	var interval = 5000;
+	var speed = 100;
+	var currFocus = 0;
+	var maxFocus = ${list?size};
+	var $fc = $("#focusContent");
+	var $fp = $("#focusPage");
+	var fsTimeout;
+	function focusSwitch(targetFocus) {
+		if(targetFocus >= maxFocus) {
+			targetFocus = 0;
+		}
+		if(targetFocus < 0) {
+			targetFocus = maxFocus-1;
+		}
+		$fc.children().eq(currFocus).fadeOut(speed);
+		$fc.children().eq(targetFocus).fadeIn(speed);
+		$fp.children().eq(currFocus).children(":first").removeClass("vfocus-hover");
+		$fp.children().eq(targetFocus).children(":first").addClass("vfocus-hover");				
+		currFocus = targetFocus;
+	}
+	function focusSwitchAuto() {	
+		targetFocus = currFocus + 1;
+		focusSwitch(targetFocus);
+		fsTimeout = setTimeout(focusSwitchAuto,interval);
+	}
+	$fc.hover(function() {
+		clearTimeout(fsTimeout);
+	},function() {
+		fsTimeout = setTimeout(focusSwitchAuto,interval);
+	});
+	$fp.children().each(function(index) {
+		$(this).children(":first").hover(function(){
+			clearTimeout(fsTimeout);
+			$fc.stop(true);
+			focusSwitch(index);
+		},function() {
+			fsTimeout = setTimeout(focusSwitchAuto,interval);			
+		});
+	});
+	fsTimeout = setTimeout(focusSwitchAuto,interval);
+});
+</script>
+[/@InfoList]
+[@NodeList parentId=node.id;list]
+[#list list as n]
+<div class="w center">
+	<div class="left" style="width:765px;">
+		<div class="mt30" style="color:#699f00;padding-bottom:6px;border-bottom:2px solid #699f00;">
+			<div class="ff-yh fs28" style="padding-left:20px;background:url(_files/img/video_play.png) left center no-repeat;"><a href="${n.url}" class="a-none" style="color:#699f00;">${n.name}</a><a href="${n.url}" class="ff-yh fs14 a-none" style="padding-left:10px;color:#699f00;">更多></a></div>
+		</div>
+		<div class="mt20">
+			[@InfoList nodeId=n.id limit='4';list]
+			[#list list as info]
+			<div class="left mt5" style="[#if (info_index+1) % 4 !=0]margin-right:20px;[/#if]">
+				<div class="relative">
+					<a href="${info.url}" target="_blank" title="${info.title}">
+						<img src="${info.smallImageUrl}" width="176" height="99"/>
+						[#if info.videoTime??]
+						<div class="trans absolute c-fff" style="bottom:0;right:0;padding:3px 5px;background-color:#000;">
+							<span class="relative">${info.videoTime}</span>
+						</div>
+						[/#if]
+					</a>
+				</div>
+				<div style="height:56px;padding:0 4px;background-color:#f2f2f2;">
+					<a href="${info.url}" target="_blank" title="${info.url}" class="vtitle fs14 ff-yh" style="display:block;padding-top:6px;">${substring(info.title,12,'...')}</a>
+					<div class="c-999" style="padding-top:2px;">${substring(info.subtitle,18,'...')}</div>
+				</div>
+			</div>
+			[/#list]
+			[/@InfoList]
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="right" style="width:215px;">
+		<div class="mt30" style="color:#699f00;padding-bottom:6px;border-bottom:2px solid #699f00;">
+			<div class="ff-yh fs28" style="padding-left:20px;background:url(_files/img/video_play.png) left center no-repeat;"><span style="color:#699f00;">${n.name}榜</span></div>
+		</div>
+		<ul class="list-unstyled" style="padding:14px 0 10px 0;">
+			[@InfoList nodeId=n.id isIncludeChildren='true' sort='views desc' limit='6';list]
+			[#list list as info]
+			<li style="height:20px;line-height:20px;margin-top:8px; overflow:hidden;">
+				<span class="left text-center c-fff fs14" style="margin-right:5px;padding:0 6px;background-color:[#if info_index<3]#699f00[#else]#a5a5a5[/#if];">${info_index+1}</span>
+				<a class="fs14 vtitle" href="${info.url}" target="_blank" title="${info.title}">${substring(info.title,15,'...')}</a>
+			</li>
+			[/#list]
+			[/@InfoList]
+		</ul>
+	</div>
+	<div class="clear"></div>
+</div>
+[/#list]
+[/@NodeList]
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

@@ -1,0 +1,36 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${vote.title}_投票_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${vote.title}"/>
+<meta name="description" content="${vote.title}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div style="padding:10px 5px;">您的位置:&nbsp; <a href="${ctx}" class="a c-desc">首页</a> > 投票</div>	
+	<div style="border-top:2px solid #f29149;padding:0 30px;">
+		<h1 class="ff-yh fs28" style="margin:20px 0 0 0;padding:0 20px;">${vote.title}</h1>
+		<div style="padding:10px 20px;border-bottom:1px solid #ccc;"><span>总票数：${vote.total} 票</span></div>
+		<ul class="list-unstyled mt10 ff-yh fs14" style="padding:0 30px;">
+			[#list vote.options as option]
+			<li class="oh" style="padding:12px 0;border-bottom:1px dashed #ccc;">
+				<div class="left" style="width:55%;">${option_index+1}、${option.title}</div>
+				<div class="left" style="width:161px;height:14px;margin-top:4px;background-color:#ccc;"><div style="background-color:#f29149;height:100%;width:${option.proportion*160}px;border-right:1px solid #fff;"></div></div>
+				<div class="left" style="width:50px;text-align:right;color:#f29149;">${(option.proportion*100)?string('0.0')}%</div>
+				<div class="right c-666 ml10" style="text-align:right;">${option.count}票</div>
+			</li>
+			[/#list]
+		</ul>
+	</div>		
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

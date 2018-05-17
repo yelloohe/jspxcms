@@ -1,0 +1,42 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>网站地图_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="网站地图"/>
+<meta name="description" content="网站地图"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+<div style="padding:30px 0;background-color:#edeef0;">
+	<div class="w center">
+		<div><a href="${ctx}/sitemap" class="ff-yh fs28 a-none" style="color:#059;">网站地图</a></div>		
+		<div style="padding:3px 0 0 2px;"><a href="${ctx}/" class="a c-desc">首页</a> > <a href="${ctx}/sitemap" class="a c-desc">网站地图</a></div>
+	</div>
+</div>
+<div class="w center">
+	<ul class="list-unstyled">
+	[@NodeList;parentList]
+	[#list parentList as parent]
+		<li style="padding:10px 0; border-bottom:1px solid #eaeaea;">
+			<div><a href="${parent.url}" class="ff-yh fs18 a-none" style="color:#ff8600;">${parent.name}</a></div>
+			<ul class="list-unstyled oh" style="padding-left:20px;">
+			[@NodeList parentId=parent.id;Childrenlist]
+			[#list Childrenlist as child]
+				<li class="left" style="padding:10px 20px;"><a href="${child.url}" class="ff-yh fs16 a-hover c-333">${child.name}</a></li>
+			[/#list]
+			[/@NodeList]
+			</ul>
+		</li>
+	[/#list]
+	[/@NodeList]
+	</ul>
+</div>
+
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

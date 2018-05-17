@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="atarm" />
+<title>${node.name} -- ${site.fullNameOrName} -- Powerd by Jspxcms</title>
+<link href="_files/jspxcms.css" rel="stylesheet" type="text/css" />
+<link href="_files/pic_change.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="${fore}/jquery.js" ></script>
+<script language="javascript" type="text/javascript" src="_files/pic_change.js"></script>
+<script language="javascript" type="text/javascript" src="_files/common.js"></script>
+</head>
+<body>
+[#include "inc_header.html"/]
+<div class="w960 center clear mt1">
+	<div class="pleft">
+         <div class="position">
+      	  当前位置：[#list node.hierarchy as n]<a href="${n.url}">${n.name}</a>[#if n_has_next]>[/#if][/#list]
+        </div>
+    <div class="textlist">
+  		  [@InfoPage nodeId=node.id pageSize=20;pagedList]
+ 		  <ul>
+  		 [#list pagedList.content as info]
+  	 		<li>
+            	<span class="spanleft">[@A bean=info target="_blank"/]</span>
+            	<span class="spanright">${info.publishDate?string('yyyy-MM-dd')}</span>
+            </li>
+  		 [/#list]
+  	 	 </ul>
+         [#include "inc_page.html"/]
+ 	 	 [/@InfoPage]
+     </div>
+	</div>
+	<div class="pright">
+	[#include "inc_right.html"/]
+	</div>
+</div>
+[#include "inc_footer.html"/]
+</body>
+</html>

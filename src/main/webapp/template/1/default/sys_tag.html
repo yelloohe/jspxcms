@@ -1,0 +1,39 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${tag.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${tag.name}"/>
+<meta name="description" content="${tag.name}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+<div style="padding:30px 0;background-color:#edeef0;">
+	<div class="w center">
+		<div><a href="${ctx}/tag/${tag.id}" class="ff-yh fs28 a-none" style="color:#059;">${tag.name}</a></div>
+		<div style="padding:3px 0 0 2px;"><a href="${ctx}/" class="a c-desc">首页</a> > <a href="${ctx}/tag" class="a c-desc">TAGS</a> > <a href="${ctx}/tag/${tag.id}" class="a c-desc">${tag.name}</a></div>
+	</div>
+</div>
+<div class="w center">
+	[@InfoPage tagId=tag.id pageSize=15;pagedList]
+	<ul class="list-unstyled oh mt10">
+		[#list pagedList.content as info]
+		<li class="oh" style="padding:10px 10px;border-bottom:1px dotted #ccc;">
+				[@A bean=info class='ff-yh fs14 a c-000' target='_blank'/]
+				<span style="padding:2px;color:#a1a1a1;">${info.publishDate?string('yyyy-MM-dd HH:mm')}</span>
+		</li>
+		[/#list]
+	</ul>
+	<div style="padding:20px 0;">
+		[#include 'page.html'/]
+	</div>
+	[/@InfoPage]
+</div>
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]
+

@@ -1,0 +1,133 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.photo-dot{background:url(_files/img/photo_dot.gif) center center no-repeat;display:inline-block;width:10px;height:10px;cursor:pointer;margin-left:12px;}
+.photo-dot-curr{background:url(_files/img/photo_dot_red.gif) center center no-repeat;}
+.photo-left{display:block;background:url(_files/img/photo_left.png) 0 center no-repeat;}
+.photo-right{display:block;background:url(_files/img/photo_right.png) right center no-repeat;}
+</style>
+<script>
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center mt10 relative" style="overflow:hidden;">
+	[@InfoList attr='focusphoto' limit='6';list]
+	<div id="photo-content" class="relative" style="width:90000px;">
+		[#list list as info]
+		<div class="left">
+			<div>
+				<a href="${info.url}" target="_blank" title="${info.title}" style="outline:none;"><img src="${info.attrImageUrl}" width="1000" height="500"/></a>
+			</div>
+			<div style="height:78px;border:1px solid #d0d0d0;">
+				<div class="text-center ff-yh fs22 mt10">${info.title}</div>			
+			</div>
+		</div>
+		[/#list]
+	</div>
+	<div id="photo-page" class="absolute text-center" style="bottom:10px;width:100%;">
+		[#list 1..list?size as index]
+		<div class="photo-dot[#if index==1] photo-dot-curr[/#if]" title="第${index}页"></div>
+		[/#list]
+	</div>
+	[#if list?size > 1]
+	<script>
+		$(function() {
+			var interval = 5000;
+			var speed = 600;
+			var maxFocus = ${list?size};
+			var currFocus = 0;
+			var targetFocus = 1;
+			var $fc = $("#photo-content");
+			var $fp = $("#photo-page");
+			var fsTimeout;
+			function focusSwitch(targetFocus) {				
+				if(targetFocus>=maxFocus) {
+					targetFocus = 0;
+				}
+				if(targetFocus<0) {
+					targetFocus = maxFocus-1;
+				}	
+				$fc.animate({left:"-"+$fc.children(":first").width()*targetFocus+"px"},speed);
+				$fp.children(":eq("+currFocus+")").removeClass("photo-dot-curr");
+				$fp.children(":eq("+targetFocus+")").addClass("photo-dot-curr");				
+				currFocus = targetFocus;
+			}
+			function focusSwitchAuto() {	
+				targetFocus = currFocus + 1;
+				focusSwitch(targetFocus);
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			}
+			function focusSwitchNext() {
+				clearTimeout(fsTimeout);
+				$fc.stop(true);
+				focusSwitch(currFocus+1);
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			}
+			function focusSwitchPrev() {
+				clearTimeout(fsTimeout);
+				$fc.stop(true);
+				focusSwitch(currFocus-1);
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			}
+			$fc.hover(function() {
+				clearTimeout(fsTimeout);
+			},function() {
+				fsTimeout = setTimeout(focusSwitchAuto,interval);
+			});
+			$fp.children().each(function() {
+				$(this).mouseover(function() {
+					clearTimeout(fsTimeout);
+					$fc.stop(true);
+					focusSwitch($(this).index());
+				});
+			});
+			fsTimeout = setTimeout(focusSwitchAuto,interval);
+			$("#photo-left").click(focusSwitchPrev);
+			$("#photo-right").click(focusSwitchNext);
+		});
+	</script>
+	<a id="photo-left" href="javascript:;" class="absolute photo-left" style="left:0;top:215px;width:70px;height:70px;outline:none;" title="点击查看上一张图"></a>
+	<a id="photo-right" href="javascript:;" class="absolute photo-right" style="right:0;top:215px;width:70px;height:70px;outline:none;" title="点击查看上一张图"></a>
+	[/#if]
+	[/@InfoList]
+</div>
+[@NodeList parentId=node.id;list]
+[#list list as n]
+<div class="w center mt30" style="height:22px;line-height:22px;background:url(_files/img/phone_bg.jpg) right center no-repeat;">
+	<div class="left ff-yh fs18" style="width:100px;border-left:7px solid #e71a21;padding-left:18px;">${n.name}</div>
+	<div class="right" style="width:100px;padding-right:18px;text-align:right;"><a href="${n.url}" class="a-hover c-666">更多</a></div>
+	<div class="clear"></div>
+</div>
+<div class="w center mt20">
+	[@InfoList nodeId=n.id limit='8';list]
+	[#list list as info]
+	<div class="left mt5 relative" style="[#if (info_index+1) % 4 !=0]margin-right:5px;[/#if]">
+		<a href="${info.url}" target="_blank" title="${info.title}">
+			<img src="${info.smallImageUrl}" width="246" height="164"/>
+			<div class="absolute" style="width:100%;height:75px;bottom:0;background:url(_files/img/pic_bg.png) left bottom;"></div>
+			<div class="absolute text-center ff-yh fs14" style="bottom:5px;width:100%;text-align:center;">
+				<span class="relative c-fff">${substring(info.title,15,'...')}</span>
+			</div>
+		</a>
+	</div>
+	[/#list]
+	[/@InfoList]
+	<div class="clear"></div>
+</div>
+[/#list]
+[/@NodeList]
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

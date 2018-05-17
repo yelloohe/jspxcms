@@ -1,0 +1,55 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${category.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${category.name}"/>
+<meta name="description" content="${category.name}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.a1{color:#8d8d8d;text-decoration:none;}
+a.a1:hover{color:#d90102;text-decoration:none}
+a.zt-a1{color:#252525;font-size:20px;font-family:"Microsoft YaHei";text-decoration:none;}
+a.zt-a2{color:#004276;font-size:14px;font-family:"Microsoft YaHei";text-decoration:none;}
+a.zt-a2:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center" style="background-color:#e6e6e6;">
+	[@SpecialCategoryList;list]
+	<ul class="list-unstyled oh" style="padding:5px 0;">
+		[#list list as sc]
+		<li class="left ml20"><a href="${dy}/special_category/${sc.id}" class="zt-a2">${sc.name}专题</a></li>
+		[/#list]
+	</ul>
+	[/@SpecialCategoryList]
+</div>
+<div class="w center">
+	<div class="fs20 ff-yh" style="padding:8px 28px;background:url(_files/img/ico-point-red2.png) 10px center no-repeat">
+		<a href="${dy}/special_category" class="zt-a1">专题</a> - <a href="${dy}/special_category/${category.id}" class="zt-a1">${category.name}专题</a>
+	</div>
+</div>
+[@SpecialPage categoryId=category.id pageSize='20';pagedList]
+<div class="w center">
+	<ul class="oh list-unstyled" style="padding:10px 10px;border-top:2px solid #4e4e4e;">
+		[#list pagedList.content as special]
+		<li class="[#if special_index % 2 == 0]left[#else]right[/#if] oh" style="width:460px;height:32px;line-height:32px;padding-left:15px;background:url(_files/img/ico-point-red.png) 0 center no-repeat;">
+			<div class="left"><a href="${ctx}/special/${special.id}" target="_blank" class="a fs14" style="">${substring(special.title,20,'...')}</a></div>
+			<div class="right" style="color:#8d8d8d;">${special.creationDate?string('yyyy-MM-dd')}</div>
+		</li>
+		[/#list]
+	</ul>
+	<table class="center mt10"><tr><td>
+		[#include 'page.html'/]
+	</td></tr></table>
+</div>
+[/@SpecialPage]
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

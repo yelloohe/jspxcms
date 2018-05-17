@@ -1,0 +1,94 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}[#if node.parent??]_${node.parent.name}[/#if]_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.ap{color:#333;text-decoration:none;}
+a.ap:hover{color:#699f00;}
+a.ap-curr{color:#fff;background-color:#699f00;text-decoration:none;}
+
+.boxchk{color:#333;text-decoration:none;}
+.boxchk:hover{color:#699f00;}
+.boxchk .box{display:inline-block;padding:1px;width:9px;height:9px;border-radius:1px;border:1px solid #ccc;}
+.boxchk .box-inner{display:none;width:9px;height:9px;position:absolute;background-color:#fff;}
+.boxchk .box-text{margin-left:4px;}
+.boxchk-curr{color:#699f00;text-decoration:none;}
+.boxchk-curr .box{position:relative;display:inline-block;line-height:0;padding:1px;width:9px;height:9px;border-radius:1px;border:1px solid #699f00;}
+.boxchk-curr .box-inner{display:block;width:9px;height:9px;position:absolute;background-color:#699f00;}
+.boxchk-curr .box-text{margin-left:4px;}
+
+.photo-item{border:1px solid transparent;}
+.photo-item:hover{border:1px solid #e4e4e4;}
+.photo-item-inner{border:1px solid #e4e4e4;}
+.photo-item-inner:hover{border:1px solid #bfbfbf;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div class="ff-yh mt30" style="border:1px solid #e0e0e0;padding:0 20px;">
+		<div style="padding-bottom:5px;">
+			<div class="left c-999 fs12" style="width:70px;padding-top:10px;">频道：</div>
+			<div class="left fs14" style="width:888px;">
+				[@NodeList parentId=node.parent.id;list]
+				[#list list as n]
+				<a href="${n.url}" class="[#if node.id==n.id]ap-curr[#else]ap[/#if] mt5" style="[#if n_has_next]margin-right:15px;[/#if]display:inline-block;padding:2px 8px;">${n.name}</a>
+				[/#list]
+				[/@NodeList]
+			</div>
+			<div class="clear"></div>
+		</div>
+		[#list node.infoModel.queryableFields as field]
+		<div style="padding-bottom:5px;border-top:1px dotted #d5d5d5;">
+			<div class="left c-999 fs12" style="width:70px;padding-top:10px;">${field.label}：</div>
+			<div class="left fs14" style="width:888px;">
+				<a href="${addParam(node.urlDynamic,field.name)}" class="[#if !Param[field.name]??]ap-curr[#else]ap[/#if] mt5" style="display:inline-block;padding:2px 8px;margin-right:15px;">全部</a>
+				[#assign options = field.options/]
+				[#list options?keys as key]
+				<a href="${addParam(node.urlDynamic,field.name,key)}" class="[#if Param[field.name]! == key]ap-curr[#else]ap[/#if] mt5" style="[#if key_has_next]margin-right:15px;[/#if]display:inline-block;padding:2px 8px;">${options[key]}</a>
+				[/#list]
+			</div>
+			<div class="clear"></div>
+		</div>
+		[/#list]
+	</div>
+	[#if Param.sort! == 'views']
+		[#assign sort='views desc'/]
+	[/#if]
+	[@InfoPage nodeId=node.id sort=sort pageSize='20' p1=Param.p1 p2=Param.p2 p3=Param.p3 p4=Param.p4 p5=Param.p5 p6=Param.p6;pagedList]
+	<div class="mt30 c-999" style="border-bottom:1px solid #e0e0e0;line-height:1;padding-bottom:10px;">
+		<div class="left ff-yh fs14" style="width:40%;">
+			<span>排序：</span>
+			<a href="${addParam(node.urlDynamic,'sort','views')}" class="ml5 [#if Param.sort! == 'views']boxchk-curr[#else]boxchk[/#if]"><span class="box"><span class="box-inner"></span></span><span class="box-text">热门</span></a>
+			<a href="${addParam(node.urlDynamic,'sort')}" class="ml10 [#if !Param.sort??]boxchk-curr[#else]boxchk[/#if]"><span class="box"><span class="box-inner"></span></span><span class="box-text">更新时间</span></a>
+		</div>
+		<div class="right" style="width:40%;text-align:right;">共<span style="padding:0 5px;">${pagedList.totalElements}</span>个筛选结果</div>
+		<div class="clear"></div>
+	</div>
+	<ul class="list-unstyled lh ff-yh fs14">
+		[#list pagedList.content as info]
+		<li class="left mt20" style="[#if info_index%5 != 0]margin-left:10px;[/#if]">
+			<div><a href="${info.url}" target="_blank"><img src="${info.smallImageUrl}" width="192" height="108"/></a></div>
+			<div class="mt5"><a href="${info.url}" class="ap" target="_blank" title="${info.titile}">${substring(info.title,12,'...')}</a></div>
+			<div class="mt5 c-666">${info.publishDate?string('yyyy-MM-dd')}</div>
+		</li>
+		[/#list]
+		<li class="clear"></li>
+	</ul>	
+	<table class="center mt20"><tr><td>
+		[#include 'page.html'/]
+	</td></tr></table>
+	[/@InfoPage]
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

@@ -1,0 +1,48 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}[#if node.parent??]_${node.parent.name}[/#if]_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.photo-item{border:1px solid transparent;}
+.photo-item:hover{border:1px solid #e4e4e4;}
+.photo-item-inner{border:1px solid #e4e4e4;}
+.photo-item-inner:hover{border:1px solid #bfbfbf;}
+/*.photo-item:hover{border:1px solid #fe6500;}*/
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div style="padding:10px 5px;border-bottom:2px solid #458fce;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a>[#if n_has_next] > [/#if][/#list]</div>
+	<div>
+		<div style="padding:0 0px;">
+			[@InfoPage nodeId=node.id pageSize='15';pagedList]
+			[#list pagedList.content as info]
+			<div class="left photo-item mt20" style="[#if info_index % 4 !=0]margin-left:16px;[/#if]">
+				<div class="photo-item-inner">
+					<div><a href="${info.url}" target="_blank" title="${info.title}"><img src="${info.smallImageUrl}" width="234" height="156"/></a></div>
+					<div style="padding:15px 10px;"><a href="${info.url}" target="_blank" title="${info.title}" class="c-333 a-none ff-yh fs14">${substring(info.title,15,'...')}</a></div>
+				</div>
+			</div>
+			[/#list]
+			<div class="clear"></div>
+		</div>
+		<table class="center mt20"><tr><td>
+			[#include 'page.html'/]
+		</td></tr></table>
+		[/@InfoPage]
+	</div>
+	<div class="clear"></div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

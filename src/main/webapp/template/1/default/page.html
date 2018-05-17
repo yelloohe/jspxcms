@@ -1,0 +1,18 @@
+<div class="pager">
+<a[#if page>1] href="${paging(1)}"[/#if] class="page">棣栭〉</a>
+[#if page>1]
+<a href="${paging(page-1)}" class="page">涓婁竴椤�</a>
+[/#if]
+[#assign start=page-4/][#if start<1][#assign start=1/][/#if]
+[#assign end=start+8/][#if end>pagedList.totalPages][#assign end=pagedList.totalPages/][/#if][#if end<1][#assign end=1/][/#if]
+[#if end-start<8][#assign start=end-8/][/#if][#if start<1][#assign start=1/][/#if]
+[#list start..end as p]
+<a[#if page!=p] href="${paging(p)}"[/#if] class="[#if page!=p]page[#else]page-curr[/#if]">${p}</a>
+[/#list]
+[#if page < pagedList.totalPages]
+<a href="${paging(page+1)}" class="page">涓嬩竴椤�</a>
+[/#if]
+
+<a>[#if page<pagedList.totalPages] href="${paging(pagedList.totalPages)}"[/#if] class="page" >鏈〉</a>
+<div style="clear:both;"></div>
+</div>

@@ -1,0 +1,230 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${title}_${node.name}_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${info.keywords}"/>
+<meta name="description" content="${info.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.a1{color:#333;text-decoration:none;}
+.a1:hover{color:#ab000e;}
+.a2{color:#fff;}
+.a2:hover{color:#ff8400;}
+.group-left{border-radius:10px 0 0 10px;background:url(_files/img/photo-group.png) #f9f9f9 -3px center no-repeat;}
+.group-left:hover{background:url(_files/img/photo-group.png) #eeeeee -27px center no-repeat;}
+.group-right{border-radius:0 10px 10px 0;background:url(_files/img/photo-group.png) #f9f9f9 -51px center no-repeat;}
+.group-right:hover{background:url(_files/img/photo-group.png) #eeeeee -75px center no-repeat;}
+.photo-min{border:1px solid #dfdfdf;max-width:110px;max-height:110px;}
+.photo-min:hover{border:5px solid #dfdfdf;}
+.photo-min-curr{border:5px solid #dfdfdf;}
+.photo-orig{background-image:url(_files/img/photo_orig.png);}
+.photo-orig:hover{background-color:#aaa;}
+</style>
+<script>
+var currPhoto = 1;
+var maxPhoto = ${info.images?size};
+var photoImages = [
+	[#list info.images as image]"${image.image!?js_string}"[#if image_has_next],[/#if][/#list]
+];
+var photoTexts = [
+	[#list info.images as image]"${image.text!info.description?js_string}"[#if image_has_next],[/#if][/#list]
+];
+function setPhoto(index) {
+	if(maxPhoto<2 || index<1 || index>maxPhoto) {
+		return;
+	}
+	photoEndHide();
+	$("#photoImage").attr("src",photoImages[index-1]);
+	$("#photoOrig").attr("href",photoImages[index-1]);
+	$("#photoText").text(photoTexts[index-1]);
+	$("#photoIndex").text(index);		
+	$("#photoMin"+currPhoto).removeClass("photo-min-curr");
+	$("#photoMin"+index).addClass("photo-min-curr");
+	//第一张图片没有上一张
+	if(index==1) {
+		$("#prevPhotoBtn").hide();
+	} else {		
+		$("#prevPhotoBtn").show();
+	}
+	//大于5张图，需要移动缩略图位置。
+	if(maxPhoto>5) {
+		if(index<=3) {
+			//前3张，移动到最前面。
+			$("#photoMinContainer").animate({"left":"0"});
+		}else if(maxPhoto-index<3) {
+			//后3张，移动到最后面。
+			$("#photoMinContainer").animate({"left":"-"+$("#photoMinCell").width()*(maxPhoto-5)+"px"});
+		}else {
+			//其他移动到到中间。
+			$("#photoMinContainer").animate({"left":"-"+$("#photoMinCell").width()*(index-3)+"px"});
+		}
+	}
+	window.location.hash = "#p="+index;	
+	currPhoto=index;
+}
+function photoEndShow() {
+	var top = $("#photoImage").offset().top + $("#photoImage").height()/2 - $("#photoEnd").height()/2;
+	var left = $("#photoImage").offset().left + $("#photoImage").width()/2 - $("#photoEnd").width()/2;
+	$("#photoEnd").css({"top":top, "left":left}).show();
+}
+function photoEndHide() {
+	$("#photoEnd").hide();
+}
+function nextPhoto() {
+	if(currPhoto+1<=maxPhoto) {
+		setPhoto(currPhoto+1);
+	} else {
+		photoEndShow();
+	}
+}
+function prevPhoto() {
+	if(currPhoto-1>0) {
+		setPhoto(currPhoto-1);
+	}
+}
+function nextGroup() {
+	var nextLeft = $("#photoMinContainer").offsetParent().scrollLeft() - $("#photoMinCell").width()*5;
+	var maxLeft = $("#photoMinCell").width()*(maxPhoto-5) * -1;
+	if(nextLeft<maxLeft) {
+		nextLeft = maxLeft;
+	}
+	$("#photoMinContainer").animate({"left":nextLeft});	
+}
+function prevGroup() {
+	var nextLeft = $("#photoMinContainer").position().left + $("#photoMinCell").width()*5;
+	if(nextLeft>0) {
+		nextLeft = 0;
+	}
+	$("#photoMinContainer").animate({"left":nextLeft});		
+}
+$(function(){
+	var photoAnchor = window.location.hash;
+	if(photoAnchor != "" && photoAnchor != undefined){
+		var index = photoAnchor.indexOf("p=");
+		if(index!=-1) {
+			var p = photoAnchor.substring(index+2);
+			setPhoto(parseInt(p));
+		}
+	}
+})
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div id="photoEnd" style="display:none;z-index:200;position:absolute;width:240px;height:100px;border:1px solid #fff;">
+	<div style="position:absolute;width:240px;height:100px;filter:alpha(opacity=75);background-color:#000;background:rgba(0, 0, 0, 0.75) none repeat scroll 0 0 !important;"></div>
+	<div class="right cursor-point relative" style="border:1px solid #fff;color:#fff;width:12px;height:12px;font-size:17px;line-height:10px;padding:0px 0px 0 0px;margin:5px 5px 0 0;" onclick="photoEndHide();" title="关闭">×</div>
+	<div class="clear"></div>
+	<div class="c-fff fs14 text-center relative">图集已浏览完毕</div>
+	<div class="mt15 text-center">
+		<a href="javascript:;" onclick="setPhoto(1);" class="fs12 text-center cursor-point a2 relative a-none" style="display:inline-block;padding:2px 10px;border:1px solid #fff;background-color:#1a1a1a;">重新浏览</a>
+		[@InfoNext id=info.id;bean]
+		[#if bean??]
+		<a href="${bean.url}" class="fs12 text-center cursor-point a2 relative a-none" style="display:inline-block;margin-left:20px;padding:2px 10px;border:1px solid #fff;background-color:#1a1a1a;">下一图集</a>
+		[/#if]
+		[/@InfoNext]
+	</div>
+</div>
+<div class="w center">	
+	<div style="padding:10px 5px;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a>[#if n_has_next] > [/#if][/#list] > 图集</div>
+	<div class="" style="padding:30px 25px;border-top:2px solid #206f96;border-left:1px solid #cfcfcf;border-right:1px solid #cfcfcf;border-bottom:1px solid #cfcfcf;">
+		<h1 class="ff-yh text-center" style="font-size:28px;font-weight:normal;margin:0;">${title}</h1>
+		<div style="padding:10px 0 5px 0;border-bottom:1px solid #cfcfcf;">
+			<div class="left" style="color:#ababab;line-height:30px;">
+				<span>${info.publishDate?string('yyyy-MM-dd HH:mm')}</span>
+				<span class="info-detail"><span id="info_views"></span>次阅读</span>
+				<script type="text/javascript">
+					$("#info_views").load("${dy}/info_views/${info.id}?d="+new Date()*1);
+				</script>
+				<span class="info-detail"><span id="info_comments"></span>条评论</span>			
+				<script type="text/javascript">
+					 $("#info_comments").load("${dy}/info_comments/${info.id}?d="+new Date()*1);
+				</script>
+				<script src="${dy}/app?template=info_favorites&id=${info.id}&d="+new Date()*1></script>
+			</div>
+			<div class="right">			
+				<div class="bdsharebuttonbox"><a href="#" class="bds_more a-none c-666" data-cmd="more">分享到：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+				<script>
+					window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};
+					with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+				</script>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="relative">
+			<div id="prevPhotoBtn" onclick="prevPhoto();" style="z-index:10;display:none;position:absolute;left:0;width:50%;height:100%;cursor:url(_files/img/cursor_left.cur),pointer;background-image:url(_files/img/space.png);" title="上一张"></div>
+			<div onclick="nextPhoto();" style="z-index:10;position:absolute;right:0;width:50%;height:100%;cursor:url(_files/img/cursor_right.cur),pointer;background-image:url(_files/img/space.png);" title="下一张"></div>
+			<table class="center mt20"><tr><td>
+				[#if info.images?size gt 0]
+				<div class="relative">
+					<a id="photoOrig" href="${info.images[0].image}" target="_blank" title="原图" class="photo-orig absolute" style="z-index:20;display:block;width:32px;height:32px;right:0;top:0;"></a>
+					<img id="photoImage" src="${info.images[0].image}" style="max-width:948px;"/>
+				</div>
+				[#else]
+				没有图片
+				[/#if]
+			</td></tr></table>
+		</div>
+		<div class="mt20">
+			[#if info.images?size gt 0]
+			<div class="fs24" style="display:inline-block;vertical-align:top;color:#ab000e;"><span id="photoIndex">1</span><span class="fs16" style="color:#a1a1a1;"> / ${info.images?size}</span></div>
+			<div id="photoText" class="ff-yh fs14 c-666" style="display:inline-block;width:850px;padding:5px 0 0 8px;line-height:2;">${info.images[1].text!info.description}</div>
+			[/#if]
+		</div>
+		<div class="mt30">
+			<div class="left" style="width:102px;padding-top:4px;">
+				[@InfoPrev id=info.id;bean]
+				<a href="${bean.url}" class="a1 relative ff-yh block" title="上一图集">
+					<div style="z-index:2;position:absolute;left:-4px;top:-4px;background-color:#fff;border:1px solid #dedfe3;width:100px;height:100px;">
+						<img[#if bean??] src="${bean.smallImageUrl}"[/#if] width="100" height="75" style="margin-top:13px;"/>
+					</div>
+					<div style="z-index:1;position:absolute;left:-2px;top:-2px;background-color:#fff;border:1px solid #dedfe3;width:100px;height:100px;"></div>
+					<div style="border:1px solid #dedfe3;width:100px;height:100px;"></div>
+					<div class="mt5" title="${bean.title}">[#if bean??]${substring(bean.title,16,'...')}[#else]没有了[/#if]</div>
+				</a>
+				[/@InfoPrev]
+			</div>
+			<a href="javascript:;" onclick="prevGroup();" class="left group-left" style="margin-left:18px;height:124px;width:12px;padding:0 9px;"></a>			
+			<div class="left" style="width:620px;margin:0 14px;overflow:hidden;">
+				<div style="width:90000px;">
+					<table id="photoMinContainer" class="relative"><tr>
+					[#list info.images as image]
+					<td id="photoMinCell" valign="middle" align="center" style="width:124px;height:124px;">
+						<div style="width:124px;display:inline-block;">
+							<a href="javascript:;" onclick="setPhoto(${image_index+1});" style="outline:none;" ><img id="photoMin${image_index+1}" src="${image.imageMin}" class="photo-min[#if image_index==0] photo-min-curr[/#if]"/></a>
+						</div>
+					</td>
+					[/#list]
+					</tr></table>
+				</div>
+			</div>
+			<div class="right" style="width:102px;padding-top:4px;">			
+				[@InfoNext id=info.id;bean]
+				<a href="${bean.url}" class="a1 relative ff-yh block" title="下一图集">
+					<div style="z-index:2;position:absolute;left:-4px;top:-4px;background-color:#fff;border:1px solid #dedfe3;width:100px;height:100px;">
+						<img[#if bean??] src="${bean.smallImageUrl}"[/#if] width="100" height="75" style="margin-top:13px;"/>
+					</div>
+					<div style="z-index:1;position:absolute;left:-2px;top:-2px;background-color:#fff;border:1px solid #dedfe3;width:100px;height:100px;"></div>
+					<div style="border:1px solid #dedfe3;width:100px;height:100px;"></div>
+					<div class="mt5" title="${bean.title}">[#if bean??]${substring(bean.title,16,'...')}[#else]没有了[/#if]</div>
+				</a>
+				[/@InfoNext]
+			</div>
+			<a href="javascript:;" onclick="nextGroup();" class="right group-right" style="margin-right:18px;height:124px;width:12px;padding:0 9px;"></a>
+			<div class="clear"></div>
+		</div>
+		<div id="commentDiv" class="mt20"></div>		
+		<script type="text/javascript">
+			$("#commentDiv").load("${dy}/comment_list?fid=${info.id}&url=${url?url}&d="+new Date()*1);
+		</script>
+	</div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

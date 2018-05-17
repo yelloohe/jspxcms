@@ -1,0 +1,59 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${guestbook.title!substring(guestbook.text,100,'...')}_留言板_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="留言板"/>
+<meta name="description" content="${substring(guestbook.text,200,'...')}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.msg-status{padding:3px 15px;margin-left:10px;font-size:16px;font-weight:bold;color:#333;background-color:#e7e7e7;}
+.msg-status-curr{color:#fff;background-color:#993333;}
+.msg-type{color:#333;margin:0 5px;}
+.msg-type-curr{color:#cc3333;}
+.reply{color:#fff;background-color:#993333;padding:3px 5px;}
+.unreply{color:#fff;background-color:#858181;padding:3px 5px;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div class="ff-yh b fs16" style="padding:6px 5px 6px 5px;border-bottom:4px solid #993333;"><a href="${dy}/guestbook" class="left fs18 a-none" style="color:#cc3333;padding-top:5px;">留言板</a><a href="${ctx}/guestbook/create" class="a-hover right" style="padding:4px 10px;background-color:#cc3333;color:#fff;">我要留言</a><div class="clear"></div></div>
+	<div class="mt20" style="padding:20px 20px;border:1px solid #be0000;">
+		<div class="fs14 c-666" style="height:40px;line-height:40px;padding:0 10px 0 50px;background:url(_files/img/msg.gif) 10px center no-repeat;background-color:#f5f9fa;">
+			<div class="left ff-yh fs18 b" style="color:#993333;">网友留言</div>
+			<div class="left ml30">编号：${guestbook.id}</div>
+			<div class="left ml30">发表用户：${guestbook.creator.username!guestbook.username!"匿名网友"}</div>
+			<div class="left ml30">发表时间：${guestbook.creationDate?string('yyyy-MM-dd HH:mm')}</div>
+			<div class="right ml30">[#if guestbook.reply]已回复[#else]未回复[/#if]</div>
+			<div class="clear"></div>
+		</div>
+		<div class="b fs14 mt10" style="padding-left:10px;color:green;">
+			[${guestbook.type.name}] ${guestbook.title!substring(guestbook.text,100,'...')}		
+		</div>
+		<div class="fs14 mt15" style="padding-left:10px;">
+			[#noescape]${bbcode(guestbook.text)}[/#noescape]
+		</div>
+	</div>
+	[#if guestbook.replyText??]
+	<div class="mt20" style="padding:20px 20px;border:1px solid #ffd57d;">
+		<div class="fs14 c-666" style="height:40px;line-height:40px;padding:0 10px 0 50px;background:url(_files/img/msg.gif) 10px center no-repeat;background-color:#f5f9fa;">
+			<div class="left ff-yh fs18 b" style="color:#993333;">官方回复</div>
+			<div class="left ml30">回复用户：${guestbook.replyer.username}</div>
+			<div class="left ml30">回复时间：${guestbook.replyDate?string('yyyy-MM-dd HH:mm')}</div>
+			<div class="clear"></div>
+		</div>
+		<div class="fs14 mt15" style="padding-left:10px;">
+			[#noescape]${bbcode(guestbook.replyText!)}[/#noescape]
+		</div>
+	</div>
+	[/#if]
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

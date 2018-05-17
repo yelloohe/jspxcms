@@ -1,0 +1,65 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${node.name}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center mt10">
+	当前位置：[#list node.hierarchy as n]<a href="${n.url}" class="a-hover" style="color:#146C88;">${n.name}</a>[#if n_has_next] > [/#if][/#list]
+</div>
+<div class="w center mt10">
+	<div class="list-unstyled" style="border:1px solid #ccc;padding:8px 8px 8px 0;">
+		[#assign parentId=node.id/]
+		[#--当前栏目为末级栏目，则获取上级栏目ID--]
+		[#if node.children?size == 0][#assign parentId=node.parent.id/][/#if]
+		[@NodeList parent='doc';list]
+		[#list list as n]
+		<a href="${n.url}" class="left ml10 a-none" style="padding:0px 8px;height:22px;line-height:22px;[#if node.id==n.id]background-color:#ff6400;border:1px solid #ff3200;color:#fff;[#else]background-color:#fff;border:1px solid #ccc;color:#333;[/#if]">${n.name}</a>
+		[/#list]
+		<div class="clear"></div>
+		[/@NodeList]
+	</div>
+</div>
+[@InfoPage nodeId=node.id isIncludeChildren='true';pagedList]
+<ul class="w center mt10 list-unstyled" style="border-top:2px solid #ccc;">
+	[#list pagedList.content as info]
+	<li style="padding:20px 10px;border-bottom:1px solid #ccc;">
+		[#if info.smallImage??]
+		<div class="left" style="width:98px;">
+			<img src="${info.smallImageUrl}" style="width:80px;height:113px;border:1px solid #ccc;"/>
+		</div>
+		<div class="left" style="width:880px;">
+		[#else]
+		<div>
+		[/#if]
+			<div>
+				<div class="left"><a href="${info.url}" target="_blank" class="ff-yh fs16 a-hover" style="color:#00a0e9;">${info.title}</a></div>
+				<div class="right"><span style="color:#00a0e9;">${info.creator.username}</span><span class="ml10">${info.publishDate?string('yyyy-MM-dd HH:mm')}</span></div>
+				<div class="clear"></div>
+			</div>
+			<div class="ff-yh fs12" style="line-height:30px;padding:20px 0;color:#333;">${info.description}</div>
+			<div style="color:#888;"><span>分类：<a href="${info.node.url}" class="a-hover" style="color:#888;">${info.node.name}</a></span><span class="ml20">浏览：${info.views}次</span><span class="ml20">评星：<span style="color:#d47200;">★☆☆☆☆</span></span></div>
+		</div>
+		<div class="clear"></div>
+	</li>	
+	[/#list]
+</ul>
+<div class="w center mt20">
+	[#include 'page.html'/]
+</div>
+[/@InfoPage]
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

@@ -1,0 +1,114 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${targetUser.username}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.user-top{background-color:#008ee1;color:#fff;}
+.user-top a{color:#fff;text-decoration:none;}
+.user-top a:hover{color:#fff;}
+.ct-bg{background-color:#fff;border:1px solid #dcdcdc;}
+.user-box{border:1px solid #ccc;background-color:#fff;}
+.user-box-head{padding:0 12px;border-bottom:1px solid #eee;line-height:32px;height:32px;font-size:14px;font-weight:bold;font-family:"Microsoft YaHei";}
+.user-box-body{padding:5px 12px;}
+.user-box-body-item{padding:3px 0;}
+.user-box-body-item label{color:#666;}
+.user-nav{list-style:none;padding-left:0;overflow:hidden; border-bottom:1px solid #008ee1;font-family:"Microsoft YaHei";font-size:14px;}
+.user-nav-item{float:left;margin-left:12px;padding:0 12px;line-height:28px;background-color:#e6e6e6;}
+.user-nav-item a{color:#666;text-decoration:none;}
+.user-nav-item a:hover{color:#000;}
+.user-nav-item-curr{background-color:#008ee1;}
+.user-nav-item-curr a{color:#fff;}
+.user-nav-item-curr a:hover{color:#fff;}
+</style>
+</head>
+<body style="background-color:#f4f4f4;">
+<div class="user-top">
+	<div class="w center c999" style="height:32px;line-height:32px;">
+		<div class="left">
+			<a class="topa ml5" href="${ctx}/" target="_blank">首页</a>
+			<a class="topa ml5" href="${ctx}/sitemap" target="_blank">网站地图</a>
+			<a class="topa ml5" href="${ctx}/rss">RSS订阅</a>
+			<a class="topa ml5" href="${ctx}/tags">TAGS标签</a>
+		</div>
+		<div class="right">
+			<script type="text/javascript" src="${ctx}/login_include?d=${.now?time}"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="w center mt10 oh">
+	[#include 'sys_member_my_header.html'/]
+</div>
+<div class="w center mt10 oh">
+	<div class="left" style="width:240px;">
+		<div class="user-box">
+			<div class="user-box-head">基本概况</div>
+			<div class="user-box-body">
+				<div class="user-box-body-item"><label>会员组：</label>${targetUser.group.name}</div>
+				<div class="user-box-body-item"><label>性别：</label>[#if targetUser.gender??][#if targetUser.gender=='M']男[#else]女[/#if][#else]保密[/#if]</div>
+				<div class="user-box-body-item"><label>生日：</label>[#if targetUser.birthDate??]${targetUser.birthDate?string('yyyy-MM-dd')}[#else]保密[/#if]</div>
+				<div class="user-box-body-item"><label>来自：</label>[#if targetUser.comeFrom??]${targetUser.comeFrom}[#else]保密[/#if]</div>
+				<div class="user-box-body-item"><label>注册时间：</label>${targetUser.creationDate?string('yyyy-MM-dd HH:mm')}</div>
+				<div class="user-box-body-item"><label>最后访问：</label>${targetUser.lastLoginDate?string('yyyy-MM-dd HH:mm')}</div>
+				<div class="user-box-body-item"><label>登录次数：</label>${targetUser.logins}</div>
+			</div>
+		</div>
+	</div>
+	<div class="right" style="width:710px;padding:10px 15px;border:1px solid #ccc;background-color:#fff;">
+		<ul class="user-nav">
+			<li class="user-nav-item[#if !Param.type??] user-nav-item-curr[/#if]"><a href="${ctx}/space/${targetUser.id}">主页</a></li>
+			<li class="user-nav-item[#if Param.type?? && Param.type='comment'] user-nav-item-curr[/#if]"><a href="${ctx}/space/${targetUser.id}?type=comment">评论</a></li>
+			<li class="user-nav-item[#if Param.type?? && Param.type='article'] user-nav-item-curr[/#if]"><a href="${ctx}/space/${targetUser.id}?type=article">文章</a></li>
+		</ul>
+		[#if Param.type?? && Param.type=='comment']
+			[#include 'sys_member_space_comment.html'/]
+		[#elseif Param.type?? && Param.type=='article']
+			[#include 'sys_member_space_article.html'/]
+		[#else]
+			[@CommentList creatorId=targetUser.id limit='5';list]
+			<div class="mt10">
+				<div class="b" style="height:28px;line-height:28px;padding-left:10px;background-color:#f4f4f4;"><a href="#" class="a-hover" style="color:#252525;">最新评论</a></div>
+				<ul class="list-unstyled" style="line-height:1.8;">
+				[#list list as comment]
+					<li style="padding:10px;border-bottom:1px dotted #d2e1f1;"><span class="b c-comment cert">${comment.creator.username}</span>：<a class="c-comment a-hover" href="${comment.anchor.url}" target="_blank" title="${comment.anchor.title}">#${substring(comment.anchor.title,30,'...')}#</a> ${substring(comment.text,150,'...')}</li>
+				[/#list]
+				</ul>
+			</div>
+			[/@CommentList]
+			[@InfoList userId=targetUser.id limit='5';list]
+			<div class="mt10">
+				<div class="b" style="height:28px;line-height:28px;padding-left:10px;background-color:#f4f4f4;"><a href="#" class="a-hover" style="color:#252525;">最新文章</a></div>
+				[#list list as info]
+				<div class="oh" style="padding:10px 10px;border-bottom:1px dotted #ccc;">
+					<div class="left" style="[#if info.withImage]width:75%;[/#if]">
+						<div>[@A bean=info class='ff-yh fs14 a c-000'/]</div>
+						<div class="" style="padding:2px;color:#a1a1a1;">${info.publishDate?string('yyyy-MM-dd HH:mm')}</div>
+					</div>
+				</div>
+				[/#list]
+			</div>
+			[/@InfoList]
+		[/#if]
+	</div>
+</div>
+<div style="border-top:1px solid #e6e6e6;padding-bottom:20px;margin-top:30px;"></div>
+<div class="w center text-center">
+	<div class="powered">    
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+	</div>
+</div>
+</body>
+</html>
+[/#escape]

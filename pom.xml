@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jspxcms</groupId>
+	<artifactId>jspxcms-ep-mysql</artifactId>
+	<version>8.5.0</version>
+	<packaging>war</packaging>
+
+	<name>Jspxcms</name>
+	<description>Jspxcms是灵活的、易扩展的、企业级开源网站内容管理系统，支持多组织、多站点、独立管理的网站群，支持MySQL、Oracle、SQLServer等数据库。</description>
+	<url>http://www.jspxcms.com/</url>
+	<inceptionYear>2011-2017</inceptionYear>
+
+	<organization>
+		<name>Jspxcms</name>
+		<url>http://www.jspxcms.com/</url>
+	</organization>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.2.RELEASE</version>
+	</parent>
+	<properties>
+		<!-- Apache公共基础组件 -->
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<!-- Apache公共网络组件 -->
+		<commons-net.version>3.4</commons-net.version>
+		<!-- Apache公共IO组件 -->
+		<commons-io.version>2.4</commons-io.version>
+		<!-- 缓存组件 -->
+		<ehcache-core.version>2.6.11</ehcache-core.version>
+		<!-- 安全框架 -->
+		<shiro.version>1.3.2</shiro.version>
+		<!-- 全文检索组件 -->
+		<lucene.version>3.6.2</lucene.version><!--<lucene.version>4.7.2</lucene.version> -->
+		<!-- HTML解析组件 -->
+		<htmlparser.version>2.1</htmlparser.version>
+		<!-- 定时任务组件 -->
+		<quartz.version>2.2.2</quartz.version>
+		<!-- 微软文档解析组件 -->
+		<poi.version>3.13</poi.version>
+		<!-- Ant组件。使用zip部分模块 -->
+		<ant.version>1.9.6</ant.version>
+		<!-- 社交风格时间格式化类库 -->
+		<prettytime.version>4.0.1.Final</prettytime.version>
+		<!-- HTML过滤组件。防止用户提交的HTML包含有害代码 -->
+		<owasp-java-html-sanitizer.version>20160924.1</owasp-java-html-sanitizer.version>
+		<!-- 用户代理解析组件。分析用户浏览器类型、操作系统等信息 -->
+		<UserAgentUtils.version>1.20</UserAgentUtils.version>
+		<!-- 微信组件 -->
+		<weixin4j.version>1.7.4</weixin4j.version>
+		<!-- Markdown解析组件 -->
+		<!-- <pegdown.version>1.6.0</pegdown.version> -->
+		<!-- 纯Java的图片处理组件 -->
+		<imgscalr.version>4.2</imgscalr.version>
+		<!-- 验证码组件 -->
+		<jcaptcha.version>2.0.0</jcaptcha.version>
+		<!-- OpenOffice转换组件 -->
+		<jodconverter-core.version>1.0.5</jodconverter-core.version>
+		<!-- MSOffice转换组件 -->
+		<jacob.version>1.14.3</jacob.version>
+		<!-- GraphicsMagick原生图片处理库调用组件 -->
+		<im4java.version>1.4.0</im4java.version>
+		<!-- 阿里云短信sdk -->
+		<aliyun-sdk-mns.version>1.1.8</aliyun-sdk-mns.version>
+		<!-- 单元测试Mock组件 -->
+		<powermock.version>1.6.6</powermock.version>
+
+		<!-- 数据库JDBC驱动 -->
+		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+		<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
+		<jdbc.driver.version>5.1.6</jdbc.driver.version>
+
+		<java.version>1.7</java.version>
+		<tomcat.version>7.0.73</tomcat.version>
+		<servlet-api.version>3.0.1</servlet-api.version>
+		<jsp-api.version>2.2.1</jsp-api.version>
+		<springloaded.version>1.2.7.RELEASE</springloaded.version>
+	</properties>
+	<dependencies>
+		<!-- springboot web 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- springboot freemarker 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+		<!-- springboot data jpa 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- springboot mail 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!-- springboot mobile 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mobile</artifactId>
+		</dependency>
+		<!-- <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-cache</artifactId></dependency> -->
+		<!-- 系统监控actuator,autoconfig,beans,configprops,dump,env,flyway,health,info,liquibase,metrics,mappings,shutdown,trace;docs,heapdump,jolokia,logfile -->
+		<!-- <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency> -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${commons-net.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>${htmlparser.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>c3p0</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>${ant.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ocpsoft.prettytime</groupId>
+			<artifactId>prettytime</artifactId>
+			<version>${prettytime.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+			<artifactId>owasp-java-html-sanitizer</artifactId>
+			<version>${owasp-java-html-sanitizer.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+			<version>${UserAgentUtils.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.foxinmy</groupId>
+			<artifactId>weixin4j-mp</artifactId>
+			<version>${weixin4j.version}</version>
+		</dependency>
+		<!-- <dependency><groupId>org.pegdown</groupId><artifactId>pegdown</artifactId><version>${pegdown.version}</version></dependency> -->
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>${imgscalr.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.leopard.thirdparty</groupId>
+			<artifactId>jcaptcha-core</artifactId>
+			<version>${jcaptcha.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.livesense</groupId>
+			<artifactId>jodconverter-core</artifactId>
+			<version>${jodconverter-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>jacob</artifactId>
+			<version>${jacob.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.im4java</groupId>
+			<artifactId>im4java</artifactId>
+			<version>${im4java.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.mns</groupId>
+			<artifactId>aliyun-sdk-mns</artifactId>
+			<version>${aliyun-sdk-mns.version}</version>
+			<classifier>jar-with-dependencies</classifier>
+		</dependency>
+		<!-- 中文分词组件 -->
+		<dependency>
+			<groupId>local</groupId>
+			<artifactId>IKAnalyzer</artifactId>
+			<version>2012_u6</version>
+			<!-- <version>2012FF_u1</version> -->
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/IKAnalyzer-2012_u6.jar</systemPath>
+		</dependency>
+		<!-- QQ组件 -->
+		<dependency>
+			<groupId>local</groupId>
+			<artifactId>qq-connect-Sdk4J</artifactId>
+			<version>2.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/qq-connect-Sdk4J-2.0.0.jar</systemPath>
+		</dependency>
+		<!-- 微博组件 -->
+		<dependency>
+			<groupId>local</groupId>
+			<artifactId>weibo4j-oauth2</artifactId>
+			<version>beta3.1.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/weibo4j-oauth2-beta3.1.1.jar</systemPath>
+		</dependency>
+
+		<!-- springboot将snakeyaml设置为运行时(runtime)依赖，代码里使用了snakeyaml，这里设置为编译期(compile)依赖 -->
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+		</dependency>
+		<!-- 日期组件 -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		<!-- QueryDSL查询框架 -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		<!-- HTTP组件 -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${jdbc.driver.groupId}</groupId>
+			<artifactId>${jdbc.driver.artifactId}</artifactId>
+			<version>${jdbc.driver.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>${jsp-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- 快速启动启动应用，类似热部署 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- 默认使用tomcat8，使用tomcat7需要增加这项配置 -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-juli</artifactId>
+			<version>${tomcat.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 打包成war需要设置scope为provided -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 使用JSP必须包含此项 -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+ 		<groupId>com.google.code.gson</groupId>
+ 		<artifactId>gson</artifactId>
+ 		<version>2.3.1</version>
+		</dependency>
+
+		<!-- Hikvision -->
+		<!-- <dependency>
+			<groupId>com.hikvision</groupId>
+			<artifactId>common-digests</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hikvision</groupId>
+			<artifactId>common-httpclient</artifactId>
+			<version>1.0</version>
+		</dependency> -->
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<!-- 本地开发环境 -->
+			<id>dev</id>
+			<properties>
+				<package.environment>dev</package.environment>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<!-- 生产环境 -->
+			<id>prd</id>
+			<properties>
+				<package.environment>prd</package.environment>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<finalName>intelligence_park</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+					<webResources>
+						<resource>
+							<directory>src/main/resources/${package.environment}</directory>
+							<targetPath>WEB-INF/classes</targetPath>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<!-- spring-boot插件。使用方式：spring-boot:run。该方式只适合在IDEA开发工具下使用，Eclipse使用该方式启动会出现无法停止tomcat服务的情况 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- 指定启动的入口类 -->
+					<mainClass>com.jspxcms.core.Application</mainClass>
+					<!-- 关闭fork。否则使用spring-boot:run启动时，在idea中无法调试程序，在eclipse中无法关闭web服务 -->
+					<fork>false</fork>
+				</configuration>
+				<dependencies>
+					<!-- 热加载插件。修改方法里面的内容无需重启tomcat，但修改配置文件或者新增方法则无效。需关闭devtool的自动reload功能 -->
+					<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>springloaded</artifactId> 
+						<version>${springloaded.version}</version> </dependency> -->
+				</dependencies>
+			</plugin>
+			<!-- Tomcat7插件。使用方式：tomcat7:run。如果使用Tomcat7插件启动，则不能使用spring-boot-devtools提供的功能。由于tomcat7插件已经不再更新了（一直没有发布tomcat8插件），建议使用spring-boot:run插件启动。 -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<!-- 上下文路径 -->
+					<path>/</path>
+					<!-- 端口号 -->
+					<port>8080</port>
+					<uriEncoding>UTF-8</uriEncoding>
+					<server>tomcat7</server>
+					<contextReloadable>false</contextReloadable>
+					<useTestClasspath>true</useTestClasspath>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

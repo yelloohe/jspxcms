@@ -1,0 +1,690 @@
+@charset "utf-8";
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Calibri";
+}
+
+@font-face{
+	font-family: "newFont";
+	src: url("font/English/NeoSansPro-Bold.ttf") format("truetype");
+}
+.heiti {
+	font-family: "heiti";
+}
+
+#bgSize {
+	width: 1349px;
+	background: linear-gradient(top, #7da0dd, #cec4e9, #dbd1e9, #fbf9fc);
+	background: -webkit-linear-gradient(top, #7da0dd, #cec4e9, #dbd1e9, #fbf9fc);
+	background: -moz-linear-gradient(top, #7da0dd, #cec4e9, #dbd1e9, #fbf9fc);
+	background: -ms-linear-gradient(top, #7da0dd, #cec4e9, #dbd1e9, #fbf9fc);
+	font-weight: 600;
+	overflow: hidden;
+	margin: 0;
+	position: relative;
+}
+body{
+	color: white;
+}
+.transformOrigin{
+	transform-origin: 0 0;
+	-webkit-transform-origin: 0 0;
+	-moz-transform-origin: 0 0;
+	-ms-transform-origin: 0 0;
+}
+
+.test{
+	position: absolute;
+	left: 0;
+	top: 0;
+	/*font-size: 32px;*/
+	padding-left: 60px;
+	padding-top: 45px;
+}
+.inlineFloat {
+	overflow: hidden;
+}
+
+.inlineFloat>div {
+	float: left;
+	width: 50%;
+}
+
+
+/*时间一列*/
+
+.timeBox {
+	height: 550px;
+	position: relative;
+	text-align: center;
+}
+
+.AirBox {
+	height: 550px;
+	position: relative;
+}
+
+.timeBox>span {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	position: relative;
+}
+
+.time {
+	width: 640px;
+	height:210px;
+	overflow: hidden;
+	margin-left: 10px;
+}
+
+.marginTop {
+	margin-top: 100px;
+}
+
+.timeBox>.whiteLine {
+	width: 12%;
+	height: 1px;
+	border: 1px solid white;
+	margin-top: 28px;
+}
+
+.date {
+	/*margin-top: 20px;*/
+	font-size: 70px;
+	line-height: 90px;
+}
+
+.week {
+	font-size: 38px;
+}
+.lunar{
+	font-size: 32px;
+	position: relative;
+	letter-spacing: 4px;
+	margin-top: 10px;
+}
+
+.specialDate{
+	line-height: 70px;
+}
+
+.kqzl {
+	text-align: left;
+    padding-right: 145px;
+    font-size: 24px;
+}
+
+/*温度*/
+
+.leftPart {
+	position: relative;
+	margin-bottom: 32px;
+}
+
+.textLeft {
+	margin-top: -10px;
+	text-align: left;
+	padding-left: 32px;
+	margin-bottom: 32px;
+}
+
+
+/*英文字体设置*/
+
+.enSm {
+	font-size: 28px;
+	font-family: "calibri";
+	font-weight: 500;
+	color: white;
+}
+
+.textSm {
+	font-size: 45px;
+	font-family: "黑体";
+	letter-spacing: 4px;
+}
+
+.enXs {
+	font-size: 22px;
+	font-family: "calibri";
+	font-weight: 500;
+	color: black;
+}
+
+.textXs {
+	font-size: 38px;
+	font-family: "黑体";
+	letter-spacing: 4px;
+	color: black;
+}
+
+.textSsm{
+	font-size: 36px;
+	font-family: "黑体";
+	letter-spacing: 2px;
+	color: black;
+}
+
+.enSsm {
+	font-size: 32px;
+	font-family: "calibri";
+	font-weight: 500;
+	color: black;
+	margin-left: -10px;
+}
+
+
+/*彩色圆柱中的数字*/
+
+.textNum {
+	font-size: 50px;
+	font-family: "calibri";
+	line-height: 64px;
+	padding-left: 18px;
+	position: absolute;
+
+}
+
+
+/*彩色圆柱*/
+
+.column{
+	width: 500px;
+	height: 64px;
+	margin-left: 32px;
+	position: relative;
+	border-radius: 32px;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.percent {
+	position: absolute;
+	height: 100%;
+	border-radius: 32px;
+}
+
+.percentText{
+	position: absolute;
+	overflow: hidden;
+	text-align: left;
+	height: 90.28px;
+}
+
+.percentOpacity{
+	position: absolute;
+	width: 100%;
+	background: black;
+	opacity: 0;
+}
+
+.percentTem1 {
+ 	width: 26%;
+	background: linear-gradient(left, #69a3e3, #6bb1da, #6cc0d0);
+	background: -webkit-linear-gradient(left, #69a3e3, #6bb1da, #6cc0d0);
+	background: -moz-linear-gradient(left, #69a3e3, #6bb1da, #6cc0d0);
+	background: -ms-linear-gradient(left, #69a3e3, #6bb1da, #6cc0d0);
+	opacity: 0;
+}
+
+.percentTem2 {
+	width: 26%;
+	background: linear-gradient(left, #69a3e3, #6cc0d0,#6fd98f);
+	background: -webkit-linear-gradient(left, #69a3e3, #6cc0d0,#6fd98f);
+	background: -moz-linear-gradient(left, #69a3e3, #6cc0d0,#6fd98f);
+	background: -ms-linear-gradient(left, #69a3e3, #6cc0d0,#6fd98f);
+	opacity: 0;
+}
+
+.percentTem3 {
+	width: 34%;
+	background: linear-gradient(left, #6cbfd1 ,#83d8b1);
+	background: -webkit-linear-gradient(left, #6cbfd1 ,#83d8b1);
+	background: -moz-linear-gradient(left, #6cbfd1 ,#83d8b1);
+	background: -ms-linear-gradient(left, #6cbfd1 ,#83d8b1);
+	opacity: 0;
+}
+
+.percentTem4 {
+	width: 34%;
+	background: linear-gradient(left, #70e0bb ,#92d1a9,#c0be91);
+	background: -webkit-linear-gradient(left, #70e0bb ,#92d1a9,#c0be91);
+	background: -moz-linear-gradient(left,  #70e0bb ,#92d1a9,#c0be91);
+	background: -ms-linear-gradient(left, #70e0bb ,#92d1a9,#c0be91);
+	opacity: 0;
+}
+.percentTem5 {
+	background: linear-gradient(left, #70e0bb ,#92d1a9,#c0be91,#d2b788);
+	background: -webkit-linear-gradient(left, #70e0bb ,#92d1a9,#c0be91,#d2b788);
+	background: -moz-linear-gradient(left,  #70e0bb ,#92d1a9,#c0be91,#d2b788);
+	background: -ms-linear-gradient(left, #70e0bb ,#92d1a9,#c0be91,#d2b788);
+	opacity: 0;
+}
+
+.percentTem6 {
+	background: linear-gradient(left,#92d1a9,#c0be91,#d2b788,#deb281);
+	background: -webkit-linear-gradient(left,#92d1a9,#c0be91,#d2b788,#deb281);
+	background: -moz-linear-gradient(left,#92d1a9,#c0be91,#d2b788,#deb281);
+	background: -ms-linear-gradient(left,#92d1a9,#c0be91,#d2b788,#deb281);
+	opacity: 0;
+}
+
+.percentTem7 {
+	background: linear-gradient(left,#ceb88a,#fba672,#ff7d69);
+	background: -webkit-linear-gradient(left,#ceb88a,#fba672,#ff7d69);
+	background: -moz-linear-gradient(left,#ceb88a,#fba672,#ff7d69);
+	background: -ms-linear-gradient(left,#ceb88a,#fba672,#ff7d69);
+	opacity: 0;
+}
+.percentTem8 {
+	background: linear-gradient(left, #ff9d6f, #ff7b69,#ff4f61);
+	background: -webkit-linear-gradient(left, #ff9d6f, #ff7b69,#ff4f61);
+	background: -moz-linear-gradient(left, #ff9d6f, #ff7b69,#ff4f61);
+	background: -ms-linear-gradient(left, #ff9d6f, #ff7b69,#ff4f61);
+	opacity: 0;
+}
+
+.percentTem9 {
+	background: linear-gradient(left, #ff7467,#ff4f61);
+	background: -webkit-linear-gradient(left, #ff7467,#ff4f61);
+	background: -moz-linear-gradient(left, #ff7467,#ff4f61);
+	background: -ms-linear-gradient(left, #ff7467,#ff4f61);
+	opacity: 0;
+}
+
+
+.percentHum1 {
+	width: 26%;
+	background: linear-gradient(left, #ffbd42, #d7c54f);
+	background: -webkit-linear-gradient(left,#ffbd42, #d7c54f);
+	background: -moz-linear-gradient(left, #ffbd42, #d7c54f);
+	background: -ms-linear-gradient(left, #ffbd42, #d7c54f);
+}
+.percentHum2 {
+	width: 26%;
+	background: linear-gradient(left, #ffbd42, #eec34c,#ccc753);
+	background: -webkit-linear-gradient(left,#ffbd42, #eec34c,#ccc753);
+	background: -moz-linear-gradient(left, #ffbd42, #eec34c,#ccc753);
+	background: -ms-linear-gradient(left, #ffbd42, #eec34c,#ccc753);
+}
+.percentHum3 {
+	width: 34%;
+	background: linear-gradient(left, #ddc440, #c4c855,#abcd5e);
+	background: -webkit-linear-gradient(left,#ddc440, #c4c855,#abcd5e);
+	background: -moz-linear-gradient(left, #ddc440, #c4c855,#abcd5e);
+	background: -ms-linear-gradient(left, #ddc440, #c4c855,#abcd5e);
+}
+.percentHum4 {
+	background: linear-gradient(left, #c5c855, #a9ce5e,#8bd36a);
+	background: -webkit-linear-gradient(left, #c5c855, #a9ce5e,#8bd36a);
+	background: -moz-linear-gradient(left,  #c5c855, #a9ce5e,#8bd36a);
+	background: -ms-linear-gradient(left,  #c5c855, #a9ce5e,#8bd36a);
+}
+.percentHum5 {
+	background: linear-gradient(left, #adcd5d, #8fd367,#6cd189);
+	background: -webkit-linear-gradient(left, #adcd5d, #8fd367,#6cd189);
+	background: -moz-linear-gradient(left,  #adcd5d, #8fd367,#6cd189);
+	background: -ms-linear-gradient(left,  #adcd5d, #8fd367,#6cd189);
+}
+
+.percentHum6 {
+	background: linear-gradient(left, #a5cf5f, #82d274,#5cd099);
+	background: -webkit-linear-gradient(left,#a5cf5f, #82d274,#5cd099);
+	background: -moz-linear-gradient(left, #a5cf5f, #82d274,#5cd099);
+	background: -ms-linear-gradient(left,  #a5cf5f, #82d274,#5cd099);
+}
+
+.percentHum7 {
+	background: linear-gradient(left, #8ed368, #65d08f,#3cceb8);
+	background: -webkit-linear-gradient(left,#8ed368, #65d08f,#3cceb8);
+	background: -moz-linear-gradient(left, #8ed368, #65d08f,#3cceb8);
+	background: -ms-linear-gradient(left,  #8ed368, #65d08f,#3cceb8);
+}
+
+.percentHum8 {
+	background: linear-gradient(left, #74d181, #48c1ac,#22ccd1);
+	background: -webkit-linear-gradient(left,#74d181, #48c1ac,#22ccd1);
+	background: -moz-linear-gradient(left, #74d181, #48c1ac,#22ccd1);
+	background: -ms-linear-gradient(left, #74d181, #48c1ac,#22ccd1);
+}
+
+.percentHum9 {
+	background: linear-gradient(left, #65d090, #36cdbe,#22ccd1);
+	background: -webkit-linear-gradient(left,#65d090, #36cdbe,#22ccd1);
+	background: -moz-linear-gradient(left, #65d090, #36cdbe,#22ccd1);
+	background: -ms-linear-gradient(left, #65d090, #36cdbe,#22ccd1);
+}
+
+.percentHum10 {
+	background: linear-gradient(left, #4ecfa7, #2ccdd1,#22ccd1);
+	background: -webkit-linear-gradient(left,#4ecfa7, #2ccdd1,#22ccd1);
+	background: -moz-linear-gradient(left,#4ecfa7, #2ccdd1,#22ccd1);
+	background: -ms-linear-gradient(left, #4ecfa7, #2ccdd1,#22ccd1);
+}
+
+
+/*环境噪音*/
+
+.headText {
+	margin-top: 95px;
+	opacity: 1;
+	/*透明度不被继承*/
+	position: relative;
+	padding-left: 0;
+	margin-left: 100px;
+}
+.environmenBox{
+	margin-top: 20px;
+	margin-left: 98px;
+	width: 560px;
+	height: 348px;
+	position: relative;
+}
+#envirLine{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+.envirDescr{
+	position: absolute;
+	bottom: 0;
+	left: 15px;
+	font-size: 70px;
+	color: white;
+	font-family: "calibri";
+	z-index: 100;
+}
+.envirNum{
+	float: left;
+	height: 86px;
+	overflow: hidden;
+}
+
+.envirUnit{
+	font-size: 48px;
+	height: 86px;
+	line-height: 86px;
+	float: left;
+}
+
+
+/*空气质量*/
+
+.percentAir1 {
+	width: 18%;
+	background: linear-gradient(left, #54c799, #54c7b8);
+	background: -webkit-linear-gradient(left,#54c799, #54c7b8);
+	background: -moz-linear-gradient(left,#54c799, #54c7b8);
+	background: -ms-linear-gradient(left, #54c799, #54c7b8);
+}
+.percentAir2 {
+	background: linear-gradient(left, #fbb13b, #fbca3b);
+	background: -webkit-linear-gradient(left,#fbb13b, #fbca3b);
+	background: -moz-linear-gradient(left,#fbb13b, #fbca3b);
+	background: -ms-linear-gradient(left,#fbb13b, #fbca3b);
+}
+.percentAir3 {
+	background: linear-gradient(left, #f16325, #f18535);
+	background: -webkit-linear-gradient(left,#f16325, #f18535);
+	background: -moz-linear-gradient(left,#f16325, #f18535);
+	background: -ms-linear-gradient(left,#f16325, #f18535);
+}
+
+.percentAir4 {
+	background: linear-gradient(left, #f15622, #f12405);
+	background: -webkit-linear-gradient(left,#f15622, #f12405);
+	background: -moz-linear-gradient(left,#f15622, #f12405);
+	background: -ms-linear-gradient(left,#f15622, #f12405);
+}
+
+.textAir {
+	position: absolute;
+	right: 20px;
+	font-size: 32px;
+}
+
+.marginAir {
+	margin: 95px 0 0 40px;
+}
+
+.marginAirCol {
+	height: 30px;
+	margin: 20px 0 0 40px;
+}
+
+.marginAirCol>.column {
+	margin-left: 0;
+}
+
+
+/*圆环*/
+
+.marginAirRing {
+	margin: 40px 0 0 40px;
+	position: relative;
+}
+.co2Bg{
+	position: absolute;
+	width: 218px;
+	left: 0px;
+	top: 1px;
+}
+.oxyBg{
+	position: absolute;
+	width: 218px;
+	top: 0;
+	left: 274px;
+}
+#canvasOxy {
+	margin-left: 50px;
+	position: relative;
+	z-index: 10;
+}
+
+#canvasCo2 {
+	position: relative;
+	z-index: 10;
+}
+.airNumBox{
+	width: 120px;
+	position: absolute;
+	text-align: center;
+	top: 80px;
+}
+#airNumBox1{
+	left: 50px;
+}
+#airNumBox2{
+	left: 324px;
+	
+}
+.airNumBox>div{
+	height: 60px;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.airNumBox>div ul li{
+	list-style: none;
+	font-family: "Calibri";
+	font-size: 70px;
+	line-height: 70px;
+	font-weight: bold;
+}
+.unit{
+	position: absolute;
+	color: black;
+	top: 140px;
+	font-size: 26px;
+	font-size: 500;
+}
+.unitCo2{
+	left: 90px;
+}
+.unitOxy{
+	left:350px ;
+}
+.unitGe{
+	font-size: 18px;
+}
+
+.canvasText {
+	width: 220px;
+	display: inline-block;
+	margin-right: 50px;
+	margin-top: 26px;
+}
+
+.canvasText>span {
+	width: 220px;
+	display: block;
+	text-align: center;
+}
+
+
+/*第三行*/
+
+
+
+/*人流量统计*/
+
+.renqunPic {
+	width: 110px;
+	margin-left: 150px;
+	margin-bottom: 20px;
+}
+
+.people {
+	/*width: 290px;*/
+	height: 100px;
+	margin-left: 32px;
+	padding-left: 20px;
+	padding-bottom: 0;
+	margin-bottom: 0;
+	overflow: hidden;
+}
+.peopleZero{
+	float: left;
+	color: #662d91;
+	font-size: 110px;
+	line-height: 100px;
+	letter-spacing: 6px;
+}
+.peopleNum{
+	float: left;
+}
+.peopleText {
+	margin-left: 100px;
+	font-size: 32px;
+	color: black;
+	font-family: "黑体";
+	padding-left: 26px;
+}
+
+
+/*地图*/
+
+.inline {
+	width: 100%;
+	position: relative;
+}
+
+.zhongshanParkMap {
+	width: 834px;
+	height: 361px;
+	position: absolute;
+	top: 100px;
+	left: 425px;
+}
+
+.zhongshanParkMap>img {
+	position: absolute;
+	width: 100%;
+}
+
+.map {
+	margin-left: 0;
+	left: 0;
+	top: 0;
+}
+
+.door1 {
+	top: 60px;
+	right: 35px;
+}
+
+.door2 {
+	top: -35px;
+	left: 300px;
+}
+
+.door3 {
+	left: 0px;
+	top: 130px;
+}
+
+/*各个门的人数显示*/
+.peopleNumShow{
+	width: 100%;
+	margin-top: 70px;
+}
+.peopleNumShow>div{
+	float: left;
+	width: 33.3%;
+	text-align: center;
+	
+}
+.imgBox>p{
+	text-align: center;
+	margin-bottom: 20px;
+}
+.imgBox1>p,
+.imgBox1>div{
+	margin-left: 20px;
+}
+.imgDoorBox{
+	position: relative;
+}
+.imgDoor{
+	width: 180px;
+	margin-bottom: 15px;
+}
+
+.imgDoor3{
+	margin-left: -20px;
+}
+.doorNum{
+	/*width: 100%;*/
+	text-align: center;
+	position: absolute;
+	left: 50%;
+	top: 250px;
+	transform: translateX(-50%);
+	top: 60px;
+	font-size: 50px;
+	font-family: "calibi";
+	overflow: hidden;
+	height: 70px;
+	
+}
+
+.door1Num{
+	color: #f15a24;
+}
+
+.door2Num{
+	color: #54c79c;
+}
+
+.door3Num{
+	color: #fbc13a;
+	margin-left:-10px ;
+}
+.personImg>img{
+	width: 20px;
+	margin: 0 1px;
+}
+.personImg3{
+	margin-left: -10px;
+}

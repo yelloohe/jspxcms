@@ -1,0 +1,121 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>用户注册_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="用户注册"/>
+<meta name="description" content="用户注册"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+label.error{color:red;font-style:normal;background:url(_files/img/error.png) 5px center no-repeat;background-color:#fef2f2;border:1px solid #ffb8b8;padding:0 10px 0 25px;margin-left:10px;float:left;height:30px;}
+label.valid{background-image:url(_files/img/valid.png);background-color:inherit;border:none;margin-left:5px;}
+input.error{border-color:red !important;}
+form .line{ margin-top:30px;overflow:hidden;}
+form .label{float:left;width:100px;color:#666;font-weight:bold;text-align:right;font-size:14px;}
+form .input{float:left;width:auto;margin-left:20px;}
+form .prompt{float:left;width:280px;margin-left:10px;color:#999;display:none;}
+
+input.text{padding:4px;height:22px;line-height:22px;border:1px solid #ccc;}
+input.text:focus{border-color:#7abd54;}
+
+/*input.button{height:30px;font-size:14px;font-family:"Microsoft YaHei";font-weight:bold;padding:0 1em;}*/
+input.button{width:210px;height:30px;border-radius:3px;border:none;color:#fff;background-color:#e4393c;font-size:16px;font-family:"Microsoft YaHei";font-weight:bold;}
+</style>
+<script>
+$(function() {
+	$("#validForm").validate({
+		//success: function(label) {label.addClass("valid");},
+		success: "valid",
+		focusInvalid: false,
+		focusCleanup: true,
+		onkeyup: false
+	});
+	$("#validForm input").each(function() {
+		$(this).focusin(function() {
+			$("#"+$(this).attr("id")+"-prompt").show();
+		});
+		$(this).focusout(function() {
+			$("#"+$(this).attr("id")+"-prompt").hide();
+		});
+		$("#username").focus().select();
+	});
+});
+</script>
+</head>
+<body>
+<div id="agreementDialog" class="dialog hide" style="width:700px;position:absolute;margin:0 auto;top:100px;left:0;right:0;border:5px solid #c2c2c2;border-radius:5px;background-color:#fff;">
+	<div class="head b fs14" style="height:30px;line-height:30px;padding-left:10px;border-bottom:1px solid #c4c4c4;background-color:#f3f3f3;">网站用户协议</div>
+	<div class="body" style="margin:8px 0;padding:5px 10px;height:300px;overflow:auto;">
+		[#noescape]${bbcode(global.register.userAgreement!)}[/#noescape]
+	</div>
+	<div class="footer text-center" style="padding:12px;border-top:1px solid #ccc;background-color:#f2f2f2;"><input type="button" onclick="$('#agreementDialog').hide();" value="同意并继续" style="padding:0 50px;height:32px;border-radius:3px;border:none;color:#fff;background-color:#e4393c;font-size:16px;font-family:'Microsoft YaHei';font-weight:bold;"/></div>
+</div>
+<div class="w center mt10 oh">
+	<a class="left" style="margin-left:50px;width:228px;height:90px;background:url(_files/img/logo.png) no-repeat;" href="${ctx}/"></a>
+	<div class="left ff-yh fs28 ml20 c-333" style="margin:30px 0 0 25px;padding-left:25px;border-left:1px solid #ddd;">用户注册</div>
+</div>
+<div class="center oh" style="width:1200px;background:url(_files/img/member_line_bg.png) 0 -1px no-repeat;">
+	<div class="left" style="width:620px;padding:30px 20px 40px 130px;line-height:30px;border-right:1px solid #ddd;">
+		<form id="validForm" action="${ctx}/register" method="post">
+			<input type="hidden" name="redirectUrl" value="${ctx}/register_message?username={username}&email={email}&verifyMode={verifyMode}"/>
+			<div class="line">
+				<label for="username" class="label"><em class="required">*</em>用户名:</label>
+				<div class="input"><input type="text" id="username" name="username" class="text left required" maxlength="${global.register.maxLength}" data-rule-minlength="${global.register.minLength}" data-rule-pattern="${global.register.validCharacter}" data-rule-remote='{"url":"${ctx}/check_username","type":"post"}' data-msg-remote="用户名已经存在" data-msg-pattern="用户名不能使用非法字符" style="width:200px;"/></div>
+				<label id="username-prompt" for="username" class="prompt">${global.register.minLength}~${global.register.maxLength}个字符，支持汉字、字母、数字、下划线</label>
+			</div>
+			<div class="line">
+				<label for="password" class="label"><em class="required">*</em>密码:</label>
+				<div class="input"><input type="password" id="password" name="password" class="text left required" style="width:200px;"/></div>
+				<label id="password-prompt" for="password" class="prompt">请填写密码</label>
+			</div>
+			<div class="line">
+				<label for="password" class="label"><em class="required">*</em>确认密码:</label>
+				<div class="input"><input type="password" id="passwordAgain" class="text left required" equalTo="#password" style="width:200px;"/></div>
+				<label id="passwordAgain-prompt" for="passwordAgain" class="prompt">请再次填写密码</label>
+			</div>
+			<div class="line">
+				<label for="username" class="label"><em class="required">*</em>电子邮箱:</label>
+				<div class="input"><input type="text" id="email" name="email" class="text left required email" style="width:200px;" data-msg-email="电子邮箱格式不正确"/>	</div>
+				<label id="email-prompt" for="email" class="prompt">请填写电子邮箱</label>
+			</div>
+			<div class="line">
+				<label for="captcha" class="label"><em class="required">*</em>验证码:</label>
+				<div class="input">
+					<input type="text" id="captcha" name="captcha" class="text" style="width:94px;" data-rule-required="true" data-rule-remote='{"url":"${ctx}/captcha","type":"post"}' data-msg-remote="验证码错误" autocomplete="off"/>
+					<img src="${ctx}/captcha" onclick="this.src='${ctx}/captcha?d='+new Date()*1;$('#captcha').focus();" style="cursor:pointer;border:1px solid #ccc;margin:0;vertical-align:top;" title="点击重新获取验证码"/>
+				</div>
+				<label for="captcha" generated="true" class="hide error"></label>
+				<label id="captcha-prompt" for="captcha" class="prompt">请填写图片中的字符，不区分大小写</label>				
+			</div>
+			<div class="line">
+				<label class="label">&nbsp;</label>
+				<div class="input"><label><input type="checkbox" id="agreement" name="agreement" checked class="required" title="请接受服务条款"/> 我已阅读并同意<a href="javascript:;" onclick="$('#agreementDialog').show();" class="a-hover" style="color:#0a8cd2;">《网站用户协议》</a></label></div>
+				<label for="agreement" generated="true" class="hide error"></label>
+			</div>
+			<div class="line">
+				<label class="label">&nbsp;</label>
+				<div class="input"><input type="submit" value="立即注册" class="button" style="margin-right:20px;"/></div>
+			</div>
+		</form>
+	</div>
+	<div class="left fs14" style="width:310px;padding:60px 50px 0 50px;">
+		<div>已有账号，<a href="${ctx}/login" class="fs14 a-hover" style="color:#0a8cd2;">现在登录</a></div>
+		[#include 'inc_oauth.html'/]
+	</div>
+</div>
+<div class="w center text-center" style="margin-top:100px;">
+	<div class="powered">    
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+	</div>
+</div>
+</body>
+</html>
+[/#escape]

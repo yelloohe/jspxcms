@@ -1,0 +1,25 @@
+[#escape x as (x)!?html]
+<!--[if lt IE 8]><p class="browserupgrade">您正在使用<strong>过时</strong>的浏览器，请更新您的浏览器。</p><![endif]-->
+<nav class="navbar navbar-default" style="margin-bottom:0;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="${site.url}">Jspxcms演示手机站</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+      	[@NodeList parent='news';list]
+        [#list list as n]
+        <li class="[#if n.id==node.id]active[/#if]"><a href="${n.url}">${n.name}</a></li>
+        [/#list]
+        [/@NodeList]
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+[/#escape]

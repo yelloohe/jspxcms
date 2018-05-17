@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+       default-lazy-init="true">
+
+    <bean id="Anchor" class="com.jspxcms.common.freemarker.AnchorDirective"/>
+    <bean id="Image" class="com.jspxcms.common.freemarker.ImageAnchorDirective"/>
+    <!-- <bean id="AddParam" class="com.jspxcms.common.freemarker.AddParamDirective" /> -->
+
+    <bean id="processed" class="com.jspxcms.common.freemarker.ProcessedMethod"/>
+    <bean id="substring" class="com.jspxcms.common.freemarker.SubstringMethod"/>
+    <bean id="bbcode" class="com.jspxcms.common.freemarker.BBCodeMethod"/>
+    <bean id="paging" class="com.jspxcms.common.freemarker.PagingMethod"/>
+    <bean id="addParam" class="com.jspxcms.common.freemarker.AddParamMethod"/>
+    <bean id="prettyTime" class="com.jspxcms.common.freemarker.PrettyTimeMethod"/>
+    <!-- <bean id="anchor" class="com.jspxcms.common.freemarker.AnchorMethod" /> -->
+
+    <bean id="SQLQuery" class="com.jspxcms.core.web.directive.SQLQueryDirective"/>
+    <!-- <bean id="SQLUpdate" class="com.jspxcms.core.web.directive.SQLUpdateDirective" /> -->
+
+    <bean id="CmsSite" class="com.jspxcms.core.web.directive.SiteDirective"/>
+    <bean id="CmsSiteList" class="com.jspxcms.core.web.directive.SiteListDirective"/>
+    <bean id="CmsNode" class="com.jspxcms.core.web.directive.NodeDirective"/>
+    <bean id="CmsNodeList" class="com.jspxcms.core.web.directive.NodeListDirective"/>
+    <bean id="CmsNodePage" class="com.jspxcms.core.web.directive.NodePageDirective"/>
+    <bean id="CmsInfo" class="com.jspxcms.core.web.directive.InfoDirective"/>
+    <bean id="CmsInfoNext" class="com.jspxcms.core.web.directive.InfoNextDirective"/>
+    <bean id="CmsInfoPrev" class="com.jspxcms.core.web.directive.InfoPrevDirective"/>
+    <bean id="CmsInfoList" class="com.jspxcms.core.web.directive.InfoListDirective"/>
+    <bean id="CmsInfoPage" class="com.jspxcms.core.web.directive.InfoPageDirective"/>
+    <bean id="CmsInfoFulltextList" class="com.jspxcms.core.web.directive.InfoFulltextListDirective"/>
+    <bean id="CmsInfoFulltextPage" class="com.jspxcms.core.web.directive.InfoFulltextPageDirective"/>
+    <bean id="CmsCommentList" class="com.jspxcms.core.web.directive.CommentListDirective"/>
+    <bean id="CmsCommentPage" class="com.jspxcms.core.web.directive.CommentPageDirective"/>
+    <bean id="CmsTagList" class="com.jspxcms.core.web.directive.TagListDirective"/>
+    <bean id="CmsTagPage" class="com.jspxcms.core.web.directive.TagPageDirective"/>
+    <bean id="CmsSpecialCategoryList" class="com.jspxcms.core.web.directive.SpecialCategoryListDirective"/>
+    <bean id="CmsSpecialList" class="com.jspxcms.core.web.directive.SpecialListDirective"/>
+    <bean id="CmsSpecialPage" class="com.jspxcms.core.web.directive.SpecialPageDirective"/>
+    <bean id="CmsScoreGroup" class="com.jspxcms.core.web.directive.ScoreGroupDirective"/>
+    <bean id="CmsMessageList" class="com.jspxcms.core.web.directive.MessageListDirective"/>
+    <bean id="CmsMessagePage" class="com.jspxcms.core.web.directive.MessagePageDirective"/>
+    <bean id="CmsMessageContactList" class="com.jspxcms.core.web.directive.MessageContactListDirective"/>
+    <bean id="CmsMessageContactPage" class="com.jspxcms.core.web.directive.MessageContactPageDirective"/>
+    <bean id="CmsInboxList" class="com.jspxcms.core.web.directive.InboxListDirective"/>
+    <bean id="CmsInboxPage" class="com.jspxcms.core.web.directive.InboxPageDirective"/>
+    <bean id="CmsNotificationList" class="com.jspxcms.core.web.directive.NotificationListDirective"/>
+    <bean id="CmsNotificationPage" class="com.jspxcms.core.web.directive.NotificationPageDirective"/>
+
+    <bean id="cmsGetNode" class="com.jspxcms.core.web.method.GetNodeMethod"/>
+    <bean id="cmsGetInfo" class="com.jspxcms.core.web.method.GetInfoMethod"/>
+    <bean id="cmsCountNotification" class="com.jspxcms.core.web.method.CountNotificationMethod"/>
+
+    <bean id="CmsGuestbookTypeList" class="com.jspxcms.ext.web.directive.GuestbookTypeListDirective"/>
+    <bean id="CmsGuestbookList" class="com.jspxcms.ext.web.directive.GuestbookListDirective"/>
+    <bean id="CmsGuestbookPage" class="com.jspxcms.ext.web.directive.GuestbookPageDirective"/>
+
+    <bean id="CmsFriendlinkTypeList" class="com.jspxcms.ext.web.directive.FriendlinkTypeListDirective"/>
+    <bean id="CmsFriendlinkList" class="com.jspxcms.ext.web.directive.FriendlinkListDirective"/>
+
+    <bean id="CmsAdList" class="com.jspxcms.ext.web.directive.AdListDirective"/>
+
+    <bean id="CmsVoteList" class="com.jspxcms.ext.web.directive.VoteListDirective"/>
+    <bean id="CmsVotePage" class="com.jspxcms.ext.web.directive.VotePageDirective"/>
+    <bean id="CmsVote" class="com.jspxcms.ext.web.directive.VoteDirective"/>
+
+    <bean id="CmsQuestionList" class="com.jspxcms.ext.web.directive.QuestionListDirective"/>
+    <bean id="CmsQuestionPage" class="com.jspxcms.ext.web.directive.QuestionPageDirective"/>
+    <bean id="CmsQuestion" class="com.jspxcms.ext.web.directive.QuestionDirective"/>
+
+    <bean id="CmsFavoriteList" class="com.jspxcms.ext.web.directive.FavoriteListDirective"/>
+    <bean id="CmsFavoritePage" class="com.jspxcms.ext.web.directive.FavoritePageDirective"/>
+
+
+</beans>

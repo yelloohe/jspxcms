@@ -1,0 +1,106 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>申请职位_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="申请职位"/>
+<meta name="description" content="申请职位"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<script type="text/javascript" src="${fore}/jquery.validation_zh_CN.js"></script>
+<script type="text/javascript" src="${ctx}/static/vendor/My97DatePicker/cn_WdatePicker.js"></script>
+<style>
+.form-item{margin-top:20px;}
+.form-label{float:left;padding-left:20px;width:150px;font-size:14px;font-weight:bold;}
+.form-input{float:left;}
+label.error {color:red;font-style:italic;}
+em.required {color:red;font-style:normal;}
+</style>
+<script type="text/javascript">
+$(function() {
+	$("#validForm").validate();
+});
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div style="padding:10px 5px;border-bottom:2px solid #7aaf23;"><a href="${site.url}" class="a c-desc">首页</a> > 申请职位</div>
+	<form id="validForm" method="post" action="${ctx}/resume">
+		<div class="mt20" style="padding:0px 20px 20px 20px;border:1px dotted #cdcdcd; background-color:#f2f2f2;">
+			<div class="form-item">
+				<div class="form-label"><em class="required">*</em>职位</div>
+				<div class="form-input">							
+					 <select name="post">
+					 [@InfoList node='jobs';list]
+					 [#list list as info]
+					 <option[#if Param.post! ==info.title] selected[/#if]>${info.title}</option>
+					 [/#list]
+					 [/@InfoList]
+					 </select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label"><em class="required">*</em>姓名</div>
+				<div class="form-input"><input type="text" name="name" class="required" maxlength="100" style="width:220px;"/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label"><em class="required">*</em>性别</div>
+				<div class="form-input">
+					<label><input type="radio" name="gender" value="M" checked="checked"/>男</label> &nbsp;
+					<label><input type="radio" name="gender" value="F"/>女</label>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">出生年月</div>
+				<div class="form-input"><input type="text" name="birthDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" style="width:220px;"/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">手机</div>
+				<div class="form-input"><input type="text" name="mobile" maxlength="100" style="width:220px;"/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">邮箱</div>
+				<div class="form-input"><input type="text" name="email" class="email" maxlength="100" style="width:220px;"/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">期望薪水</div>
+				<div class="form-input"><input type="text" name="expectedSalary" class="digits" maxlength="9" style="width:220px;"/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">教育经历</div>
+				<div class="form-input"><textarea name="educationExperience" style="width:500px;height:100px;"></textarea></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">工作经历</div>
+				<div class="form-input"><textarea name="workExperience" style="width:500px;height:100px;"></textarea></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form-item">
+				<div class="form-label">备注</div>
+				<div class="form-input"><textarea name="remark" style="width:500px;height:100px;"></textarea></div>
+				<div class="clear"></div>
+			</div>
+			<table class="center mt20"><tr><td>
+				<input type="hidden" name="nextUrl" value="${url}"/>
+				<input type="hidden" name="status_0" value="投递简历成功"/>
+				<button type="submit" class="ff-yh fs16 b" style="background-color:#cc3333;color:#fff;border:none;padding:5px 20px;">确认提交</button>
+			</td></tr></table>
+		</div>
+	</form>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

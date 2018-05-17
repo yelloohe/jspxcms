@@ -1,0 +1,17 @@
+			[#if !page??][#if Param.page??][#assign page=Param.page?number][#else][#assign page=1/][/#if][/#if]
+			[@InfoPage userId=targetUser.id pageSize='10' page=page;pagedList]
+			<div class="mt10">
+				[#--<div class="b" style="height:28px;line-height:28px;padding-left:10px;background-color:#f4f4f4;"><a href="#" class="a-hover" style="color:#252525;">最新文章</a></div>--]
+				[#list pagedList.content as info]
+				<div class="oh" style="padding:10px 10px;border-bottom:1px dotted #ccc;">
+					<div class="left" style="[#if info.withImage]width:75%;[/#if]">
+						<div>[@A bean=info class='ff-yh fs14 a c-000'/]</div>
+						<div class="" style="padding:2px;color:#a1a1a1;">${info.publishDate?string('yyyy-MM-dd HH:mm')}</div>
+					</div>
+				</div>
+				[/#list]
+			</div>
+			<div class="mt10" style="padding:5px 0;">
+				[#include 'page.html'/]
+			</div>
+			[/@InfoPage]

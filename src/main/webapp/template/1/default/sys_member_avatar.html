@@ -1,0 +1,201 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>头像修改_${user.username}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="头像修改"/>
+<meta name="description" content="头像修改"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<link href="${ctx}/static/vendor/swfupload/process.css" rel="stylesheet"/>
+<link href="${ctx}/static/vendor/imgareaselect/css/imgareaselect-animated.css" rel="stylesheet"/>
+<script src="${ctx}/static/vendor/swfupload/swfupload.js"></script>
+<script src="${ctx}/static/vendor/swfupload/swfupload.queue.js"></script>
+<script src="${ctx}/static/vendor/swfupload/fileprogress.js"></script>
+<script src="${ctx}/static/vendor/swfupload/handlers.js"></script>
+<script src="${ctx}/static/vendor/imgareaselect/scripts/jquery.imgareaselect.js"></script>
+<style>
+.user-top{background-color:#008ee1;color:#fff;}
+.user-top a{color:#fff;text-decoration:none;}
+.user-top a:hover{color:#fff;}
+.ct-bg{background-color:#fff;border:1px solid #dcdcdc;}
+.user-box{border:1px solid #ccc;background-color:#fff;}
+.user-box-head{padding:0 12px;border-bottom:1px solid #eee;line-height:32px;height:32px;font-size:14px;font-weight:bold;font-family:"Microsoft YaHei";}
+.user-box-body{padding:5px 12px;}
+.user-box-body-item{padding:3px 0;}
+.user-box-body-item a{color:#4466bb;font-size:14px;font-family:"Microsoft YaHei";text-decoration:none;display:block;}
+ 
+.user-box-body-item a:hover{}
+.user-box-body-item label{color:#666;}
+.user-nav{list-style:none;padding-left:0;overflow:hidden; border-bottom:1px solid #008ee1;font-family:"Microsoft YaHei";font-size:14px;}
+.user-nav-item{float:left;margin-left:12px;padding:0 12px;line-height:28px;background-color:#e6e6e6;}
+.user-nav-item a{color:#666;text-decoration:none;}
+.user-nav-item a:hover{color:#000;}
+.user-nav-item-curr{background-color:#008ee1;}
+.user-nav-item-curr a{color:#fff;}
+.user-nav-item-curr a:hover{color:#fff;}
+
+.ft-label{text-align:right;width:150px;color:#666;}
+.ft-content{padding:3px 0 3px 8px;}
+.ft-content input[type=text],.ft-content input[type=password]{height:18px;line-height:18px;}
+</style>
+<script>
+$(function(){
+	$("#validForm").validate();
+	var settings = {
+		upload_url: "${ctx}/my/avatar_upload;jsessionid=${jsessionid}",
+		file_size_limit: "1024 KB",
+		file_types: "*.jpg;*.jpeg;*.png;*.gif",
+		file_types_description : "Images",
+		file_post_name: "file",
+		
+		flash_url: "${ctx}/static/vendor/swfupload/swfupload.swf",
+		flash9_url: "${ctx}/static/vendor/swfupload/swfupload_fp9.swf",
+		file_upload_limit : 0,
+		file_queue_limit : 0,
+		custom_settings : {
+			progressTarget : "avatarSwfProgress",
+			cancelButtonId : "avatarSwfCancel"
+		},
+		
+		debug: false,
+		
+		button_cursor: SWFUpload.CURSOR.HAND,
+		button_width: "67",
+		button_height: "25",
+		button_placeholder_id: "avatarSwfButton",
+		button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+		button_action: SWFUpload.BUTTON_ACTION.SELECT_FILE,
+		
+		// The event handler functions are defined in handlers.js
+		file_queued_handler : fileQueued,
+		file_queue_error_handler : fileQueueError,
+		file_dialog_complete_handler : fileDialogComplete,
+		upload_start_handler : uploadStart,
+		upload_progress_handler : uploadProgress,
+		upload_error_handler : uploadError,
+		upload_complete_handler : uploadComplete,
+		upload_success_handler : function(file, serverData) {
+			doUploadSuccess(file,serverData,this);
+			var data = $.parseJSON(serverData);
+			fileUrl = data.fileUrl;
+			imgSelectInit();
+		}
+	};
+	var avatarSwfUpload = new SWFUpload(settings);
+	var container = 700;
+	var fileUrl = null;
+	var srcWidth = null;
+	var srcHeight = null;
+	var scale = 1;
+	function imgSelectInit() {
+		var imgHtml="<img id='avatarImgSrc' src='"+fileUrl+"?d="+new Date()*1+"' style='position:absolute;top:-99999px;left:-99999px'/>";
+		$(imgHtml).appendTo(document.body).load(function() {
+			srcWidth=this.width;
+			srcHeight=this.height;
+		  if(srcWidth>container || srcHeight>container) {
+		    scale = container/srcWidth < container/srcHeight ? container/srcWidth : container/srcHeight;
+		  }
+			setImgAreaSelect();
+			$(this).remove();
+		});
+	}
+	function onSelectChange(img, selection) {
+		//selection.width,selection.height,selection.x1,selection.x2,selection.y1,selection.y2
+	  if (!selection.width || !selection.height) {
+	    return;
+	  }
+		//Math.round()
+		$("#left").val(Math.round(selection.x1/scale));
+		$("#top").val(Math.round(selection.y1/scale));
+		$("#width").val(Math.round(selection.width/scale));
+		$("#height").val(Math.round(selection.height/scale));
+	}
+	function setImgAreaSelect() {
+		$("#avatarImg").imgAreaSelect({remove:true}).remove();
+		$("#avatarDiv").empty().hide();
+		$("<img id='avatarImg' style='max-height:700px;max-width:700px;'/>").click(function() {
+			this.src=fileUrl+'?d='+new Date()*1;
+		}).appendTo("#avatarDiv");
+		$("#avatarImg").attr("src",fileUrl+"?d="+new Date()*1);
+		var ms = ${avatarLarge}*scale;
+		$("#avatarImg").imgAreaSelect({aspectRatio: "1:1", minWidth: ms, minHeight: ms,x1:0, y1:0, x2:ms, y2:ms, handles: true, onSelectChange: onSelectChange});
+		$("#avatarDiv").show();
+		$("#avatarForm").show();
+		//初始化时需设置这些值
+		$("#left").val(Math.round(0/scale));
+		$("#top").val(Math.round(0/scale));
+		$("#width").val(Math.round(ms/scale));
+		$("#height").val(Math.round(ms/scale));
+	}
+});
+</script>
+</head>
+<body style="background-color:#f4f4f4;">
+<div class="user-top">
+	<div class="w center c999" style="height:32px;line-height:32px;">
+		<div class="left">
+			<a class="topa ml5" href="${ctx}/" target="_blank">首页</a>
+			<a class="topa ml5" href="${ctx}/sitemap" target="_blank">网站地图</a>
+			<a class="topa ml5" href="${ctx}/rss">RSS订阅</a>
+			<a class="topa ml5" href="${ctx}/tags">TAGS标签</a>
+		</div>
+		<div class="right">
+			<script type="text/javascript" src="${ctx}/login_include?d=${.now?time}"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="w center mt10 oh">
+	[#include 'sys_member_my_header.html'/]
+</div>
+<div class="w center mt10 oh">
+	<div class="left" style="width:240px;">
+		<div class="user-box">
+			<div class="user-box-head">账号管理</div>
+			<div class="user-box-body">
+				[#include 'sys_member_my_left.html'/]
+			</div>
+		</div>
+	</div>
+	<div class="right user-box" style="width:740px;">
+		<div class="user-box-head">头像修改</div>
+		<div style="padding:20px 20px;">
+			<div style="padding-bottom:50px;">
+				<div style="float:left;width:50%;">
+					<span id="avatarSwfButton"></span><input type="button" value="上传" class="swfbutton"/> &nbsp;
+					<input id="avatarSwfCancel" type="button" value="取消" onclick="avatarSwfUpload.cancelQueue();" disabled="disabled"/>			
+				</div>
+				<div style="float:right;width:50%;position:relative;">
+					<div id="avatarSwfProgress" style="position:absolute;"></div>			
+				</div>
+			</div>
+			<div id="avatarDiv"></div>
+			<form id="avatarForm" action="${ctx}/my/avatar" method="post" class="mt20 hide">
+				<input type="hidden" name="status_0" value="头像修改成功！"/>
+				<input type="hidden" name="nextUrl" value="${url}"/>
+				<input type="hidden" id="top" name="top" value=""/>
+				<input type="hidden" id="left" name="left" value=""/>
+				<input type="hidden" id="width" name="width" value=""/>
+				<input type="hidden" id="height" name="height" value=""/>
+				<input type="submit" value="提交"/>			
+			</form>
+		</div>
+	</div>
+</div>
+<div style="border-top:1px solid #e6e6e6;padding-bottom:20px;margin-top:30px;"></div>
+<div class="w center text-center">
+	<div class="powered">    
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+	</div>
+</div>
+</body>
+</html>
+[/#escape]

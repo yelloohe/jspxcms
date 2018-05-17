@@ -1,0 +1,1 @@
+start "" /MAX "http://127.0.0.1:8080/park/views/zhongshan_park.html"

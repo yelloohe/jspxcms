@@ -1,0 +1,69 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>专题汇总_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="专题汇总"/>
+<meta name="description" content="专题汇总"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+a.a1{color:#8d8d8d;text-decoration:none;}
+a.a1:hover{color:#d90102;text-decoration:none}
+a.zt-a1{color:#252525;font-size:20px;font-family:"Microsoft YaHei";text-decoration:none;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div class="fs20 ff-yh" style="padding:8px 28px;background:url(_files/img/ico-point-red2.png) 10px center no-repeat">
+		<a href="${dy}/special_category" class="zt-a1">专题</a>
+	</div>
+</div>
+<div class="w center">
+	<ul class="list-unstyled">
+		[@SpecialList isRecommend='true' limit='5';list]
+		[#list list as special]
+		<li class="left" style="[#if (special_index+1) % 5 != 0]margin-right:25px;[/#if]">
+			<a href="${ctx}/special/${special.id}" target="_blank" class="a fs14">
+				<div><img src="${special.smallImageUrl}" width="180" height="120"/></div>
+				<div class="text-center" style="padding:5px 0 5px 0;">${substring(special.title,12,'...')}</div>
+			</a>
+		</li>
+		[/#list]
+		<li class="clear"></li>
+		[/@SpecialList]
+	</ul>
+</div>
+<div class="w center">
+	[@SpecialCategoryList;list]
+	[#list list as sc]
+	<div class="[#if sc_index % 2 == 0]left[#else]right[/#if] mt20" style="width:490px;">
+		<div style="padding-left:10px;border-top:2px solid #4e4e4e;line-height:32px;">
+			<div class="left"><a href="${ctx}/special_category/${sc.id}" class="a-none ff-yh fs16" style="color:#d90102;">${sc.name}专题</a></div>
+			<div class="right" style="background:url(_files/img/more.png) right 11px no-repeat;padding-right:15px;"><a href="${ctx}/special_category/${sc.id}" class="a1">更多</a></div>
+			<div class="clear"></div>
+		</div>
+		<ul class="list-unstyled mt5" style="padding-left:10px;line-height:32px;">
+			[@SpecialList categoryId=sc.id limit='5';list]
+			[#list list as special]
+			<li style="padding-left:15px;background:url(_files/img/ico-point-red.png) 0 center no-repeat;">
+				<div class="left"><a href="${ctx}/special/${special.id}" target="_blank" class="a fs14" style="">${substring(special.title,20,'...')}</a></div>
+				<div class="right" style="color:#8d8d8d;">${special.creationDate?string('yyyy-MM-dd')}</div>
+				<div class="clear"></div>
+			</li>
+			[/#list]
+			[/@SpecialList]
+		</ul>
+	</div>
+	[/#list]
+	[/@SpecialCategoryList]
+	<div class="clear"></div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

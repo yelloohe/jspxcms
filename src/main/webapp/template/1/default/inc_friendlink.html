@@ -1,0 +1,15 @@
+[#escape x as (x)!?html]
+<div class="w center mt20">
+	<div class="box3" style="border-right:1px solid #dbecec;">
+		<div class="head b c-node fs14">友情链接</div>
+	</div>
+	<ul class="list-unstyled" style="padding:10px;border-bottom:1px solid #dbecec;border-left:1px solid #dbecec;border-right:1px solid #dbecec;">
+		[@FriendlinkList;list]
+		[#list list as friendlink]
+		<li class="left" style="padding:10px 20px;"><a class="a fs14" href="${friendlink.url}" target="_blank" title="${friendlink.name}">${friendlink.name}</a></li>
+		[/#list]
+		[/@FriendlinkList]
+		<div class="clear"></div>
+	</ul>
+</div>
+[/#escape]

@@ -1,0 +1,176 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${title}_${node.name}_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${info.keywords}"/>
+<meta name="description" content="${info.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.bright{color:#f76e4a;}
+.tab{padding:0 10px;color:#3e2916;background-color:#efdfce;text-decoration:none;}
+.tab:hover{color:#ff6600;text-decoration:underline;}
+.tab-curr{color:#fff;font-weight:bold;background-color:#835c35;text-decoration:none;}
+.tab-curr:hover{color:#fff;text-decoration:none;}
+table{border-collapse:separate;border-spacing:1px;border-color:grey;background:#ccc;}
+table th{padding:5px 0;}
+table td br{display:none;}
+</style>
+<script type="text/javascript">
+	$.get("${dy}/info_views/${info.id}?d="+new Date()*1);
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div style="padding:10px 5px;">[#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a>[#if n_has_next] > [/#if][/#list]</div>
+	<div style="height:350px;border:1px solid #f5f5f5;">
+		<div class="left" style="width:350px;border-right:1px solid #f5f5f5;">
+			<img src="${info.largeImageUrl}" width="350" height="350"/>
+		</div>
+		<div class="right mt20" style="width:610px;">
+			<h1 class="fs16 b" style="margin:0;line-height:1.5;color:#262626;">${title}</h1>
+			<div class="ff-yh mt20" style="color:#999;line-height:28px;">
+				<span style="display:inline-block;width:55px;">优惠价</span>
+				<span style="color:#dc0000;font-size:20px;font-weight:bold;">￥${info.customs['price']}</span>
+			</div>
+			<div class="ff-yh" style="color:#999;line-height:28px;">
+				<span style="display:inline-block;width:55px;">市场价</span>
+				<span>￥${info.customs['marketPrice']}</span>
+			</div>
+			<div class="ff-yh" style="color:#999;line-height:28px;">
+				<span style="display:inline-block;width:55px;">库存</span>
+				<span style="font-size:14px;font-weight:bold;">${info.customs['stock']}</span>
+			</div>
+			
+			[@ScoreGroup number='star';group]
+			[#if group??]
+			<div class="ff-yh" style="color:#999;line-height:28px;">
+				<span style="display:inline-block;width:55px;">得分</span>
+				<span id="starGroup" style="font-family:\5b8b\4f53;font-size:14px;"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+				<span id="score" style="padding-left:3px;color:red;font-size:14px;"></span>
+			</div>
+			<script type="text/javascript">
+			function getScore() {
+				$.get("${dy}/info_score/${info.id}?d="+new Date()*1,function(data) {
+					var tickets=0,score=0,totalScore=0;	
+					for(var id in data) {
+						if($("#item-score-"+id).length>0){
+							tickets+=data[id];
+							totalScore += parseInt($("#item-score-"+id).val())*data[id];
+						}
+					}
+					if(tickets!=0){
+						score=Math.round(totalScore/tickets*10)/10;
+					}
+					var $starGroup=$("#starGroup > span");
+					for(var i=0;i<5;i++) {
+						if(score>i){
+							$starGroup.eq(i).addClass("bright");
+						} else {
+							$starGroup.eq(i).removeClass("bright");							
+						}
+					}
+					if(score!=0) {
+						$("#score").text(score.toFixed(1))
+					}
+				},"json");				
+			}
+			$(function(){
+				getScore();
+			});
+			</script>
+			<div class="ff-yh" style="color:#999;line-height:28px;">
+				<span style="display:inline-block;width:55px;">请您评价</span>
+				<span id="evaluationGroup" style="font-family:\5b8b\4f53;font-size:14px;">[#list group.items as item]<span class="cursor-point" onclick="scoring(${info.id},${item.id});">★</span><input type="hidden" value="${item.score!}" id="item-score-${item.id}"/>[/#list]</span>
+				<span id="evaluation"></span>
+			</div>
+			<script type="text/javascript">
+			function scoring(id,itemId) {
+				$.post('${ctx}/info_scoring',
+					{id:id,itemId:itemId},
+					function(data) {
+						if(data!="0"){
+							getScore();
+							//alert("评价成功");
+						}else{
+							alert("您已经评价过了！");	
+						}
+					}
+				);
+			}
+			var evaluations = ["很差","较差","还行","推荐","力荐"];
+			$(function(){
+				$("#evaluationGroup > span").each(function(index) {
+					$(this).hover(function() {
+						for(var i=0;i<=index;i++) {
+							$("#evaluationGroup > span").eq(i).addClass("bright");
+						}
+						$("#evaluation").text(evaluations[index]);
+					},function(){
+						for(var i=0;i<=index;i++) {
+							$("#evaluationGroup > span").eq(i).removeClass("bright");	
+						}
+						$("#evaluation").text("");
+					});
+				});
+			});
+			</script>
+			[/#if]
+			[/@ScoreGroup]
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="mt20">
+		<div id="tabHead" class="ff-yh fs14" style="line-height:30px;border-bottom:3px solid #835c35;">
+			<a href="javascript:;" class="left tab tab-curr">商品介绍</a>
+			<a href="javascript:;" class="left tab" style="margin-left:1px;">规格参数</a>
+			<a href="javascript:;" class="left tab" style="margin-left:1px;">包装清单</a>
+			<a href="javascript:;" class="left tab" style="margin-left:1px;">售后服务</a>
+			<div class="clear"></div>
+		</div>
+		<div id="tabBody" style="padding:10px 0;">
+			<div>
+				[#noescape]${info.clobs['introduce']}[/#noescape]
+			</div>
+			<div class="hide" style="border-spacing: 1px;border-collapse: separate;">
+				[#noescape]${info.clobs['specification']}[/#noescape]
+			</div>
+			<div class="hide" style="padding:0 10px">
+				[#noescape]${info.clobs['packingList']}[/#noescape]
+			</div>
+			<div class="hide" style="padding:0 10px">
+				[#noescape]${info.clobs['services']}[/#noescape]
+			</div>
+		</div>
+		<script>
+		$(function(){
+			$("#tabHead > a").each(function(index) {
+				$(this).click(function() {
+					for(var i=0,len=$("#tabHead > a").length;i<len;i++) {
+						if(i==index) {
+							$("#tabHead > a").eq(i).addClass("tab-curr");
+							$("#tabBody > div").eq(i).show();
+						} else {
+							$("#tabHead > a").eq(i).removeClass("tab-curr");
+							$("#tabBody > div").eq(i).hide();
+						}				
+					}
+				});
+			});
+		});
+		</script>
+	</div>
+	<div id="commentDiv" class="mt20"></div>		
+	<script type="text/javascript">
+		$("#commentDiv").load("${dy}/comment_list?fid=${info.id}&url=${url?url}&d="+new Date()*1);
+	</script>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

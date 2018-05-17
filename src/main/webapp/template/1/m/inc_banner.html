@@ -1,0 +1,30 @@
+[#escape x as (x)!?html]
+<div id="carousel-generic" class="carousel slide" data-ride="carousel">
+	[@InfoList attr='focusmobile' siteId='1' limit='4';list]
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    [#list list as info]
+    <li data-target="#carousel-generic" data-slide-to="${info_index}"[#if info_index==0] class="active"[/#if]></li>
+    [/#list]
+  </ol>
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    [#list list as info]
+    <a href="${info.url}" class="item[#if info_index==0] active[/#if]">
+      <img src="${info.attrImageUrl}" alt="${info.title}" style="width:100%;">
+      <!--<div class="carousel-caption"></div>-->
+    </a>
+    [/#list]
+  </div>
+	[/@InfoList]
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+[/#escape]

@@ -1,0 +1,41 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>调查问卷_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="调查问卷"/>
+<meta name="description" content="调查问卷"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">
+	<div class="fs14 ff-yh" style="padding:10px 5px;"><a href="${ctx}/"  class="a c-desc fs14 ff-yh">首页</a> > <a href="${dy}/questions"  class="a c-desc fs14 ff-yh">调查问卷</a></div>
+	<div class="left w2" style="border-top:2px solid #1F3B7B;">
+		[@QuestionPage pageSize='10';pagedList]
+		<ul class="list-unstyled mt10">
+			[#list pagedList.content as question]
+			<li class="oh" style="padding:15px 10px;border-bottom:1px dotted #ccc; background:url(_files/img/ico-point-red.png) 0 center no-repeat;">
+				<div class="left"><a href="${ctx}/questions/${question.id}" target="_blank" class='fs14 a c-000'>${substring(question.title,35,'...')}</a></div>
+				<div class="right" style="padding:2px;color:#a1a1a1;">${question.creationDate?string('yyyy-MM-dd')}</div>
+			</li>
+			[/#list]
+		</ul>
+		<table class="center mt20"><tr><td>
+			[#include 'page.html'/]
+		</td></tr></table>
+		[/@QuestionPage]
+	</div>
+	<div class="right w1">
+		[#include 'inc_news_right.html'/]
+	</div>
+	<div class="clear"></div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

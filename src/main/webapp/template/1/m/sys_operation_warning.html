@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>提示信息_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<style type="text/css">
+html,body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,th,td,img,div,table{margin:0;padding:0;}
+html,body{font:12px/1.5 tahoma,arial,\5b8b\4f53;color:#000;}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+ul,ol{list-style:none;}
+fieldset,img{border:0;}
+
+a{color:#006699;text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.message{width:500px;margin:20px auto 0 auto;border:1px solid #cad9ea;padding:2px;}
+.message .head{border-bottom:1px solid #cad9ea;background-color:#f1f8fe;height:28px;line-height:28px;padding-left:15px;font-size:12px;}
+.message .body{padding:15px 20px;font-size:12px;}
+.message .body .list{padding:10px 0;}
+.message .body .jump{padding:10px 0;}
+</style>
+</head>
+<body>
+<div class="message">
+	<h1 class="head">提示信息</h1>
+	<div class="body">
+		<ul class="list">
+			[#if .data_model['status_${status}']??]
+			 <li>${.data_model['status_${status}']?html}</li>
+			[#elseif messages?? && messages?size>0]
+			[#list messages as m]
+			 <li>${m?html}</li>
+			[/#list]
+			[#else]
+			 <li>操作成功</li>
+			[/#if]
+		</ul>
+		<p class="jump"><a href="javascript:history.go(-1);">返回</a></p>
+	</div>
+</div>
+</body>
+</html>

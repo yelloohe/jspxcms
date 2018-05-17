@@ -1,0 +1,96 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>我的资料_${user.username}_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="我的资料"/>
+<meta name="description" content="我的资料"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.user-top{background-color:#008ee1;color:#fff;}
+.user-top a{color:#fff;text-decoration:none;}
+.user-top a:hover{color:#fff;}
+.ct-bg{background-color:#fff;border:1px solid #dcdcdc;}
+.user-box{border:1px solid #ccc;background-color:#fff;}
+.user-box-head{padding:0 12px;border-bottom:1px solid #eee;line-height:32px;height:32px;font-size:14px;font-weight:bold;font-family:"Microsoft YaHei";}
+.user-box-body{padding:5px 12px;}
+.user-box-body-item{padding:3px 0;}
+.user-box-body-item a{color:#4466bb;font-size:14px;font-family:"Microsoft YaHei";text-decoration:none;display:block;}
+ 
+.user-box-body-item a:hover{}
+.user-box-body-item label{color:#666;}
+.user-nav{list-style:none;padding-left:0;overflow:hidden; border-bottom:1px solid #008ee1;font-family:"Microsoft YaHei";font-size:14px;}
+.user-nav-item{float:left;margin-left:12px;padding:0 12px;line-height:28px;background-color:#e6e6e6;}
+.user-nav-item a{color:#666;text-decoration:none;}
+.user-nav-item a:hover{color:#000;}
+.user-nav-item-curr{background-color:#008ee1;}
+.user-nav-item-curr a{color:#fff;}
+.user-nav-item-curr a:hover{color:#fff;}
+.um-item{height:26px;line-height:26px;overflow:hidden;}
+.um-item label{float:left;width:150px;text-align:right;color:#666;}
+.um-item span{float:left;margin-left:8px;}
+</style>
+</head>
+<body style="background-color:#f4f4f4;">
+<div class="user-top">
+	<div class="w center c999" style="height:32px;line-height:32px;">
+		<div class="left">
+			<a class="topa ml5" href="${ctx}/" target="_blank">首页</a>
+			<a class="topa ml5" href="${ctx}/sitemap" target="_blank">网站地图</a>
+			<a class="topa ml5" href="${ctx}/rss">RSS订阅</a>
+			<a class="topa ml5" href="${ctx}/tags">TAGS标签</a>
+		</div>
+		<div class="right">
+			<script type="text/javascript" src="${ctx}/login_include?d=${.now?time}"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="w center mt10 oh">
+	[#include 'sys_member_my_header.html'/]
+</div>
+<div class="w center mt10 oh">
+	<div class="left" style="width:240px;">
+		<div class="user-box">
+			<div class="user-box-head">账号管理</div>
+			<div class="user-box-body">
+				[#include 'sys_member_my_left.html'/]
+			</div>
+		</div>
+	</div>
+	<div class="right user-box" style="width:740px;">
+		<div class="user-box-head">我的资料</div>
+		<div class="user-box-body">
+		  <div class="um-item"><label>用户名：</label><span>${user.username}</span></div>
+			<div class="um-item"><label>会员组：</label><span>${user.group.name}</span></div>
+      <div class="um-item"><label>性别：</label><span>[#if user.gender??][#if user.gender=='M']男[#else]女[/#if][#else]保密[/#if]</span></div>
+      <div class="um-item"><label>生日：</label><span>${(user.birthDate?string('yyyy-MM-dd'))!}</span></div>
+      <div class="um-item"><label>邮箱：</label><span>${user.email!}</span></div>
+      <div class="um-item"><label>自我介绍：</label><span>${user.bio!}</span></div>
+      <div class="um-item"><label>来自哪里：</label><span>${user.comeFrom!}</span></div>
+      <div class="um-item"><label>QQ：</label><span>${user.qq!}</span></div>
+      <div class="um-item"><label>注册时间：</label><span>${user.creationDate?string("yyyy-MM-dd hh:mm:ss")}</span></div>
+      <div class="um-item"><label>最后登录：</label><span>${user.lastLoginDate?string("yyyy-MM-dd hh:mm:ss")}</span></div>
+      <div class="um-item"><label>注册IP：</label><span>${user.creationIp}</span></div>
+      <div class="um-item"><label>上次登录IP：</label><span>${user.prevLoginIp}</span></div>
+      <div class="um-item"><label>登录次数：</label><span>${user.logins}</span></span></div>
+		</div>
+	</div>
+</div>
+<div style="border-top:1px solid #e6e6e6;padding-bottom:20px;margin-top:30px;"></div>
+<div class="w center text-center">
+	<div class="powered">    
+		<span>Powered by <strong style="font-size:12px"><a href="http://www.jspxcms.com" target="_blank" class="c-666 a-hover">Jspxcms</a></strong></span>
+    <span>&copy; 2010-2017 Jspxcms All Rights Reserved</span>
+	</div>
+	<div class="copyright">
+		<span>${site.customs['company']} 版权所有</span>
+		<span><a href="http://www.miibeian.gov.cn" target="_blank" class="icp c-666 a-hover">${site.customs['icp']}</a></span>
+	</div>
+</div>
+</body>
+</html>
+[/#escape]

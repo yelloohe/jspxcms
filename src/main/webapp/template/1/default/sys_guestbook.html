@@ -1,0 +1,68 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>留言板_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="留言板"/>
+<meta name="description" content="留言板"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.msg-status{padding:3px 15px;margin-left:10px;font-size:16px;font-weight:bold;color:#333;background-color:#e7e7e7;}
+.msg-status-curr{color:#fff;background-color:#993333;}
+.msg-type{color:#333;margin:0 5px;}
+.msg-type-curr{color:#cc3333;}
+.reply{color:#fff;background-color:#993333;padding:3px 5px;}
+.unreply{color:#fff;background-color:#858181;padding:3px 5px;}
+</style>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div class="ff-yh b fs16" style="padding:6px 5px 6px 5px;border-bottom:4px solid #993333;"><a href="${dy}/guestbook" class="left fs18 a-none" style="color:#cc3333;padding-top:5px;">留言板</a><a href="${ctx}/guestbook/create" class="a-hover right" style="padding:4px 10px;background-color:#cc3333;color:#fff;">我要留言</a><div class="clear"></div></div>
+	<div style="">
+		<div class="mt10">
+			<a href="${addParam('','isReply')}" class="a-hover left msg-status[#if !Param.isReply??] msg-status-curr[/#if]">全部留言</a>
+			<a href="${addParam('','isReply','true')}" class="a-hover left msg-status[#if Param.isReply! =='true'] msg-status-curr[/#if]">已回复留言</a>
+			<a href="${addParam('','isReply','false')}" class="a-hover left msg-status[#if Param.isReply! =='false'] msg-status-curr[/#if]">未回复留言</a>
+			[@GuestbookTypeList;list]
+			<div class="right" style="padding:5px 10px 0 0;">
+				<div class="left" style="color:#666;">类别：</div>
+				<a href="${addParam('','typeId')}" class="a-hover left msg-type[#if !Param.typeId??] msg-type-curr[/#if]">全部</a>
+				[#list list as type]
+				<a href="${addParam('','typeId',type.id)}" class="a-hover left msg-type[#if Param.typeId! == type.id?string] msg-type-curr[/#if]">${type.name}</a>
+				[/#list]
+				<div class="clear"></div>
+				[/@GuestbookTypeList]
+			</div>
+			<div class="clear"></div>
+		</div>		
+		[@GuestbookPage typeId=Param.typeId isReply=Param.isReply limit='10' sort="creationDate desc";pagedList]
+		<div class="mt10">
+			[#list pagedList.content as guestbook]
+			<div style="padding:10px 5px 10px 10px;[#if guestbook_index==0]border-top:1px solid #e7e7e7;[/#if]border-bottom:1px solid #e7e7e7;border-left:1px solid #e7e7e7;border-right:1px solid #e7e7e7;background-color:#f2f2f2;">
+				<div class="left fs14"><a href="#" class="a-hover" style="color:#333;">[${guestbook.type.name}]</a></div>
+				<div class="left ml10"><a href="${ctx}/guestbook/${guestbook.id}" class="fs14 a-hover b" style="color:#990000;" target="_blank">${guestbook.title!substring(guestbook.text,100,'...')}</a></div>
+				[#if guestbook.reply]<div class="right reply">已回复</div>[#else]<div class="right unreply">未回复</div>[/#if]
+				<div class="right fs14 c-666" style="margin-right:50px;">${guestbook.creationDate?string('yyyy-MM-dd HH:mm')}</div>
+				<div class="right fs14 c-666" style="width:160px;margin-right:10px;">网友：${guestbook.creator.username!guestbook.username!"匿名网友"}</div>
+				<div class="clear"></div>
+			</div>
+			<div class="fs14" style="padding:20px;border-bottom:1px solid #e7e7e7;border-left:1px solid #e7e7e7;border-right:1px solid #e7e7e7;">
+				${substring(guestbook.text,200,'...')} <a href="${ctx}/guestbook/${guestbook.id}" target="_blank" class="a-hover" style="color:#990000;">【查看全文】</a>
+			</div>
+			[/#list]
+		</div>
+		<table class="center mt20"><tr><td>
+			[#include 'page.html'/]
+		</td></tr></table>
+		[/@GuestbookPage]
+	</div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

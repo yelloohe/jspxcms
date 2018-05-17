@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	>
+	
+	<!-- <bean name="exampleJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="example.ExampleJob" />
+		<property name="jobDataAsMap">
+			<map>
+			 <entry key="timeout" value="5" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		see the example of method invoking job above
+		<property name="jobDetail" ref="jobDetail" />
+		10 seconds
+		<property name="startDelay" value="10000" />
+		repeat every 50 seconds
+		<property name="repeatInterval" value="50000" />
+	</bean> -->
+	
+	<bean id="dynamicScheduler" class="com.jspxcms.core.quartz.DynamicSchedulerImpl"/>
+	<!--
+  <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="testJob" />
+    <property name="targetMethod" value="doJob" />
+  </bean>
+	
+ 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="cronExpression" value="10 * * * * ?" />
+	</bean>
+	-->
+	
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="applicationContextSchedulerContextKey" value="appContext"/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:quartz.properties"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,65 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${title}_${node.name}_${site.name}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${info.keywords}"/>
+<meta name="description" content="${info.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<script type="text/javascript">
+	$.get("${dy}/info_views/${info.id}?d="+new Date()*1);
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+<div class="w center">	
+	<div style="padding:10px 5px;">您的位置:&nbsp; [#list node.hierarchy as n]<a href="${n.url}" class="a c-desc">${n.name}</a>[#if n_has_next] > [/#if][/#list] > 正文</div>
+	<div class="" style="padding-bottom:30px;border-top:2px solid #7aaf23;border-left:1px solid #dddddd;border-right:1px solid #dddddd;border-bottom:1px solid #dddddd;">	
+		<div style="background-color:#f5f5f5;padding:20px 30px; border-bottom:1px solid #dddddd;">
+			<div class="ff-yh fs24">${info.title}</div>
+			<div class="fs14 mt5" style="color:#315AAA;">${info.customs['company']}</div>
+		</div>
+		<div class="fs14" style="padding:30px 30px;">
+			<div>
+				<div class="left" style="width:40%;">薪酬待遇：${info.customs['salary']}</div>
+				<div class="left" style="width:50%;">工作地点：${info.customs['location']}</div>
+				<div class="clear"></div>
+			</div>
+			<div class="mt10">
+				<div class="left" style="width:40%;">发布日期：${info.publishDate?string('yyyy-MM-dd')}</div>
+				<div class="left" style="width:50%;">工作性质：${info.customs['jobtype']}</div>
+				<div class="clear"></div>
+			</div>
+			<div class="mt10">
+				<div class="left" style="width:40%;">工作经验：${info.customs['experience']}</div>
+				<div class="left" style="width:50%;">最低学历：${info.customs['education']}</div>
+				<div class="clear"></div>
+			</div>
+			<div class="mt10">
+				<div class="left" style="width:40%;">招聘人数：${info.customs['number']}</div>
+				<div class="left" style="width:50%;">部门名称：${info.customs['dept']}</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div style="padding:0 30px;">
+			<div class="fs14 b" style="padding:0 15px;line-height:34px;border:1px solid #dddddd;background-color:#f5f5f5;color:#4b4b4b;">岗位职责</div>
+			<div class="fs14 mt20">[#noescape]${bbcode(info.customs['responsibilities'])}[/#noescape]</div>
+		</div>
+		<div class="mt20" style="padding:0 30px;">
+			<div class="fs14 b" style="padding:0 15px;line-height:34px;border:1px solid #dddddd;background-color:#f5f5f5;color:#4b4b4b;">岗位要求</div>
+			<div class="fs14 mt20">[#noescape]${bbcode(info.customs['qualifications'])}[/#noescape]</div>
+		</div>
+		<form action="${dy}/resume" class="mt20" style="padding:0 30px;">
+			<input type="hidden" name="post" value="${info.title}"/>
+			<button type="submit" class="ff-yh fs20" style="border:none;padding:10px 30px;background-color:#fd8000;color:#fff;">申请职位</button>
+		</form>
+	</div>
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]

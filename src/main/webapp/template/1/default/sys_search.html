@@ -1,0 +1,109 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="${node.keywords}"/>
+<meta name="description" content="${node.description}"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<script type="text/javascript" src="${ctx}/static/vendor/My97DatePicker/cn_WdatePicker.js"></script>
+<style>
+.s-result{font-family:"Microsoft YaHei";}
+.s-result li{margin-top:8px;}
+.sr-title{margin:0;}
+.sr-desc{margin-top:3px;font-size:14px;width:90%;}
+.sr-footer{margin-top:3px;}
+em.term{font-style:normal;color:#c00;}
+a.sa{color:#00c;text-decoration:underline;font-size:16px;font-family:"Microsoft YaHei";}
+.sf-param{margin-top:10px;}
+</style>
+</head>
+<body>
+<!-- 顶部开始 -->
+<div style="background-color:#fafafa;border-bottom:1px solid #ebebeb;">
+	<div class="w center c999" style="height:28px;line-height:28px;">
+		<div class="left">
+			<a class="topa" href="${ctx}/sitemap" target="_blank">网站地图</a>
+			<a class="topa" href="${ctx}/rss" target="_blank">RSS订阅</a>
+			<a class="topa" href="${ctx}/tags" target="_blank">TAGS标签</a>
+		</div>
+		<div class="right">
+			<script type="text/javascript" src="${ctx}/login_include?d=${.now?time}"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<!-- 顶部结束 -->
+<div class="w center mt10 oh">
+	<div class="left">
+		<a class="block" style="width:228px;height:90px;background:url(_files/img/logo.png) no-repeat;" href="${ctx}/"></a>
+	</div>
+	<div class="left">
+		<form action="${ctx}/search" method="get" class="s-form" style="margin:20px 0 0 10px;">
+			<div class="oh">
+				<input type="text" id="q" name="[#if Param.part! =='title' || Param.part! =='keyword' || Param.part! =='description' || Param.part! =='text']${Param.part}[#else]q[/#if]" value="[#if Param.part! =='title' || Param.part! =='keyword' || Param.part! =='description' || Param.part! =='text']${Param[Param.part]}[#else]${Param.q}[/#if]" class="left search-input" style="width:600px;" autocomplete="off"/>
+				<button type="submit" class="left" style="width:86px;height:34px;background:url(_files/img/search.png);border:0;"></button>
+			</div>
+			<div class="sf-param">
+				<span>关键词位置：<select name="part" onchange="if($(this).val()==''){$('#q').attr('name','q');}else{$('#q').attr('name',$(this).val());}">
+						<option value="">所有位置</option>
+						<option value="title"[#if Param.part! == 'title'] selected="selected"[/#if]>仅标题</option>
+						<option value="keyword"[#if Param.part! == 'keyword'] selected="selected"[/#if]>仅关键词</option>
+						<option value="description"[#if Param.part! == 'description'] selected="selected"[/#if]>仅描述</option>
+						<option value="text"[#if Param.part! == 'text'] selected="selected"[/#if]>仅正文</option>
+					</select>
+				</span>
+				<span class="ml10">栏目：<select name="nodeId">
+					[@NodeList isIncludeChildren='true';list]
+						<option value="">所有栏目</option>
+						[#list list as node]
+						[#if node_index != 0 && !node.linked && node.realNode]
+						<option value="${node.id}"[#if node.id?string == Param.nodeId!] selected="selected"[/#if]>[#if node.treeLevel gt 1][#list 2..node.treeLevel as i]--[/#list][/#if]${node.name}</option>
+						[/#if]
+						[/#list]
+					[/@NodeList]
+					</select>
+				</span>
+				<span class="ml10">时间：<input type="text" name="beginDate" value="${Param.beginDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" style="width:80px;"/> 至 <input type="text"  name="endDate" value="${Param.endDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'});" style="width:80px;"/></span>
+				<span class="ml10">排序：<select name="sort">
+						<option value="">按相关度</option>
+						<option value="publishDate long desc"[#if Param.sort! == 'publishDate long desc'] selected="selected"[/#if]>按发布时间倒序</option>
+						<option value="publishDate long asc"[#if Param.sort! == 'publishDate long asc'] selected="selected"[/#if]>按发布时间升序</option>
+					</select>
+				</span>
+			</div>
+		</form>
+	</div>
+</div>
+[@InfoFulltextPage q=Param.q title=Param.title keyword=Param.keyword description=Param.description text=Param.text nodeId=Param.nodeId beginDate=Param.beginDate endDate=Param.endDate sort=Param.sort pageSize=10;pagedList]
+<div class="w center mt10">
+	<div class="c-666" style="height:24px;line-height:24px;background-color:#eee;padding:0 5px;">为您找到相关结果 ${pagedList.totalElements} 篇</div>
+	[#if pagedList.totalElements > 0]
+	<ul class="list-unstyled s-result">
+		[#list pagedList.content as info]
+		<li>
+			<h3 class="sr-title"><a href="${info.url}" target="_blank" class="sa">[#noescape]${info.highlightTitle}[/#noescape]</a></h3>
+			<div class="sr-desc">[#noescape]${info.highlightText}[/#noescape]</div>
+			<div class="sr-footer">
+				<span style="color:#008000;">${info.publishDate?string('yyyy-MM-dd HH:mm')}</span> &nbsp;
+				<span>[#list info.node.hierarchy as n]<a href="${n.url}" class="a-hover" style="color:#555;">${n.name}</a>[#if n_has_next]>[/#if][/#list]</span> &nbsp;
+				<span style="color:#888;">点击：${info.bufferViews}</span> &nbsp;
+				<span style="color:#888;">评论：${info.bufferComments}</span>
+			</div>
+		</li>
+		[/#list]
+	</ul>
+	<div class="mt20">
+		[#include "page.html"/]
+	</div>
+	[/#if]
+</div>
+[/@InfoFulltextPage]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]
+

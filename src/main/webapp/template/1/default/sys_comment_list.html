@@ -1,0 +1,130 @@
+[#escape x as (x)!?html]
+[#assign commentIndex = 1/]
+[#macro printComment parent]
+  <div style="background-color:#FFE;border:1px solid #999;padding:3px;">
+		[#if parent.parent??]
+		[@printComment parent=parent.parent/] 
+		[/#if]
+		<div style="padding:5px;">
+			<div class="oh">
+				<div style="float:left;">[#if parent.creator.id==0]<span class="c-comment">匿名网友</span>[#else]<a href="${ctx}/space/${parent.creator.id}" target="_blank" class="a-hover c-comment">${parent.creator.username}</a>[/#if]</div>
+				<div style="float:right;">${commentIndex}[#assign commentIndex = commentIndex+1/]</div>
+			</div>
+			<div class="mt5">[#noescape]${bbcode(parent.text)}[/#noescape]</div>
+		</div>
+	</div>
+[/#macro]
+<script>	 
+function commentLike(id) {
+	$.post("${dy}/comment_like",{id:id},function(data){
+		if(data!="0"){$("#commentLike"+id).text("("+data+")");}else{alert("你已经点过赞了！")}
+	});
+}
+</script>
+[#assign info=getInfo(Param.fid)/]
+[#assign status=info.getCommentStatus(user,groups)/]
+[#assign conf = site.getConf('com.jspxcms.core.domain.SiteComment')/]
+[#if status != 0]
+[@CommentList fid=Param.fid sort='score desc,creationDate desc' limit=5;list]
+[#if list?size > 0]
+	<div style="border-bottom:1px solid #ddd;">
+		<span class="fs16 ff-yh" style="padding-bottom:5px;display:inline-block;border-bottom:3px solid #379be9;">热门评论</span>
+		<span class="fs14">（<a href="${ctx}/comment?fid=${Param.fid}" target="_blank" class="c-333 a-hover"><span style="color:red;">${info.bufferComments}</span>人评论</a>）</span>
+	</div>
+	<ul class="list-unstyled" style="padding-top:5px;">
+	[#list list as comment]
+		<li class="oh mt10" style="border-bottom:1px solid #ddd;padding-bottom:15px;">
+			<div class="left" style="width:9%;">
+				[#if comment.creator.id!=0]<a href="${ctx}/space/${comment.creator.id}" target="_blank">[/#if]<img src="${comment.creator.avatarSmall}" class="comment-avatar"/>[#if comment.creator.id!=0]</a>[/#if]
+			</div>
+			<div class="right" style="width:91%;">
+				<div class="c-666 oh">
+					<div class="left">[#if comment.creator.id==0]<span class="c-comment">匿名网友</span>[#else]<a href="${ctx}/space/${comment.creator.id}" target="_blank" class="a-hover c-comment">${comment.creator.username}</a>[/#if]</div>
+					<div class="right">${comment.creationDate?string("yyyy-MM-dd HH:mm:ss")}</div>
+				</div>				
+				[#if comment.parent??]
+				<div class="mt10">
+					[#assign commentIndex = 1/]
+					[@printComment parent=comment.parent/]
+				</div>
+				[/#if]
+				<div class="mt10">[#noescape]${bbcode(comment.text)}[/#noescape]</div>
+				<div class="mt10 comment-like"><a href="javascript:;" onclick="commentLike(${comment.id});" class="comment-like">点赞<span id="commentLike${comment.id}" class="comment-score">(${comment.score})</span></a><a href="javascript:;" onclick="$('#commentDiv${comment.id}').toggle();" class="ml20 comment-like">回复</a></div>
+				
+				<div id="commentDiv${comment.id}" style="padding-top:5px;display:none;">
+					[#if status == 1]
+					<div class="comment-i">您没有评论的权限</div>
+					[#elseif status == 2]
+					<div class="comment-i">请<a class="a-hover comment-login" href="${ctx}/login?fallbackUrl=${Param.url?url}">登录</a>后再发表评论</div>
+					[#elseif status == 3]
+					<form id="commentForm${comment.id}" action="${ctx}/comment_submit" method="post" class="comment-form">
+						<div class="comment-form-body"><textarea name="text" class="required comment-textarea" maxlength="${conf.maxLength}" data-msg-required="请输入评论内容"></textarea></div>
+						<div class="comment-form-footer">
+							[#if conf.isNeedCaptcha(user)]
+							<div class="left">
+								验证码：<input type="text" id="commentCaptcha${comment.id}" name="captcha" data-rule-required="true" data-msg-required="请输入验证码" data-rule-remote='{"url":"${ctx}/captcha","type":"post"}' data-msg-remote="验证码错误" onfocus="if($('#commentCaptchaImg${comment.id}').is(':hidden')){$('#commentCaptchaImg${comment.id}').show().attr('src','${ctx}/captcha?d='+new Date()*1)};" class="comment-captcha" autocomplete="off"/>
+								<img id="commentCaptchaImg${comment.id}" onclick="this.src='${ctx}/captcha?d='+new Date()*1;$('#commentCaptcha${comment.id}').focus();" class="comment-captcha-img" title="点击重新获取验证码"/>
+								<label for="commentCaptcha${comment.id}" generated="true" class="error"></label>
+							</div>
+							[/#if]
+							<div class="right">
+								<input type="submit" class="comment-button" value="发表评论"/>
+							</div>
+						</div>
+						<input type="hidden" name="ftype" value="Info"/>
+						<input type="hidden" name="fid" value="${info.id}"/>
+						<input type="hidden" name="parentId" value="${comment.id}"/>
+						<input type="hidden" name="status_0" value="评论成功！"/>
+						<input type="hidden" name="status_1" value="评论成功，请等待管理员审核！"/>
+						<input type="hidden" name="nextUrl" value="${Param.url}"/>
+					</form>
+					<script>
+					$(function() {
+						$("#commentForm${comment.id}").validate();
+					});
+					</script>
+					[/#if]
+				</div>
+				
+			</div>
+		</li>
+	[/#list]
+	</ul>
+	[/#if]
+	[/@CommentList]
+	
+	<div class="ff-yh fs18 mt20">网友评论</div>
+	[#if status == 1]
+	<div class="comment-i">您没有评论的权限</div>
+	[#elseif status == 2]
+	<div class="comment-i">请<a class="a-hover comment-login" href="${ctx}/login?fallbackUrl=${Param.url?url}">登录</a>后再发表评论</div>
+	[#elseif status == 3]
+	<form id="commentForm" action="${ctx}/comment_submit" method="post" class="comment-form">
+		<div class="comment-form-body"><textarea name="text" class="required comment-textarea" maxlength="${conf.maxLength}" data-msg-required="请输入评论内容"></textarea></div>
+		<div class="comment-form-footer">
+        	[#if conf.isNeedCaptcha(user)]
+			<div class="left">
+				验证码：<input type="text" id="commentCaptcha" name="captcha" data-rule-required="true" data-msg-required="请输入验证码" data-rule-remote='{"url":"${ctx}/captcha","type":"post"}' data-msg-remote="验证码错误" onfocus="if($('#commentCaptchaImg').is(':hidden')){$('#commentCaptchaImg').show().attr('src','${ctx}/captcha?d='+new Date()*1)};" class="comment-captcha" autocomplete="off"/>
+				<img id="commentCaptchaImg" onclick="this.src='${ctx}/captcha?d='+new Date()*1;$('#commentCaptcha').focus();" class="comment-captcha-img" title="点击重新获取验证码"/>
+				<label for="commentCaptcha" generated="true" class="error"></label>
+			</div>
+            [/#if]
+			<div class="right">
+				<button type="submit" class="comment-button">发表评论</button>
+			</div>
+		</div>
+		<input type="hidden" name="ftype" value="Info"/>
+		<input type="hidden" name="fid" value="${info.id}"/>
+		<input type="hidden" name="status_0" value="评论成功！"/>
+		<input type="hidden" name="status_1" value="评论成功，请等待管理员审核！"/>
+		<input type="hidden" name="nextUrl" value="${Param.url}"/>
+	</form>
+	<script>
+	$(function() {
+		$("#commentForm").validate();
+	});
+	</script>
+	[/#if]
+
+[/#if]
+[/#escape]

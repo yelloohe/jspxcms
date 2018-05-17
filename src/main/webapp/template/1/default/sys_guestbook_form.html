@@ -1,0 +1,97 @@
+[#escape x as (x)!?html]
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>留言板_${site.fullNameOrName}${global.customs['poweredby']}</title>
+<meta name="keywords" content="留言板"/>
+<meta name="description" content="留言板"/>
+<link href="_files/global.css" rel="stylesheet"/>
+<link href="_files/style.css" rel="stylesheet"/>
+[#include 'inc_js.html'/]
+<style>
+.form-item{margin-top:20px;}
+.form-label{float:left;padding-right:30px;width:130px;font-size:14px;font-weight:bold;text-align:right;}
+.form-input{float:left;}
+</style>
+<script>
+$(function() {
+	$("#guestbookForm").validate();
+});
+</script>
+</head>
+<body>
+[#include 'inc_header.html'/]
+[#assign conf = site.getConf('com.jspxcms.ext.domain.SiteGuestbook')/]
+<div class="w center">
+	<div class="ff-yh b fs16" style="padding:6px 5px 6px 5px;border-bottom:4px solid #993333;"><a href="${dy}/guestbook" class="left fs18 a-none" style="color:#cc3333;padding-top:5px;">撰写留言</a><a href="${dy}/guestbook" class="a-hover right" style="padding:4px 10px;background-color:#cc3333;color:#fff;">留言版</a><div class="clear"></div></div>
+	[#if conf.mode == 0]
+	<div class="guestbook-i mt20">留言未启用</div>
+	[#elseif conf.mode == 1 && !user??]
+	<div class="guestbook-i mt20">请<a class="a-hover guestbook-login" href="${ctx}/login?fallbackUrl=${url}">登录</a>后再留言</div>
+	[#else]
+	<form id="guestbookForm" action="${ctx}/guestbook/create" method="post">
+	<input type="hidden" name="status_0" value="留言成功！"/>
+	<input type="hidden" name="status_1" value="留言成功，请等待管理员审核！"/>
+	<input type="hidden" name="nextUrl" value="${ctx}/guestbook"/>
+	<div class="mt20" style="padding:0px 20px 20px 20px;border:1px dotted #cdcdcd; background-color:#f2f2f2;">
+		<div class="form-item">
+			<div class="form-label"><em class="required">*</em>留言标题</div>
+			<div class="form-input"><input type="text" name="title" class="required" maxlength="150" style="width:500px;"/></div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-item">
+			<div class="form-label"><em class="required">*</em>留言内容</div>
+			<div class="form-input"><textarea name="text" class="required" maxlength="${conf.maxLength}" style="width:500px;height:120px;"></textarea></div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-item">
+			<div class="form-label"><em class="required">*</em>留言类别</div>
+			<div class="form-input">
+				[@GuestbookTypeList;list]
+				[#list list as type]
+				<label style="margin-right:15px;"><input type="radio" name="typeId" value="${type.id}" class="required"[#if type_index==0] checked="checked"[/#if]/>${type.name}</label>
+				[/#list]
+				[/@GuestbookTypeList]
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-item">
+			<div class="form-label">真实姓名</div>
+			<div class="form-input"><input type="text" name="username" style="width:220px;"/></div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-item">
+			<div class="form-label">联系电话</div>
+			<div class="form-input"><input type="text" name="mobile" style="width:220px;"/></div>
+			<div class="clear"></div>
+		</div>
+		<div class="form-item">
+			<div class="form-label">电子邮箱</div>
+			<div class="form-input"><input type="text" name="email" style="width:220px;"/></div>
+			<div class="clear"></div>
+		</div>
+		[#if conf.isNeedCaptcha(user)]		
+		<div class="form-item">
+			<div class="form-label"><em class="required">*</em>验证码</div>
+			<div class="form-input">
+				<input type="text" id="commentCaptcha" name="captcha" data-rule-required="true" data-msg-required="请输入验证码" data-rule-remote='{"url":"${ctx}/captcha","type":"post"}' data-msg-remote="验证码错误" onfocus="if($('#commentCaptchaImg').is(':hidden')){$('#commentCaptchaImg').show().attr('src','${ctx}/captcha?d='+new Date()*1)};" style="width:100px;" autocomplete="off"/><label for="commentCaptcha" generated="true" class="error"></label>
+				<div class="relative">
+					<img id="commentCaptchaImg" onclick="this.src='${ctx}/captcha?d='+new Date()*1;$('#commentCaptcha').focus();" style="cursor:pointer;border:1px solid #ccc;margin:0;vertical-align:top;display:none;position:absolute;" title="点击重新获取验证码"/>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>				
+		[/#if]
+		<table class="center mt20"><tr><td>
+			<button type="submit" class="ff-yh fs16 b" style="background-color:#cc3333;color:#fff;border:none;padding:5px 20px;">确认提交</button>
+		</td></tr></table>
+	</div>
+	</form>
+	[/#if]
+</div>
+[#include 'inc_friendlink.html'/]
+[#include 'inc_footer.html'/]
+</body>
+</html>
+[/#escape]
